@@ -1,0 +1,113 @@
+// src/components/navigation/Breadcrumbs.module.scss
+/**
+ * Breadcrumbs Module Styles
+ * 
+ * Scoped styles for the Breadcrumbs component.
+ * Provides clean, professional breadcrumb navigation with proper
+ * spacing, truncation, separators, and responsive behavior.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing, typography, colors
+ * - Hover/focus states
+ * - Dark/light theme compatibility
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.breadcrumbs {
+  // Container
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $spacing-md;
+  padding: $spacing-md 0;
+  font-size: $text-sm;
+  color: var(--muted-foreground);
+
+  // Breadcrumb list (ordered list for semantics)
+  .breadcrumbList {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: $spacing-md;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  // Individual breadcrumb item
+  .breadcrumbItem {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+
+    // Link styling
+    .breadcrumbLink {
+      color: var(--muted-foreground);
+      text-decoration: none;
+      transition: color 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: $spacing-xs;
+
+      &:hover {
+        color: var(--foreground);
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--ring);
+        outline-offset: 2px;
+        border-radius: $radius-sm;
+      }
+
+      // Current page (last item)
+      &.current {
+        color: var(--foreground);
+        font-weight: $font-semibold;
+        pointer-events: none;
+      }
+
+      // Home icon
+      .breadcrumbIcon {
+        flex-shrink: 0;
+      }
+
+      .breadcrumbLabel {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px;
+
+        @media (max-width: $breakpoint-md) {
+          max-width: 120px;
+        }
+      }
+    }
+
+    // Ellipsis for truncated items
+    .breadcrumbEllipsis {
+      color: var(--muted-foreground);
+      font-weight: $font-medium;
+    }
+
+    // Separator chevron
+    .separatorIcon {
+      color: var(--muted-foreground);
+      flex-shrink: 0;
+    }
+  }
+
+  // Responsive: reduce gap on small screens
+  @media (max-width: $breakpoint-sm) {
+    gap: $spacing-sm;
+
+    .breadcrumbList {
+      gap: $spacing-sm;
+    }
+
+    .breadcrumbItem {
+      gap: $spacing-sm;
+    }
+  }
+}

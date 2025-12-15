@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="240px" height="180px" viewBox="0 0 240 180" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <!-- No Patients Illustration – Professional, calm, healthcare-themed -->
+  <!-- Used in EmptyState components when patient lists or search results are empty -->
+  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <!-- Background subtle gradient for depth -->
+    <rect width="240" height="180" rx="12" fill="#F8FAFC"/>
+
+    <!-- Empty patient chart/clipboard in center -->
+    <g transform="translate(80, 40)">
+      <!-- Clipboard backing -->
+      <rect x="0" y="10" width="80" height="100" rx="8" fill="#E2E8F0"/>
+      <rect x="6" y="16" width="68" height="88" rx="6" fill="#FFFFFF"/>
+
+      <!-- Clip at top -->
+      <rect x="15" y="0" width="50" height="16" rx="8" fill="#CBD5E1"/>
+
+      <!-- Empty lines representing missing patient data -->
+      <rect x="12" y="30" width="56" height="4" rx="2" fill="#E2E8F0" opacity="0.6"/>
+      <rect x="12" y="42" width="56" height="4" rx="2" fill="#E2E8F0" opacity="0.6"/>
+      <rect x="12" y="54" width="48" height="4" rx="2" fill="#E2E8F0" opacity="0.6"/>
+      <rect x="12" y="66" width="52" height="4" rx="2" fill="#E2E8F0" opacity="0.6"/>
+      <rect x="12" y="78" width="40" height="4" rx="2" fill="#E2E8F0" opacity="0.6"/>
+    </g>
+
+    <!-- Empty hospital bed beside clipboard for context -->
+    <g transform="translate(140, 70)">
+      <!-- Bed Frame -->
+      <rect x="0" y="20" width="60" height="30" rx="6" fill="#E2E8F0"/>
+      <rect x="6" y="24" width="48" height="22" rx="4" fill="#F1F5F9"/>
+
+      <!-- Headboard -->
+      <rect x="0" y="12" width="60" height="8" rx="6" fill="#CBD5E1"/>
+
+      <!-- Pillow -->
+      <ellipse cx="30" cy="34" rx="18" ry="8" fill="#FFFFFF" opacity="0.9"/>
+
+      <!-- Legs -->
+      <rect x="8" y="50" width="6" height="16" rx="2" fill="#94A3B8"/>
+      <rect x="46" y="50" width="6" height="16" rx="2" fill="#94A3B8"/>
+    </g>
+
+    <!-- Large subtle "No Data" indicator in center -->
+    <g transform="translate(100, 20)">
+      <!-- Transparent circle background -->
+      <circle cx="20" cy="20" r="36" fill="#64748B" opacity="0.05"/>
+
+      <!-- Magnifying glass with slash (universal "nothing found") -->
+      <circle cx="20" cy="20" r="28" stroke="#94A3B8" stroke-width="4" opacity="0.4"/>
+      <line x1="40" y1="40" x2="55" y2="55" stroke="#94A3B8" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
+
+      <!-- Subtle question mark fallback -->
+      <text font-family="Inter Variable, Inter, system-ui, sans-serif" 
+            font-size="52" 
+            font-weight="300" 
+            fill="#94A3B8" 
+            text-anchor="middle"
+            opacity="0.3">
+        <tspan x="20" y="48">?</tspan>
+      </text>
+    </g>
+
+    <!-- Floor line for ward atmosphere -->
+    <rect x="0" y="160" width="240" height="20" fill="#E2E8F0" opacity="0.4"/>
+  </g>
+</svg>

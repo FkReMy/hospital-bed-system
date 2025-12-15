@@ -1,0 +1,90 @@
+// src/components/layout/AppShell.module.scss
+/**
+ * AppShell Module Styles
+ * 
+ * Scoped styles for the AppShell component - the main dashboard layout.
+ * Handles sidebar toggle, topbar positioning, content padding, and responsive behavior.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing, typography, colors, borders, shadows
+ * - Glassmorphic elevation
+ * - Smooth transitions and animations
+ * - Dark/light theme compatibility
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.appShell {
+  // Full viewport layout
+  display: flex;
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+  transition: background 0.3s ease;
+
+  // Sidebar states
+  &.sidebarOpen {
+    .mainLayout {
+      margin-left: $sidebar-width-open;
+      transition: margin-left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+  }
+
+  &.sidebarCollapsed {
+    .mainLayout {
+      margin-left: $sidebar-width-collapsed;
+      transition: margin-left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+  }
+
+  // Main layout container
+  .mainLayout {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  // Main content area
+  .mainContent {
+    flex: 1;
+    overflow-y: auto;
+    padding: $spacing-2xl $spacing-3xl;
+    scrollbar-width: thin;
+    scrollbar-color: var(--muted) transparent;
+
+    @media (max-width: $breakpoint-lg) {
+      padding: $spacing-xl $spacing-2xl;
+    }
+
+    @media (max-width: $breakpoint-md) {
+      padding: $spacing-lg $spacing-lg;
+    }
+
+    // Content wrapper for max-width centering (optional for readability)
+    .contentWrapper {
+      max-width: $max-content-width;
+      margin: 0 auto;
+      width: 100%;
+    }
+  }
+
+  // Custom scrollbar styling (optional, for premium feel)
+  .mainContent::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .mainContent::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .mainContent::-webkit-scrollbar-thumb {
+    background: var(--muted);
+    border-radius: 4px;
+  }
+
+  .mainContent::-webkit-scrollbar-thumb:hover {
+    background: var(--muted-foreground);
+  }
+}

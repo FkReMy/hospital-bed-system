@@ -1,0 +1,124 @@
+// src/components/analytics/OccupancyChart.module.scss
+/**
+ * OccupancyChart Module Styles
+ * 
+ * Scoped styles for the OccupancyChart component.
+ * Uses global SCSS variables and mixins for unified design system consistency.
+ * 
+ * Features:
+ * - Glassmorphic card enhancement
+ * - Responsive padding and spacing
+ * - Custom tooltip styling integration (via CSS variables)
+ * - Subtle hover and focus states
+ * - Dark/light theme compatibility
+ * 
+ * All colors, radii, shadows, and typography come from _variables.scss
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.occupancyChartCard {
+  // Extend global glass card mixin for premium elevated look
+  @include glass-card;
+
+  // Additional spacing for chart content
+  padding: $spacing-lg;
+
+  // Ensure chart container has proper aspect ratio on small screens
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-md;
+  }
+
+  // Header styling - consistent with CardHeader if used
+  .chartHeader {
+    margin-bottom: $spacing-lg;
+    border-bottom: 1px solid var(--border);
+
+    .chartTitle {
+      font-size: $text-2xl;
+      font-weight: $font-semibold;
+      color: var(--foreground);
+      margin: 0;
+    }
+
+    .chartSubtitle {
+      font-size: $text-sm;
+      color: var(--muted-foreground);
+      margin-top: $spacing-xs;
+    }
+  }
+
+  // Chart content area
+  .chartContent {
+    width: 100%;
+    padding-top: $spacing-md;
+
+    // Ensure Recharts ResponsiveContainer fills available space
+    :global(.recharts-wrapper) {
+      width: 100% !important;
+      margin: 0 auto;
+
+      // Subtle background for the plot area
+      :global(.recharts-surface) {
+        background: transparent;
+      }
+
+      // Custom tooltip styling using CSS variables
+      :global(.recharts-tooltip-wrapper) {
+        :global(.recharts-default-tooltip) {
+          background: var(--background) !important;
+          border: 1px solid var(--border) !important;
+          border-radius: $radius-lg !important;
+          box-shadow: $shadow-lg !important;
+          padding: $spacing-md !important;
+
+          :global(.recharts-tooltip-label) {
+            color: var(--foreground);
+            font-weight: $font-semibold;
+            margin-bottom: $spacing-xs;
+          }
+
+          :global(.recharts-tooltip-item) {
+            color: var(--muted-foreground) !important;
+          }
+        }
+      }
+
+      // Legend styling
+      :global(.recharts-legend-wrapper) {
+        padding-top: $spacing-md !important;
+      }
+
+      :global(.recharts-legend-item-text) {
+        color: var(--muted-foreground) !important;
+        font-size: $text-sm;
+      }
+    }
+  }
+
+  // Loading skeleton override
+  .skeleton {
+    border-radius: $radius-lg;
+    background: linear-gradient(90deg, var(--muted) 25%, var(--border) 50%, var(--muted) 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+  }
+
+  @keyframes loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  // Empty state centering
+  .emptyState {
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

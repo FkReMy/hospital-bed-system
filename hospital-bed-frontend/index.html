@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Primary Meta Tags -->
+    <title>Hospital Bed Management System (HBMS) - Staff Dashboard</title>
+    <meta
+      name="description"
+      content="Real-time hospital bed management system for staff (Admin, Doctor, Nurse, Reception). Provides bed allocation, monitoring, and occupancy analytics."
+    />
+    <meta name="author" content="HBMS Development Team" />
+
+    <!-- Favicon & Manifest -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="/src/assets/fonts/Inter-Variable.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href="/src/assets/fonts/JetBrainsMono-Regular.ttf" as="font" type="font/ttf" crossorigin />
+
+    <!-- Theme Color for PWA -->
+    <meta name="theme-color" content="#ffffff" />
+
+    <!-- Open Graph / Social Meta (useful for future sharing) -->
+    <meta property="og:title" content="HBMS - Hospital Bed Management System" />
+    <meta property="og:description" content="Secure, real-time bed management dashboard for healthcare professionals." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://hbms.yourdomain.com" />
+    <meta property="og:image" content="/logo-light.svg" />
+
+    <!-- Vite Entry Point -->
+    <script type="module" src="/src/main.jsx"></script>
+  </head>
+
+  <body>
+    <!-- Root Element for React -->
+    <div id="root"></div>
+
+    <!-- Optional: Loading fallback (visible only if JS is slow) -->
+    <noscript>
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100vh;
+          font-family: system-ui, sans-serif;
+          text-align: center;
+          padding: 2rem;
+          background: #f8fafc;
+          color: #1e293b;
+        "
+      >
+        <div>
+          <h1>JavaScript Required</h1>
+          <p>This application requires JavaScript to run. Please enable it in your browser settings.</p>
+        </div>
+      </div>
+    </noscript>
+  </body>
+</html>

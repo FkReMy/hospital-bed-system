@@ -1,0 +1,125 @@
+// src/components/appointments/AppointmentForm.module.scss
+/**
+ * AppointmentForm Module Styles
+ * 
+ * Scoped styles for the AppointmentForm component.
+ * Ensures clean, professional form layout with proper spacing, focus states,
+ * and error handling consistent with the unified HBMS design system.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing ($spacing-*)
+ * - Typography
+ * - Colors (foreground, muted, destructive, border)
+ * - Border radius
+ * - Glassmorphic effects (optional subtle elevation)
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.form {
+  // Full width with comfortable max constraint for readability
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+
+  // Vertical rhythm
+  .formSection {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+
+    // Individual field wrapper
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-xs;
+
+      // Required indicator on label
+      .label {
+        display: flex;
+        align-items: center;
+        font-weight: $font-medium;
+        color: var(--foreground);
+        font-size: $text-sm;
+
+        .required {
+          color: $destructive;
+          margin-left: 4px;
+        }
+      }
+
+      // Input, Select, Textarea base enhancements
+      :global(.input),
+      :global(.select),
+      :global(.textarea) {
+        transition: all 0.2s ease;
+      }
+
+      // Focus state enhancement
+      :global(.input:focus),
+      :global(.select:focus),
+      :global(.textarea:focus) {
+        outline: none;
+        ring: 2px solid var(--ring);
+        box-shadow: $shadow-focus;
+      }
+
+      // Error state
+      &.error {
+        :global(.input),
+        :global(.select),
+        :global(.textarea) {
+          border-color: $destructive;
+          background-color: $destructive/5;
+        }
+      }
+
+      // Error message
+      .errorMessage {
+        font-size: $text-xs;
+        color: $destructive;
+        margin-top: $spacing-xs;
+        font-weight: $font-medium;
+      }
+    }
+  }
+
+  // Action buttons at bottom
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: $spacing-md;
+    padding-top: $spacing-lg;
+    border-top: 1px solid var(--border);
+
+    // Responsive: stack on small screens
+    @media (max-width: $breakpoint-sm) {
+      flex-direction: column-reverse;
+
+      :global(.button) {
+        width: 100%;
+      }
+    }
+  }
+
+  // Dialog-specific adjustments (when used inside Dialog)
+  &.inDialog {
+    padding: $spacing-lg;
+
+    @media (max-width: $breakpoint-md) {
+      padding: $spacing-md;
+    }
+  }
+}
+
+// Optional subtle glass elevation for the entire form container
+.formContainer {
+  @include glass-card;
+  padding: $spacing-xl;
+  border-radius: $radius-xl;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-lg;
+  }
+}

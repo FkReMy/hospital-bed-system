@@ -1,0 +1,61 @@
+
+{
+  "name": "Hospital Bed Management System (HBMS)",
+  "short_name": "HBMS",
+  "description": "Real-time hospital bed management dashboard for staff (Admin, Doctor, Nurse, Reception). Secure, role-based access with bed allocation, monitoring, and occupancy analytics.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1e40af",
+  "orientation": "any",
+  "scope": "/",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["medical", "productivity", "healthcare"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "48x48 72x72 96x96 128x128 256x256",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/logo-light.svg",
+      "sizes": "180x60",
+      "type": "image/svg+xml",
+      "form_factor": "wide",
+      "label": "HBMS Dashboard Header"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Bed Management",
+      "short_name": "Beds",
+      "description": "View and manage hospital beds",
+      "url": "/beds",
+      "icons": [{ "src": "/favicon.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Dashboard Overview",
+      "short_name": "Dashboard",
+      "description": "Hospital occupancy overview",
+      "url": "/dashboard",
+      "icons": [{ "src": "/favicon.svg", "sizes": "96x96" }]
+    }
+  ],
+  "prefer_related_applications": false
+}

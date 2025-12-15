@@ -1,0 +1,202 @@
+// src/components/layout/Sidebar.module.scss
+/**
+ * Sidebar Module Styles
+ * 
+ * Scoped styles for the Sidebar component - premium collapsible navigation.
+ * Handles open/collapsed states, brand logo, nav items, active highlighting,
+ * logout, and toggle button.
+ * 
+ * Uses global variables and mixins for:
+ * - Widths, spacing, typography, colors, borders, shadows
+ * - Smooth transitions
+ * - Dark/light theme compatibility
+ * - Glassmorphic background
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.sidebar {
+  // Fixed position sidebar
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  background: var(--sidebar-bg, #0f172a); // Deep slate for premium dark feel
+  color: var(--sidebar-foreground, #f8fafc);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  z-index: 50;
+  box-shadow: $shadow-2xl;
+
+  // Open state
+  &.open {
+    width: $sidebar-width-open;
+
+    .brandText {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .navLabel {
+      opacity: 1;
+      visibility: visible;
+      width: auto;
+    }
+  }
+
+  // Collapsed state
+  &.collapsed {
+    width: $sidebar-width-collapsed;
+
+    .brandText {
+      opacity: 0;
+      visibility: hidden;
+      width: 0;
+    }
+
+    .navLabel {
+      opacity: 0;
+      visibility: hidden;
+      width: 0;
+    }
+
+    .toggleButton {
+      justify-content: center;
+    }
+  }
+
+  // Brand header
+  .sidebarBrand {
+    display: flex;
+    align-items: center;
+    padding: $spacing-lg $spacing-xl;
+    gap: $spacing-md;
+    border-bottom: 1px solid var(--border);
+    min-height: 72px;
+
+    .brandLogo {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      object-fit: contain;
+    }
+
+    .brandText {
+      font-size: $text-xl;
+      font-weight: $font-bold;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+    }
+  }
+
+  // Navigation
+  .sidebarNav {
+    flex: 1;
+    overflow-y: auto;
+    padding: $spacing-md 0;
+
+    .navList {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      .navItem {
+        margin: $spacing-xs $spacing-md;
+
+        .navLink {
+          display: flex;
+          align-items: center;
+          gap: $spacing-md;
+          padding: $spacing-md $spacing-lg;
+          border-radius: $radius-lg;
+          color: var(--sidebar-foreground);
+          text-decoration: none;
+          transition: all 0.2s ease;
+          position: relative;
+
+          .navIcon {
+            flex-shrink: 0;
+            width: 22px;
+            height: 22px;
+          }
+
+          .navLabel {
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            font-weight: $font-medium;
+          }
+
+          &:hover {
+            background: var(--sidebar-hover, rgba(255, 255, 255, 0.1));
+          }
+
+          &.active {
+            background: var(--primary);
+            color: white;
+            font-weight: $font-semibold;
+
+            .navIcon {
+              stroke-width: 2.5;
+            }
+
+            // Active indicator bar
+            &::before {
+              content: '';
+              position: absolute;
+              left: 0;
+              top: 50%;
+              transform: translateY(-50%);
+              width: 4px;
+              height: 32px;
+              background: white;
+              border-radius: 0 $radius-md $radius-md 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Footer actions
+  .sidebarFooter {
+    padding: $spacing-lg $spacing-md;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+
+    .logoutLink,
+    .toggleButton {
+      display: flex;
+      align-items: center;
+      gap: $spacing-md;
+      padding: $spacing-md $spacing-lg;
+      border-radius: $radius-lg;
+      color: var(--sidebar-foreground);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: 100%;
+
+      .navIcon {
+        flex-shrink: 0;
+      }
+
+      .navLabel {
+        transition: all 0.3s ease;
+      }
+
+      &:hover {
+        background: var(--sidebar-hover, rgba(255, 255, 255, 0.1));
+      }
+    }
+
+    .toggleButton {
+      justify-content: flex-end;
+      padding: $spacing-md;
+    }
+  }
+}

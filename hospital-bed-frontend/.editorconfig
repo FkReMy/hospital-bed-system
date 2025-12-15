@@ -1,0 +1,47 @@
+# .editorconfig
+# This file enforces consistent coding styles across editors and IDEs
+# Supports VS Code, WebStorm, IntelliJ, Vim, Sublime Text, etc.
+
+root = true
+
+[*]
+# Core settings for all files
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+# Specific overrides
+[*.{js,jsx,ts,tsx}]
+indent_size = 2
+max_line_length = 120
+
+[*.{json,yml,yaml,md}]
+indent_size = 2
+
+[*.scss]
+indent_size = 2
+max_line_length = 120
+
+[*.html]
+indent_size = 2
+
+[*.{cjs,config.js,vite.config.js}]
+indent_size = 2
+
+[package.json]
+indent_size = 2
+sort_package_json = true
+
+[*.md]
+trim_trailing_whitespace = false
+max_line_length = off
+
+# Ensure consistent line endings and whitespace handling in config files
+[*.{gitignore,editorconfig}]
+indent_style = ignore
+trim_trailing_whitespace = true
+
+# End of file

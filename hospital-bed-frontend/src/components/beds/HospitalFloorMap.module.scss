@@ -1,0 +1,142 @@
+// src/components/beds/HospitalFloorMap.module.scss
+/**
+ * HospitalFloorMap Module Styles
+ * 
+ * Scoped styles for the HospitalFloorMap component.
+ * Provides a clean, professional, responsive visual bed layout with
+ * department grouping, room sections, and occupancy indicators.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing, typography, colors, borders, shadows
+ * - Glassmorphic elevation
+ * - Responsive grid behavior
+ * - Dark/light theme compatibility
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.hospitalFloorMap {
+  // Full width with comfortable inner spacing
+  width: 100%;
+  padding: $spacing-xl;
+
+  @media (max-width: $breakpoint-lg) {
+    padding: $spacing-lg;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-md;
+  }
+
+  // Departments grid - responsive columns
+  .departmentsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: $spacing-2xl;
+
+    @media (max-width: $breakpoint-xl) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // Department card container
+  .departmentCard {
+    @include glass-card;
+    border-radius: $radius-2xl;
+    overflow: hidden;
+
+    // Department header with occupancy
+    .departmentHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: $spacing-lg $spacing-xl;
+      background: var(--muted/50);
+      border-bottom: 1px solid var(--border);
+
+      .departmentName {
+        font-size: $text-2xl;
+        font-weight: $font-bold;
+        color: var(--foreground);
+      }
+
+      .occupancySummary {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: $spacing-xs;
+
+        .occupancyText {
+          font-size: $text-sm;
+          color: var(--muted-foreground);
+          font-weight: $font-medium;
+        }
+
+        .occupancyPercentage {
+          font-size: $text-3xl;
+          font-weight: $font-bold;
+          color: var(--primary);
+
+          // Color based on occupancy level
+          &.high {
+            color: $rose-600;
+          }
+
+          &.medium {
+            color: $amber-600;
+          }
+
+          &.low {
+            color: $emerald-600;
+          }
+        }
+      }
+    }
+
+    // Rooms container
+    .roomsGrid {
+      padding: $spacing-xl;
+
+      // Individual room section
+      .roomSection {
+        margin-bottom: $spacing-2xl;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .roomLabel {
+          font-size: $text-lg;
+          font-weight: $font-semibold;
+          color: var(--foreground);
+          margin-bottom: $spacing-lg;
+          padding-bottom: $spacing-sm;
+          border-bottom: 1px solid var(--border);
+        }
+
+        // Beds grid within room
+        .bedsGrid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+          gap: $spacing-lg;
+
+          @media (max-width: $breakpoint-sm) {
+            grid-template-columns: 1fr;
+          }
+        }
+      }
+    }
+  }
+
+  // Page header integration
+  :global(.pageHeader) {
+    margin-bottom: $spacing-2xl;
+  }
+
+  // Empty state centering
+  .emptyContainer {
+    padding: $spacing-3xl;
+    text-align: center;
+  }
+}

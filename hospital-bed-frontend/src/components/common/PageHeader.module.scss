@@ -1,0 +1,127 @@
+// src/components/common/PageHeader.module.scss
+/**
+ * PageHeader Module Styles
+ * 
+ * Scoped styles for the PageHeader component.
+ * Provides consistent, professional page heading layout with title,
+ * optional subtitle, and action section.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing, typography, colors
+ * - Responsive behavior
+ * - Dark/light theme compatibility
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.pageHeader {
+  // Full width with inner padding
+  width: 100%;
+  padding: $spacing-xl 0;
+  border-bottom: 1px solid var(--border);
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-lg 0;
+  }
+
+  // Flex container for title and actions
+  .headerContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: $spacing-2xl;
+    flex-wrap: wrap;
+
+    @media (max-width: $breakpoint-lg) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  // Title and subtitle section
+  .titleSection {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    min-width: 0; // Allow text truncation if needed
+
+    .pageTitle {
+      font-size: $text-4xl;
+      font-weight: $font-bold;
+      color: var(--foreground);
+      margin: 0;
+      line-height: 1.2;
+
+      @media (max-width: $breakpoint-md) {
+        font-size: $text-3xl;
+      }
+    }
+
+    .pageSubtitle {
+      font-size: $text-lg;
+      color: var(--muted-foreground);
+      margin: 0;
+      max-width: 720px;
+      line-height: 1.6;
+
+      @media (max-width: $breakpoint-md) {
+        font-size: $text-base;
+      }
+    }
+  }
+
+  // Actions section (buttons, filters, etc.)
+  .actionsSection {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+
+    @media (max-width: $breakpoint-lg) {
+      width: 100%;
+      justify-content: flex-start;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      flex-direction: column;
+      align-items: stretch;
+
+      :global(.button) {
+        width: 100%;
+      }
+    }
+  }
+
+  // Optional variant for compact headers (e.g., in modals or cards)
+  &.compact {
+    padding: $spacing-lg 0;
+    border-bottom: none;
+
+    .pageTitle {
+      font-size: $text-2xl;
+    }
+
+    .pageSubtitle {
+      font-size: $text-base;
+    }
+  }
+
+  // Optional centered variant
+  &.centered {
+    text-align: center;
+
+    .headerContent {
+      justify-content: center;
+    }
+
+    .titleSection {
+      align-items: center;
+    }
+
+    .actionsSection {
+      justify-content: center;
+    }
+  }
+}

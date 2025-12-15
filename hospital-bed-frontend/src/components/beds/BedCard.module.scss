@@ -1,0 +1,247 @@
+// src/components/beds/BedCard.module.scss
+/**
+ * BedCard Module Styles
+ * 
+ * Scoped styles for the BedCard component - delivering the premium glassmorphic
+ * "vibe" look while maintaining full compatibility with the unified HBMS design system.
+ * 
+ * Features:
+ * - Glassmorphic card base with hover lift
+ * - Status-based color theming (available, occupied, cleaning, maintenance)
+ * - Pulsing status dot with glowing ring
+ * - Patient info layout with avatar
+ * - Empty state centering
+ * - Action overlay on hover
+ * - Responsive spacing and typography
+ * 
+ * Uses global variables and mixins for consistency.
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.bedCard {
+  // Base glassmorphic card - extended from global mixin
+  @include glass-card;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: $spacing-lg;
+
+  // Interactive state (available beds)
+  &.interactive {
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-8px);
+      box-shadow: $shadow-2xl;
+      border-color: $emerald-300;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--ring);
+      outline-offset: 4px;
+    }
+  }
+
+  // Status-based theming
+  &.available {
+    border-color: $emerald-200;
+
+    .statusIndicator {
+      background: $emerald-500;
+      box-shadow: 0 0 0 6px $emerald-100;
+    }
+  }
+
+  &.occupied {
+    border-color: $rose-200;
+
+    .statusIndicator {
+      background: $rose-500;
+      box-shadow: 0 0 0 6px $rose-100;
+    }
+  }
+
+  &.cleaning {
+    border-color: $amber-200;
+
+    .statusIndicator {
+      background: $amber-500;
+      box-shadow: 0 0 0 6px $amber-100;
+    }
+  }
+
+  &.maintenance {
+    border-color: $slate-300;
+
+    .statusIndicator {
+      background: $slate-500;
+      box-shadow: 0 0 0 6px $slate-100;
+    }
+  }
+
+  // Header layout
+  .bedHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: $spacing-md;
+
+    .bedNumberContainer {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-xs;
+
+      .bedNumber {
+        font-size: $text-xl;
+        font-weight: $font-bold;
+        color: var(--foreground);
+      }
+
+      .departmentBadge {
+        font-size: $text-xs;
+      }
+    }
+
+    // Status indicator ring + pulsing dot
+    .statusIndicator {
+      position: relative;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      animation: pulseRing 2s infinite ease-out;
+
+      .statusDot {
+        position: absolute;
+        inset: 6px;
+        border-radius: 50%;
+        background: white;
+        animation: pulseDot 2s infinite ease-out;
+      }
+    }
+  }
+
+  // Body content
+  .bedBody {
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    // Patient info layout
+    .patientInfo {
+      display: flex;
+      align-items: center;
+      gap: $spacing-lg;
+      width: 100%;
+
+      .patientAvatar {
+        flex-shrink: 0;
+
+        .avatarInitial {
+          font-size: $text-2xl;
+          font-weight: $font-bold;
+        }
+      }
+
+      .patientDetails {
+        flex: 1;
+        min-width: 0; // Allow truncation
+
+        .patientName {
+          font-size: $text-lg;
+          font-weight: $font-semibold;
+          color: var(--foreground);
+          margin-bottom: $spacing-xs;
+        }
+
+        .patientMeta {
+          display: flex;
+          gap: $spacing-sm;
+          margin-bottom: $spacing-sm;
+
+          .metaBadge {
+            font-size: $text-xs;
+          }
+        }
+
+        .patientCondition {
+          font-size: $text-sm;
+          color: var(--muted-foreground);
+          font-style: italic;
+        }
+      }
+    }
+
+    // Empty state
+    .emptyState {
+      text-align: center;
+      color: var(--muted-foreground);
+
+      .emptyBedIcon {
+        margin-bottom: $spacing-md;
+        opacity: 0.6;
+      }
+
+      .emptyStatus {
+        font-size: $text-base;
+        font-weight: $font-medium;
+        text-transform: capitalize;
+      }
+
+      .warningIcon {
+        color: $amber-500;
+        margin-top: $spacing-sm;
+      }
+    }
+  }
+
+  // Hover action overlay
+  .actionOverlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, var(--primary)/90 100%);
+    color: white;
+    font-weight: $font-bold;
+    font-size: $text-sm;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: $spacing-xl;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+
+    .actionText {
+      text-align: center;
+    }
+  }
+
+  &:hover .actionOverlay {
+    opacity: 1;
+  }
+}
+
+// Pulse animations for status indicator
+@keyframes pulseRing {
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--status-rgb), 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(var(--status-rgb), 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(var(--status-rgb), 0);
+  }
+}
+
+@keyframes pulseDot {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}

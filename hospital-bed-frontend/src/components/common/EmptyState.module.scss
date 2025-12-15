@@ -1,0 +1,115 @@
+// src/components/common/EmptyState.module.scss
+/**
+ * EmptyState Module Styles
+ * 
+ * Scoped styles for the EmptyState component.
+ * Provides a calm, professional, centered empty state with illustration,
+ * clear messaging, and optional action button.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing, typography, colors, shadows
+ * - Glassmorphic card elevation
+ * - Responsive layout
+ * - Dark/light theme compatibility
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.emptyState {
+  // Glassmorphic card base for premium feel
+  @include glass-card;
+  padding: $spacing-3xl;
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-2xl;
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    padding: $spacing-xl;
+  }
+
+  // Main content container
+  .emptyContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-2xl;
+  }
+
+  // Illustration container
+  .illustrationContainer {
+    width: 240px;
+    height: 180px;
+    flex-shrink: 0;
+
+    .illustration {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.05));
+    }
+  }
+
+  // Text content
+  .textContent {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+
+    .emptyTitle {
+      font-size: $text-3xl;
+      font-weight: $font-bold;
+      color: var(--foreground);
+      margin: 0;
+    }
+
+    .emptyDescription {
+      font-size: $text-lg;
+      color: var(--muted-foreground);
+      max-width: 480px;
+      line-height: 1.6;
+    }
+  }
+
+  // Action button container
+  .actionContainer {
+    margin-top: $spacing-lg;
+
+    :global(.button) {
+      min-width: 200px;
+      padding: $spacing-md $spacing-2xl;
+      font-size: $text-base;
+      font-weight: $font-semibold;
+    }
+  }
+
+  // Optional variant for full-page empty states
+  &.fullPage {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-3xl;
+
+    .emptyContent {
+      gap: $spacing-3xl;
+    }
+
+    .illustrationContainer {
+      width: 320px;
+      height: 240px;
+    }
+
+    .emptyTitle {
+      font-size: $text-4xl;
+    }
+
+    .emptyDescription {
+      font-size: $text-xl;
+    }
+  }
+}

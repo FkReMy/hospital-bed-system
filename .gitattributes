@@ -1,2 +1,77 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Enforce consistent Git behavior and enable robust cross-platform development for PBMS.
+
+# Normalize all text files to LF line endings in repo (prevents CRLF/LF issues)
+* text=auto eol=lf
+
+# Treat lockfiles, images, binaries as binary (never attempt to change line endings)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ttf binary
+*.woff binary
+*.woff2 binary
+*.eot binary
+*.svg binary
+*.pdf binary
+
+# Source code in all subdirectories (modern JS, C#, CSS, configs)
+*.js text diff=javascript
+*.jsx text diff=javascript
+*.ts text diff=javascript
+*.tsx text diff=javascript
+*.json text
+*.css text
+*.scss text
+*.md text
+*.yml text
+*.yaml text
+*.cjs text
+*.mjs text
+
+# C#/.NET backend (if present in mono-repo)
+*.cs text diff=csharp
+*.csproj text
+*.sln text
+
+# SQL Server DB scripts
+*.sql text
+
+# Node/Yarn/NPM lockfiles
+package-lock.json text eol=lf
+yarn.lock text eol=lf
+
+# EditorConfig
+.editorconfig text
+.eslintrc.cjs text
+.prettierrc text
+.stylelintrc text
+
+# Make diff for images show as "binary"
+*.ico binary
+
+# UTF-8 encoding by default for all files
+* text=auto working-tree-encoding=UTF-8
+
+# Do not linguist index minified files
+*.min.js linguist-documentation=false
+
+# Ignore generated build output in stats/search (e.g., Next/Vite .next/ or dist/)
+build/** linguist-vendored
+dist/** linguist-vendored
+
+# Important: do not auto-normalize any vendor libraries or external dependencies
+vendor/** -text
+
+# Special: treat all shell scripts as executable
+*.sh text eol=lf eol=lf
+*.ps1 text eol=lf
+
+# Mark Markdown, documentation, configs as text for unified diff/highlight
+*.md text
+*.txt text
+*.config text
+*.env.example text
+*.env text
+
+# End of .gitattributes
