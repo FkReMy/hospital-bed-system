@@ -41,10 +41,9 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'plugin:react/jsx-runtime', // Enables React 18+ new JSX transform (no need for import React)
-    'plugin:react-refresh/recommended',
     'prettier', // Must be last to override conflicting rules
   ],
-  plugins: ['react', 'react-hooks', 'react-refresh'],
+  plugins: ['react', 'react-hooks'],
   rules: {
     // React & JSX
     'react/prop-types': 'off', // Not using PropTypes (we can add TypeScript later if needed)
@@ -58,19 +57,11 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
 
-    // React Refresh (Vite)
-    'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-
     // Best Practices
     eqeqeq: ['error', 'always', { null: 'ignore' }],
     'no-console': ['warn', { allow: ['warn', 'error'] }],
     'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     'prefer-const': 'error',
-
-    // Import/Export
-    'import/first': 'error',
-    'import/newline-after-import': 'error',
-    'import/no-duplicates': 'error',
 
     // Code Style (enforced via Prettier where possible)
     'arrow-body-style': ['warn', 'as-needed'],
@@ -81,7 +72,7 @@ module.exports = {
       // Specific rules for component/page files
       files: ['src/**/*.{jsx}'],
       rules: {
-        'react-refresh/only-export-components': 'off', // Pages may export default without being components
+        // Pages may export default without being components
       },
     },
   ],
