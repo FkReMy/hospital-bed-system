@@ -21,7 +21,6 @@ import {
   updateDoc, 
   query, 
   where,
-  orderBy,
   Timestamp 
 } from 'firebase/firestore';
 import { db } from './firebaseConfig';
