@@ -1,0 +1,13 @@
+{
+  "name": "hospital-bed-system",
+  "version": "1.0.0",
+  "description": "Hospital Bed Management System - Firebase Testing & Data Seeding",
+  "type": "module",
+  "scripts": {
+    "seed": "node scripts/seedFirebaseTestData.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.0.0"
+  },
+  "private": true
+}

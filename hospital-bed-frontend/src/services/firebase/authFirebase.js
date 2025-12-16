@@ -54,6 +54,7 @@ export const login = async (credentials) => {
       role: userData.role || 'Nurse',
       roles: userData.roles || [userData.role || 'Nurse'],
       department_id: userData.department_id || null,
+      mustChangePassword: userData.mustChangePassword || false,
       ...userData,
     };
   } catch (error) {
@@ -108,6 +109,7 @@ export const me = async () => {
       role: userData.role || 'Nurse',
       roles: userData.roles || [userData.role || 'Nurse'],
       department_id: userData.department_id || null,
+      mustChangePassword: userData.mustChangePassword || false,
       ...userData,
     };
   } catch (error) {

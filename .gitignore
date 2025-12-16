@@ -3,6 +3,10 @@ node_modules/
 .pnp
 .pnp.js
 
+# Firebase Admin SDK credentials
+serviceAccountKey.json
+*-firebase-adminsdk-*.json
+
 # Build outputs
 dist/
 build/

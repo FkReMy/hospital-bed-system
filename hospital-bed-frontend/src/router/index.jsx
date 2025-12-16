@@ -22,6 +22,7 @@ import ProtectedRoute from './ProtectedRoute';
 
 // Lazy load pages for performance
 const LoginPage = lazy(() => import('@pages/auth/LoginPage'));
+const ChangePasswordPage = lazy(() => import('@pages/auth/ChangePasswordPage'));
 const RegisterPage = lazy(() => import('@pages/auth/RegisterPage'));
 const LandingPage = lazy(() => import('@pages/LandingPage'));
 const AdminDashboard = lazy(() => import('@pages/dashboards/AdminDashboard'));
@@ -44,6 +45,11 @@ const AppRouter = () => (
       <Route element={<LoginPage />} path="/login" />
       <Route element={<RegisterPage />} path="/register" />
       <Route element={<AccessDeniedPage />} path="/access-denied" />
+
+      {/* Protected routes - authentication required (no role check) */}
+      <Route element={<ProtectedRoute />}>
+        <Route element={<ChangePasswordPage />} path="/change-password" />
+      </Route>
 
       {/* Protected routes - all authenticated users */}
       <Route element={<ProtectedRoute />}>
