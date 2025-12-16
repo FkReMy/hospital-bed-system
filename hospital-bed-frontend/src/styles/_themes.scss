@@ -1,0 +1,98 @@
+// src/styles/_themes.scss
+/**
+ * _themes.scss
+ * 
+ * Global theme configuration for the HBMS application.
+ * Defines light/dark mode using CSS custom properties (variables).
+ * Applied via .light and .dark classes on <html> element.
+ * 
+ * Features:
+ * - Complete color palette for both themes
+ * - Smooth theme transition
+ * - Glassmorphic compatible (semi-transparent backgrounds)
+ * - Unified with all components (cards, buttons, inputs, tables)
+ * - Ready for 'system' preference via useTheme hook
+ * 
+ * Theme applied by useTheme hook in main.jsx
+ */
+
+:root {
+  /* Light theme - default */
+  --background: 255 255 255;
+  --foreground: 15 23 42;
+  --card: 255 255 255;
+  --card-foreground: 15 23 42;
+  --popover: 255 255 255;
+  --popover-foreground: 15 23 42;
+  --primary: 59 130 246;        /* blue-500 */
+  --primary-foreground: 255 255 255;
+  --primary-hover: 37 99 235;   /* blue-600 */
+  --primary-active: 29 78 216;  /* blue-700 */
+  --secondary: 241 245 249;
+  --secondary-foreground: 15 23 42;
+  --muted: 248 250 252;
+  --muted-foreground: 100 116 139;
+  --accent: 241 245 249;
+  --accent-foreground: 15 23 42;
+  --destructive: 239 68 68;     /* red-500 */
+  --destructive-foreground: 255 255 255;
+  --success: 34 197 94;         /* green-500 */
+  --border: 226 232 240;
+  --input: 226 232 240;
+  --ring: 59 130 246;
+  --radius: 0.75rem;
+  
+  /* Sidebar specific */
+  --sidebar-bg: 15 23 42;
+  --sidebar-foreground: 248 250 252;
+  --sidebar-hover: rgba(255, 255, 255, 0.1);
+}
+
+.dark {
+  /* Dark theme */
+  --background: 15 23 42;
+  --foreground: 248 250 252;
+  --card: 30 41 59;
+  --card-foreground: 248 250 252;
+  --popover: 30 41 59;
+  --popover-foreground: 248 250 252;
+  --primary: 99 102 241;        /* indigo-500 */
+  --primary-foreground: 255 255 255;
+  --primary-hover: 129 140 248; /* indigo-400 */
+  --primary-active: 79 70 229;  /* indigo-600 */
+  --secondary: 51 65 85;
+  --secondary-foreground: 248 250 252;
+  --muted: 51 65 85;
+  --muted-foreground: 148 163 184;
+  --accent: 51 65 85;
+  --accent-foreground: 248 250 252;
+  --destructive: 248 113 113;   /* red-400 */
+  --destructive-foreground: 15 23 42;
+  --success: 74 222 128;        /* green-400 */
+  --border: 51 65 85;
+  --input: 51 65 85;
+  --ring: 99 102 241;
+  
+  /* Sidebar in dark mode */
+  --sidebar-bg: 2 6 23;
+  --sidebar-foreground: 241 245 249;
+  --sidebar-hover: rgba(255, 255, 255, 0.1);
+}
+
+/* Smooth theme transition */
+*,
+*::before,
+*::after {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Optional: reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

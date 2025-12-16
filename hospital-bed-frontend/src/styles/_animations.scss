@@ -1,0 +1,218 @@
+// src/styles/_animations.scss
+/**
+ * _animations.scss
+ * 
+ * Global animation keyframes and utility classes for the HBMS application.
+ * 
+ * Features:
+ * - Fade, slide, scale animations for modals, tooltips, toasts
+ * - Shimmer for skeleton loaders
+ * - Spinner for loading states
+ * - Stripe animation for progress bars
+ * - Pulse and ring effects for notifications
+ * - Unified easing and durations via variables
+ * - Dark/light theme compatible
+ * 
+ * Import this file in your main _index.scss or globals
+ */
+
+@import 'variables';
+
+/* Fade animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Slide animations */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Scale animations */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+/* Shimmer for skeleton */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Progress stripe animation */
+@keyframes stripeMove {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 40px 0;
+  }
+}
+
+/* Pulse ring for notifications */
+@keyframes pulseRing {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  70% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+/* Bell ring animation */
+@keyframes bellRing {
+  0%, 100% {
+    transform: rotate(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: rotate(10deg);
+  }
+  20%, 40%, 60%, 80% {
+    transform: rotate(-10deg);
+  }
+}
+
+/* Badge pop animation */
+@keyframes badgePop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Utility classes (optional - use directly in components or via mixins) */
+.fade-in {
+  animation: fadeIn $animation-default ease-out;
+}
+
+.fade-out {
+  animation: fadeOut $animation-default ease-in;
+}
+
+.slide-up {
+  animation: slideUp $animation-default ease-out;
+}
+
+.scale-in {
+  animation: scaleIn $animation-default ease-out;
+}
+
+.shimmer {
+  animation: shimmer 1.8s infinite linear;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+.stripe-move {
+  animation: stripeMove 2s linear infinite;
+}
+
+.pulse-ring {
+  animation: pulseRing 1.5s infinite ease-out;
+}
+
+.bell-ring {
+  animation: bellRing 0.6s ease-in-out;
+}
+
+.badge-pop {
+  animation: badgePop 0.3s ease-out;
+}

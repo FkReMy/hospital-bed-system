@@ -1,0 +1,94 @@
+// src/styles/global.scss
+/**
+ * global.scss
+ * 
+ * Main global stylesheet for the HBMS application.
+ * Entry point for all styles - imported in main.jsx via import './styles/global.scss'
+ * 
+ * Import order:
+ * 1. Reset - normalize browser defaults
+ * 2. Variables - design tokens
+ * 3. Themes - light/dark mode CSS variables
+ * 4. Typography - font styles and utilities
+ * 5. Mixins - reusable style blocks
+ * 6. Animations - keyframes and animation utilities
+ * 
+ * This file should NOT contain component-specific styles
+ * Component styles are in their respective .module.scss files
+ */
+
+@import './_reset.scss';
+@import './_variables.scss';
+@import './_themes.scss';
+@import './_typography.scss';
+@import './_mixins.scss';
+@import './_animations.scss';
+
+/* Global HTML and body styles */
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+/* App root container */
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scrollbar styling for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--muted-foreground);
+  border-radius: $radius-lg;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground);
+}
+
+/* Selection highlight */
+::selection {
+  background: var(--primary/30);
+  color: var(--primary-foreground);
+}
+
+/* Focus visible enhancement for accessibility */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Reduced motion respect */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Print styles - clean output */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+  }
+}

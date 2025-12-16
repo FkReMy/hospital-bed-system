@@ -1,0 +1,162 @@
+// src/styles/_mixins.scss
+/**
+ * _mixins.scss
+ * 
+ * Global SCSS mixins for the HBMS application.
+ * Centralizes reusable styles for consistent design system implementation.
+ * 
+ * Features:
+ * - Glassmorphic card/elevation mixins
+ * - Responsive spacing utilities
+ * - Flex/grid helpers
+ * - Text truncation
+ * - Focus ring
+ * - Button variants (can be extended)
+ * - Dark/light theme safe (uses CSS variables)
+ * 
+ * Import this file in components or other partials as needed
+ */
+
+@import 'variables';
+
+/* Glassmorphic card base - used in Card, Dialog, NotificationCenter */
+@mixin glass-card {
+  background: rgba(var(--background-rgb), 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Glassmorphic card with stronger elevation */
+@mixin glass-card-elevated {
+  @include glass-card;
+  box-shadow: var(--shadow-2xl);
+  border-color: var(--border/50);
+}
+
+/* Flex centering helpers */
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Grid centering */
+@mixin grid-center {
+  display: grid;
+  place-items: center;
+}
+
+/* Text truncation (single line) */
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Multi-line truncation */
+@mixin truncate-lines($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Focus ring - accessible focus style */
+@mixin focus-ring {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Responsive padding utility */
+@mixin responsive-padding($base: $spacing-lg, $mobile: $spacing-md) {
+  padding: $base;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $mobile;
+  }
+}
+
+/* Hover lift effect - used on cards, buttons */
+@mixin hover-lift {
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-2xl);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+/* Button base (extend in button.module.scss) */
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-xs;
+  border-radius: $radius-md;
+  font-weight: $font-medium;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+/* Scrollable container with custom scrollbar */
+@mixin custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--muted-foreground) transparent;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--muted-foreground);
+    border-radius: $radius-lg;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--foreground);
+  }
+}
+
+/* Responsive container max-width */
+@mixin container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 $spacing-xl;
+
+  @media (max-width: $breakpoint-md) {
+    padding: 0 $spacing-lg;
+  }
+}
