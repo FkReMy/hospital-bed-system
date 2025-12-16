@@ -125,6 +125,24 @@
   }
 }
 
+/* Input base styling for form inputs */
+@mixin input-base {
+  width: 100%;
+  border: 1px solid var(--border);
+  font-size: $text-base;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: var(--ring);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
 /* Scrollable container with custom scrollbar */
 @mixin custom-scrollbar {
   scrollbar-width: thin;

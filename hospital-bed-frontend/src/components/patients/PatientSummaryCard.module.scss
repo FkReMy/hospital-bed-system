@@ -166,7 +166,7 @@
           gap: $spacing-xs;
 
           &.emergency {
-            background: $warning/10;
+            background: rgba(245, 158, 11, 0.1);
             padding: $spacing-md;
             border-radius: $radius-lg;
             border-left: 4px solid $warning;

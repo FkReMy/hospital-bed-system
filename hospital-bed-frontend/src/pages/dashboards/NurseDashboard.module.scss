@@ -67,17 +67,17 @@
         color: var(--primary);
 
         &.success {
-          background: $success/10;
+          background: rgba(34, 197, 94, 0.1);
           color: $success;
         }
 
         &.warning {
-          background: $warning/10;
+          background: rgba(245, 158, 11, 0.1);
           color: $warning;
         }
 
         &.destructive {
-          background: $destructive/10;
+          background: rgba(239, 68, 68, 0.1);
           color: $destructive;
         }
       }

@@ -137,11 +137,11 @@
   &.error {
     .selectField {
       border-color: $destructive;
-      background: $destructive/5;
+      background: rgba(239, 68, 68, 0.05);
 
       &:focus {
         border-color: $destructive;
-        box-shadow: 0 0 0 3px $destructive/30;
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3);
       }
     }
 

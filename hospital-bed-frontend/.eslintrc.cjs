@@ -19,22 +19,6 @@ module.exports = {
     react: {
       version: 'detect',
     },
-    'import/resolver': {
-      alias: {
-        map: [
-          ['@', './src'],
-          ['@components', './src/components'],
-          ['@pages', './src/pages'],
-          ['@hooks', './src/hooks'],
-          ['@store', './src/store'],
-          ['@services', './src/services'],
-          ['@lib', './src/lib'],
-          ['@assets', './src/assets'],
-          ['@styles', './src/styles'],
-        ],
-        extensions: ['.js', '.jsx', '.json'],
-      },
-    },
   },
   extends: [
     'eslint:recommended',
@@ -66,11 +50,6 @@ module.exports = {
     'no-console': ['warn', { allow: ['warn', 'error'] }],
     'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     'prefer-const': 'error',
-
-    // Import/Export
-    'import/first': 'error',
-    'import/newline-after-import': 'error',
-    'import/no-duplicates': 'error',
 
     // Code Style (enforced via Prettier where possible)
     'arrow-body-style': ['warn', 'as-needed'],

@@ -76,7 +76,7 @@
       font-weight: $font-medium;
       margin-top: $spacing-md;
       padding: $spacing-sm $spacing-md;
-      background: $destructive/10;
+      background: rgba(239, 68, 68, 0.1);
       border-radius: $radius-md;
       border-left: 4px solid $destructive;
     }
@@ -120,7 +120,7 @@
 
           &:focus {
             ring: 2px solid var(--ring);
-            box-shadow: $shadow-focus;
+            box-shadow: $shadow-md;
           }
 
           &:disabled {
