@@ -25,8 +25,7 @@ import {
   BedDouble,
   AlertCircle 
 } from 'lucide-react';
-import Avatar from '@components/ui/avatar.jsx';
-import AvatarFallback from '@components/ui/avatar-fallback.jsx';
+import Avatar, { AvatarFallback } from '@components/ui/avatar.jsx';
 import Badge from '@components/ui/badge.jsx';
 import Card from '@components/ui/card.jsx';
 import BedStatusBadge from '@components/beds/BedStatusBadge.jsx';
