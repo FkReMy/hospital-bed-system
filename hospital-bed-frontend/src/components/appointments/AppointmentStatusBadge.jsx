@@ -19,7 +19,6 @@
  * - Unified with global Badge component (extends base Badge)
  */
 
-import React from 'react';
 import { 
   Calendar,     // scheduled
   CheckCircle,  // completed
@@ -79,9 +78,9 @@ const AppointmentStatusBadge = ({
 
   return (
     <Badge 
-      variant={config.variant} 
+      className={`appointment-status-badge ${config.pulse ? 'pulse' : ''}`} 
       size={size}
-      className={`appointment-status-badge ${config.pulse ? 'pulse' : ''}`}
+      variant={config.variant}
     >
       {showIcon && (
         <Icon 

@@ -54,10 +54,10 @@ const Button = React.forwardRef(
 
     return (
       <button
+        className={`button ${variant} ${size} ${isLoading ? 'loading' : ''} ${className}`}
+        disabled={isDisabled}
         ref={ref}
         type={type}
-        disabled={isDisabled}
-        className={`button ${variant} ${size} ${isLoading ? 'loading' : ''} ${className}`}
         {...props}
       >
         {isLoading && (

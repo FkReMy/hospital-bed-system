@@ -16,7 +16,6 @@
  * - Real-time updates via SignalR (bedChannel)
  */
 
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { DoorClosed } from 'lucide-react';
 import Card from '@components/ui/card.jsx';
@@ -48,14 +47,14 @@ const RoomListPage = () => {
   });
 
   if (isLoadingBeds) {
-    return <LoadingState type="grid" count={6} />;
+    return <LoadingState count={6} type="grid" />;
   }
 
   if (rooms.length === 0) {
     return (
       <EmptyState
-        title="No rooms found"
         description="Please contact system administrator"
+        title="No rooms found"
       />
     );
   }
@@ -70,11 +69,11 @@ const RoomListPage = () => {
       <div className="rooms-grid">
         {roomStats.map(room => (
           <Link
+            className="room-link"
             key={room.id}
             to={`/rooms/${room.id}`}
-            className="room-link"
           >
-            <Card className="room-card" interactive>
+            <Card interactive className="room-card">
               <div className="room-header">
                 <DoorClosed className="room-icon" />
                 <div className="room-info">

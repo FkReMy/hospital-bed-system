@@ -60,7 +60,7 @@ const ReceptionDashboard = () => {
     .slice(0, 5);
 
   if (isLoadingBeds || isLoadingAppointments) {
-    return <LoadingState type="grid" count={6} />;
+    return <LoadingState count={6} type="grid" />;
   }
 
   return (
@@ -95,10 +95,10 @@ const ReceptionDashboard = () => {
           <div className="statContent">
             <p className="statLabel">Quick Patient Search</p>
             <Input
+              className="quickSearchInput"
               placeholder="Name, phone, or ID..."
               value={patientSearch}
               onChange={(e) => setPatientSearch(e.target.value)}
-              className="quickSearchInput"
             />
           </div>
         </Card>
@@ -140,14 +140,14 @@ const ReceptionDashboard = () => {
         <h2 className="sectionTitle">Today's Appointments</h2>
         {recentAppointments.length === 0 ? (
           <EmptyState
-            title="No appointments today"
             description="All clear! Check upcoming or create new"
             size="medium"
+            title="No appointments today"
           />
         ) : (
           <div className="appointmentsList">
             {recentAppointments.map(appointment => (
-              <div key={appointment.id} className="appointmentItem">
+              <div className="appointmentItem" key={appointment.id}>
                 <div className="appointmentTime">
                   <Clock size={16} />
                   {formatDateTime(appointment.appointment_date).split(' at ')[1]}
@@ -158,12 +158,12 @@ const ReceptionDashboard = () => {
                 </div>
                 <div className="appointmentActions">
                   <Badge variant="outline">{appointment.status}</Badge>
-                  <Phone size={16} className="phoneIcon" />
+                  <Phone className="phoneIcon" size={16} />
                 </div>
               </div>
             ))}
             {todayAppointments.length > 5 && (
-              <Button asChild variant="ghost" className="viewAll">
+              <Button asChild className="viewAll" variant="ghost">
                 <Link to="/appointments">
                   View all {todayAppointments.length} appointments
                 </Link>

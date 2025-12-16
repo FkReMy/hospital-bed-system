@@ -87,7 +87,7 @@ export const useAppointmentManagement = (filters = {}) => {
 
   // Delete/cancel appointment mutation
   const deleteAppointmentMutation = useMutation({
-    mutationFn: appointmentApi.deleteAppointment,
+    mutationFn: appointmentApi.cancel,
     onMutate: async (appointmentId) => {
       await queryClient.cancelQueries({ queryKey: ['appointments'] });
 
@@ -115,22 +115,14 @@ export const useAppointmentManagement = (filters = {}) => {
   });
 
   // Helper functions
-  const createAppointment = (data) => {
-    return createAppointmentMutation.mutateAsync(data);
-  };
+  const createAppointment = (data) => createAppointmentMutation.mutateAsync(data);
 
-  const updateAppointment = (id, data) => {
-    return updateAppointmentMutation.mutateAsync({ id, data });
-  };
+  const updateAppointment = (id, data) => updateAppointmentMutation.mutateAsync({ id, data });
 
-  const deleteAppointment = (id) => {
-    return deleteAppointmentMutation.mutateAsync(id);
-  };
+  const deleteAppointment = (id) => deleteAppointmentMutation.mutateAsync(id);
 
   // Get appointments by status
-  const getAppointmentsByStatus = (status) => {
-    return appointments.filter(apt => apt.status === status);
-  };
+  const getAppointmentsByStatus = (status) => appointments.filter(apt => apt.status === status);
 
   // Get upcoming appointments
   const getUpcomingAppointments = () => {

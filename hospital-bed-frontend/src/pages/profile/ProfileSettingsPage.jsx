@@ -142,7 +142,7 @@ const ProfileSettingsPage = () => {
             </div>
 
             <div className="form-actions">
-              <Button type="submit" isLoading={updateProfileMutation.isPending}>
+              <Button isLoading={updateProfileMutation.isPending} type="submit">
                 Save Changes
               </Button>
             </div>
@@ -172,7 +172,7 @@ const ProfileSettingsPage = () => {
             </div>
 
             <div className="form-actions">
-              <Button type="submit" isLoading={changePasswordMutation.isPending}>
+              <Button isLoading={changePasswordMutation.isPending} type="submit">
                 Update Password
               </Button>
             </div>

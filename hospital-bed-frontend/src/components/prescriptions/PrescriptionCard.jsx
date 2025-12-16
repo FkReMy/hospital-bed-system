@@ -15,7 +15,6 @@
  * - Unified with global Card, Badge, Avatar components
  */
 
-import React from 'react';
 import { format } from 'date-fns';
 import { 
   Pill, 
@@ -53,11 +52,11 @@ const PrescriptionCard = ({ prescription, onClick }) => {
 
   return (
     <Card 
+      aria-label={`Prescription for ${medication_name}, ${is_dispensed ? 'dispensed' : 'pending'}`}
       className={`prescription-card ${onClick ? 'interactive' : ''}`}
-      onClick={onClick}
       role={onClick ? 'button' : undefined}
       tabIndex={onClick ? 0 : undefined}
-      aria-label={`Prescription for ${medication_name}, ${is_dispensed ? 'dispensed' : 'pending'}`}
+      onClick={onClick}
     >
       {/* Header: Medication + Dispensed Status */}
       <div className="prescription-header">
@@ -81,8 +80,8 @@ const PrescriptionCard = ({ prescription, onClick }) => {
 
         <div className="status-section">
           <Badge 
-            variant={is_dispensed ? 'success' : 'secondary'}
             className="dispensed-badge"
+            variant={is_dispensed ? 'success' : 'secondary'}
           >
             {is_dispensed ? (
               <>

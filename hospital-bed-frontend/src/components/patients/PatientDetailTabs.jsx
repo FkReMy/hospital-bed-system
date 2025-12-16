@@ -20,7 +20,6 @@
  * - Premium glassmorphic design
  */
 
-import React from 'react';
 import Tabs from '@components/ui/tabs.jsx';
 import TabsList from '@components/ui/tabs-list.jsx';
 import TabsTrigger from '@components/ui/tabs-trigger.jsx';
@@ -49,21 +48,21 @@ const PatientDetailTabs = ({
   onTabChange,
 }) => {
   if (isLoading) {
-    return <LoadingState type="full" count={1} />;
+    return <LoadingState count={1} type="full" />;
   }
 
   if (!patient) {
     return (
       <EmptyState
-        title="Patient Not Found"
         description="The requested patient could not be loaded."
         illustration="no-patients"
+        title="Patient Not Found"
       />
     );
   }
 
   return (
-    <Tabs value={activeTab} onValueChange={onTabChange} className="patient-detail-tabs">
+    <Tabs className="patient-detail-tabs" value={activeTab} onValueChange={onTabChange}>
       <TabsList className="tabs-list">
         <TabsTrigger value="overview">Overview</TabsTrigger>
         <TabsTrigger value="bed-history">Bed History</TabsTrigger>
@@ -72,13 +71,13 @@ const PatientDetailTabs = ({
         <TabsTrigger value="timeline">Timeline</TabsTrigger>
       </TabsList>
 
-      <TabsContent value="overview" className="tab-content">
+      <TabsContent className="tab-content" value="overview">
         <Card className="overview-card">
           <PatientSummaryCard patient={patient} />
         </Card>
       </TabsContent>
 
-      <TabsContent value="bed-history" className="tab-content">
+      <TabsContent className="tab-content" value="bed-history">
         <Card className="history-card">
           {patient.bed_assignments?.length > 0 ? (
             <div className="bed-history-list">
@@ -89,15 +88,15 @@ const PatientDetailTabs = ({
             </div>
           ) : (
             <EmptyState
-              title="No Bed Assignments"
               description="This patient has not been assigned to any bed yet."
               illustration="empty-beds"
+              title="No Bed Assignments"
             />
           )}
         </Card>
       </TabsContent>
 
-      <TabsContent value="appointments" className="tab-content">
+      <TabsContent className="tab-content" value="appointments">
         <Card className="appointments-card">
           {patient.appointments?.length > 0 ? (
             <AppointmentList
@@ -106,29 +105,29 @@ const PatientDetailTabs = ({
             />
           ) : (
             <EmptyState
-              title="No Appointments"
               description="This patient has no scheduled or past appointments."
               illustration="no-patients"
+              title="No Appointments"
             />
           )}
         </Card>
       </TabsContent>
 
-      <TabsContent value="prescriptions" className="tab-content">
+      <TabsContent className="tab-content" value="prescriptions">
         <Card className="prescriptions-card">
           {patient.prescriptions?.length > 0 ? (
             <PrescriptionList prescriptions={patient.prescriptions} />
           ) : (
             <EmptyState
-              title="No Prescriptions"
               description="This patient has no recorded prescriptions."
               illustration="no-patients"
+              title="No Prescriptions"
             />
           )}
         </Card>
       </TabsContent>
 
-      <TabsContent value="timeline" className="tab-content">
+      <TabsContent className="tab-content" value="timeline">
         <Card className="timeline-card">
           <PatientTimeline patientId={patient.id} />
         </Card>

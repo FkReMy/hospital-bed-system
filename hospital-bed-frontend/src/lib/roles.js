@@ -136,9 +136,7 @@ export const getRoleInfo = (role) => ROLE_INFO[role] || {
 };
 
 // Helper: check permission
-export const hasPermission = (role, permission) => {
-  return ROLE_PERMISSIONS[permission]?.[role] || false;
-};
+export const hasPermission = (role, permission) => ROLE_PERMISSIONS[permission]?.[role] || false;
 
 // All roles array
 export const ALL_ROLES = Object.values(ROLES);

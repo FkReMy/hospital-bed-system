@@ -5,15 +5,12 @@
  * Footer section for dialog (usually contains action buttons)
  */
 
-import React from 'react';
 
-const DialogFooter = ({ children, className = '', ...props }) => {
-  return (
+const DialogFooter = ({ children, className = '', ...props }) => (
     <div className={`dialog-footer ${className}`} {...props}>
       {children}
     </div>
   );
-};
 
 DialogFooter.displayName = 'DialogFooter';
 

@@ -34,8 +34,7 @@ export const useWebSocket = (hubUrl) => {
   const reconnectDelay = 5000; // 5 seconds base
 
   // Build connection
-  const buildConnection = useCallback(() => {
-    return new HubConnectionBuilder()
+  const buildConnection = useCallback(() => new HubConnectionBuilder()
       .withUrl(`${import.meta.env.VITE_API_URL}${hubUrl}`, {
         withCredentials: true, // Important: sends httpOnly cookie with JWT
       })
@@ -48,8 +47,7 @@ export const useWebSocket = (hubUrl) => {
           return Math.min(reconnectDelay * Math.pow(2, retryContext.previousRetryCount), 30000);
         },
       })
-      .build();
-  }, [hubUrl]);
+      .build(), [hubUrl]);
 
   // Start connection
   const startConnection = useCallback(async () => {

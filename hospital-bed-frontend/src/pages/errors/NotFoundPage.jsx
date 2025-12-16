@@ -14,15 +14,13 @@
  * - Secure: No sensitive data exposure
  */
 
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Home, ArrowLeft, Search } from 'lucide-react';
 import Card from '@components/ui/card.jsx';
 import Button from '@components/ui/button.jsx';
 import './NotFoundPage.scss';
 
-const NotFoundPage = () => {
-  return (
+const NotFoundPage = () => (
     <div className="notFoundPage">
       <div className="errorContainer">
         <Card className="errorCard">
@@ -49,7 +47,7 @@ const NotFoundPage = () => {
               </Link>
             </Button>
 
-            <Button asChild variant="outline" size="lg">
+            <Button asChild size="lg" variant="outline">
               <Link to="/">
                 <ArrowLeft className="mr-2" size={20} />
                 Back to Home
@@ -65,6 +63,5 @@ const NotFoundPage = () => {
       </div>
     </div>
   );
-};
 
 export default NotFoundPage;

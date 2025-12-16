@@ -16,7 +16,6 @@
  * - Premium glassmorphic dropdown design
  */
 
-import React from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { 
   Bell, 
@@ -65,7 +64,7 @@ const NotificationCenter = ({
   if (!open) return null;
 
   return (
-    <div className="notification-center-popover" role="dialog" aria-label="Notifications">
+    <div aria-label="Notifications" className="notification-center-popover" role="dialog">
       <Card className="notification-center">
         {/* Header */}
         <div className="center-header">
@@ -73,7 +72,7 @@ const NotificationCenter = ({
             <Bell className="header-icon" size={18} />
             <h3 className="header-text">Notifications</h3>
             {unreadCount > 0 && (
-              <Badge variant="destructive" className="unread-count">
+              <Badge className="unread-count" variant="destructive">
                 {unreadCount}
               </Badge>
             )}
@@ -81,10 +80,10 @@ const NotificationCenter = ({
 
           {unreadCount > 0 && (
             <Button
-              variant="ghost"
-              size="sm"
-              onClick={onMarkAllAsRead}
               className="mark-all-read"
+              size="sm"
+              variant="ghost"
+              onClick={onMarkAllAsRead}
             >
               <Check size={14} />
               Mark all as read
@@ -96,21 +95,21 @@ const NotificationCenter = ({
         <div className="center-body">
           {notifications.length === 0 ? (
             <EmptyState
-              title="No notifications"
+              className="center-empty"
               description="You're all caught up!"
               illustration="empty-beds" // Reuse calm illustration
-              className="center-empty"
+              title="No notifications"
             />
           ) : (
-            <ul className="notification-list" aria-live="polite">
+            <ul aria-live="polite" className="notification-list">
               {notifications.map((notification) => {
                 const { icon: TypeIcon, variant } = getTypeConfig(notification.type);
                 const isUnread = !notification.read;
 
                 return (
                   <li 
-                    key={notification.id} 
-                    className={`notification-item ${isUnread ? 'unread' : ''}`}
+                    className={`notification-item ${isUnread ? 'unread' : ''}`} 
+                    key={notification.id}
                   >
                     <div className="item-icon">
                       <div className={`icon-wrapper ${variant}`}>
@@ -127,11 +126,11 @@ const NotificationCenter = ({
 
                     {isUnread && (
                       <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => onMarkAsRead(notification.id)}
                         aria-label="Mark as read"
                         className="mark-read-button"
+                        size="icon"
+                        variant="ghost"
+                        onClick={() => onMarkAsRead(notification.id)}
                       >
                         <Check size={14} />
                       </Button>

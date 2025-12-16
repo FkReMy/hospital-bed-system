@@ -14,7 +14,6 @@
  * - High contrast initials on colored background
  */
 
-import React from 'react';
 import './avatar.scss';
 
 /**
@@ -39,16 +38,16 @@ const Avatar = ({
 
   return (
     <div 
+      aria-label={alt || `Avatar for ${initials}`}
       className={`avatar ${size} ${status ? `status-${status}` : ''} ${className}`}
       role="img"
-      aria-label={alt || `Avatar for ${initials}`}
       {...props}
     >
       {hasImage ? (
         <img 
-          src={src} 
           alt={alt} 
-          className="avatar-image"
+          className="avatar-image" 
+          src={src}
           onError={(e) => {
             e.target.style.display = 'none';
             e.target.nextSibling.style.display = 'flex';
@@ -61,7 +60,7 @@ const Avatar = ({
       </div>
 
       {status && (
-        <span className="status-indicator" aria-hidden="true" />
+        <span aria-hidden="true" className="status-indicator" />
       )}
     </div>
   );

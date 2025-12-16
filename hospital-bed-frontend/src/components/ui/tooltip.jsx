@@ -51,29 +51,27 @@ const Tooltip = ({
     setVisible(false);
   };
 
-  React.useEffect(() => {
-    return () => {
+  React.useEffect(() => () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
-    };
-  }, []);
+    }, []);
 
   return (
     <div 
       className={`tooltip-wrapper ${className}`}
+      onBlur={hideTooltip}
+      onFocus={showTooltip}
       onMouseEnter={showTooltip}
       onMouseLeave={hideTooltip}
-      onFocus={showTooltip}
-      onBlur={hideTooltip}
     >
       {children}
 
       {visible && content && (
         <div 
+          aria-hidden={!visible}
           className={`tooltip ${position}`}
           role="tooltip"
-          aria-hidden={!visible}
         >
           <div className="tooltip-arrow" />
           <div className="tooltip-content">

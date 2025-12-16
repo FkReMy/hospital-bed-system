@@ -22,7 +22,7 @@ import {
   User,           // Profile
   LogOut,
 } from 'lucide-react';
-import Avatar from '@components/ui/avatar.jsx';
+import Avatar, { AvatarFallback } from '@components/ui/avatar.jsx';
 import Button from '@components/ui/button.jsx';
 import DropdownMenu from '@components/ui/dropdown-menu.jsx';
 import DropdownMenuTrigger from '@components/ui/dropdown-menu-trigger.jsx';
@@ -53,11 +53,11 @@ const Topbar = ({ sidebarOpen, onSidebarToggle }) => {
         {/* Left: Sidebar toggle (mobile + desktop) */}
         <div className="leftSection">
           <Button
-            variant="ghost"
-            size="icon"
-            onClick={onSidebarToggle}
             aria-label={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
             className="sidebarToggle"
+            size="icon"
+            variant="ghost"
+            onClick={onSidebarToggle}
           >
             <Menu size={20} />
           </Button>
@@ -79,7 +79,7 @@ const Topbar = ({ sidebarOpen, onSidebarToggle }) => {
           {/* User Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="userMenuTrigger">
+              <Button className="userMenuTrigger" variant="ghost">
                 <Avatar className="userAvatar">
                   <div className="avatarInitial">
                     {user.full_name?.charAt(0).toUpperCase() || 'U'}
@@ -94,11 +94,11 @@ const Topbar = ({ sidebarOpen, onSidebarToggle }) => {
 
             <DropdownMenuContent align="end" className="userMenu">
               <DropdownMenuItem>
-                <User size={16} className="mr-2" />
+                <User className="mr-2" size={16} />
                 Profile
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleLogout} className="logoutItem">
-                <LogOut size={16} className="mr-2" />
+              <DropdownMenuItem className="logoutItem" onClick={handleLogout}>
+                <LogOut className="mr-2" size={16} />
                 Logout
               </DropdownMenuItem>
             </DropdownMenuContent>

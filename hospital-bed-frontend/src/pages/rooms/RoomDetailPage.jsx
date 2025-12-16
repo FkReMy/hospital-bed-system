@@ -65,15 +65,15 @@ const RoomDetailPage = () => {
   };
 
   if (isLoadingBeds) {
-    return <LoadingState type="grid" count={8} />;
+    return <LoadingState count={8} type="grid" />;
   }
 
   if (!room) {
     return (
       <Card className="error-card">
         <EmptyState
-          title="Room not found"
           description="Please check the room ID or contact administrator"
+          title="Room not found"
         />
       </Card>
     );
@@ -103,14 +103,14 @@ const RoomDetailPage = () => {
         
         {roomBeds.length === 0 ? (
           <EmptyState
-            title="No beds in this room"
             description="Beds will appear here when added"
             size="medium"
+            title="No beds in this room"
           />
         ) : (
           <div className="beds-grid">
             {roomBeds.map(bed => (
-              <Card key={bed.id} className="bed-card" interactive>
+              <Card interactive className="bed-card" key={bed.id}>
                 <div className="bed-header">
                   <div className="bed-info">
                     <h3 className="bed-number">{bed.bed_number}</h3>
@@ -137,7 +137,7 @@ const RoomDetailPage = () => {
                         Assign Patient
                       </Button>
                     ) : bed.status === 'occupied' ? (
-                      <Button variant="destructive" size="sm" onClick={() => handleDischarge(bed)}>
+                      <Button size="sm" variant="destructive" onClick={() => handleDischarge(bed)}>
                         <UserX className="mr-2" size={16} />
                         Discharge
                       </Button>
@@ -156,14 +156,14 @@ const RoomDetailPage = () => {
       {selectedBed && (
         <>
           <AssignBedDialog
+            bed={selectedBed}
             open={assignDialogOpen}
             onOpenChange={setAssignDialogOpen}
-            bed={selectedBed}
           />
           <DischargeBedDialog
+            bed={selectedBed}
             open={dischargeDialogOpen}
             onOpenChange={setDischargeDialogOpen}
-            bed={selectedBed}
           />
         </>
       )}

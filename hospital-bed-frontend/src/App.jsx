@@ -1,7 +1,6 @@
 // src/App.jsx
 // Root application component - orchestrates routing, authentication, and layout
 
-import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast'; // Optional lightweight toast notifications (can be replaced later)
 import AppRouter from './router/index.jsx';
@@ -17,7 +16,7 @@ import AppShell from './components/layout/AppShell.jsx'; // Unified layout wrapp
  */
 function App() {
   return (
-    <React.Fragment>
+    <>
       {/* BrowserRouter enables SPA navigation */}
       <BrowserRouter>
         {/* AuthProvider manages JWT, user roles, login/logout state */}
@@ -30,9 +29,9 @@ function App() {
 
           {/* Global toast notifications - positioned top-center, auto-dismiss */}
           <Toaster
+            gutter={12}
             position="top-center"
             reverseOrder={false}
-            gutter={12}
             toastOptions={{
               duration: 4000,
               style: {
@@ -58,7 +57,7 @@ function App() {
           />
         </AuthProvider>
       </BrowserRouter>
-    </React.Fragment>
+    </>
   );
 }
 

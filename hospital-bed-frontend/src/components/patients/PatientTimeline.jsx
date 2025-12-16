@@ -18,7 +18,6 @@
  * (normalized in API or query)
  */
 
-import React from 'react';
 import { format, formatDistanceToNow } from 'date-fns';
 import { 
   BedDouble,
@@ -88,15 +87,15 @@ const PatientTimeline = ({
   };
 
   if (isLoading) {
-    return <LoadingState type="table" count={6} />;
+    return <LoadingState count={6} type="table" />;
   }
 
   if (events.length === 0) {
     return (
       <EmptyState
-        title="No Activity Recorded"
         description="This patient has no recorded events in the timeline yet."
         illustration="no-patients"
+        title="No Activity Recorded"
       />
     );
   }
@@ -115,7 +114,7 @@ const PatientTimeline = ({
           const isLast = index === sortedEvents.length - 1;
 
           return (
-            <div key={event.id} className="timeline-item">
+            <div className="timeline-item" key={event.id}>
               {/* Connecting line */}
               {!isLast && <div className="timeline-line" />}
 
@@ -144,7 +143,7 @@ const PatientTimeline = ({
                 {event.metadata && Object.keys(event.metadata).length > 0 && (
                   <div className="event-metadata">
                     {Object.entries(event.metadata).map(([key, value]) => (
-                      <Badge key={key} variant="outline" className="meta-badge">
+                      <Badge className="meta-badge" key={key} variant="outline">
                         {key}: {value}
                       </Badge>
                     ))}

@@ -20,7 +20,6 @@
  * - Unified with global Card, Badge, Avatar, Button components
  */
 
-import React from 'react';
 import { BedDouble, User, AlertCircle } from 'lucide-react';
 import Card from '@components/ui/card.jsx';
 import Badge from '@components/ui/badge.jsx';
@@ -48,18 +47,18 @@ const BedCard = ({
 
   return (
     <Card
+      aria-label={`Bed ${bed_number}, status: ${status}${patient ? `, occupied by ${patient.full_name}` : ''}`}
       className={`bedCard ${isInteractive ? 'interactive' : ''} ${status}`}
-      onClick={onClick}
       role="button"
       tabIndex={0}
-      aria-label={`Bed ${bed_number}, status: ${status}${patient ? `, occupied by ${patient.full_name}` : ''}`}
+      onClick={onClick}
     >
       {/* Header: Bed number + status indicator */}
       <div className="bedHeader">
         <div className="bedNumberContainer">
           <span className="bedNumber">{bed_number}</span>
           {showDepartment && bed.department && (
-            <Badge variant="outline" className="departmentBadge">
+            <Badge className="departmentBadge" variant="outline">
               {bed.department.name}
             </Badge>
           )}
@@ -71,7 +70,7 @@ const BedCard = ({
         </div>
 
         {/* Global status badge */}
-        <BedStatusBadge status={status} size="sm" />
+        <BedStatusBadge size="sm" status={status} />
       </div>
 
       {/* Body: Patient or empty state */}
@@ -88,10 +87,10 @@ const BedCard = ({
             <div className="patientDetails">
               <p className="patientName">{patient.full_name}</p>
               <div className="patientMeta">
-                <Badge variant="secondary" className="metaBadge">
+                <Badge className="metaBadge" variant="secondary">
                   {patient.blood_group || 'N/A'}
                 </Badge>
-                <Badge variant="secondary" className="metaBadge">
+                <Badge className="metaBadge" variant="secondary">
                   {patient.gender || 'N/A'}
                 </Badge>
               </div>

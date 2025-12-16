@@ -17,7 +17,6 @@
 
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
 
 // Create axios instance
 const axiosInstance = axios.create({
@@ -31,11 +30,11 @@ const axiosInstance = axios.create({
 
 // Request interceptor - add auth, logging
 axiosInstance.interceptors.request.use(
-  (config) => {
+  (config) => 
     // Can add global headers here if needed in future
     // console.log('API Request:', config.method?.toUpperCase(), config.url);
-    return config;
-  },
+     config
+  ,
   (error) => {
     console.error('Request interceptor error:', error);
     return Promise.reject(error);
@@ -44,10 +43,10 @@ axiosInstance.interceptors.request.use(
 
 // Response interceptor - handle errors globally
 axiosInstance.interceptors.response.use(
-  (response) => {
+  (response) => 
     // Successful response
-    return response;
-  },
+     response
+  ,
   (error) => {
     const message = error.response?.data?.message || error.message || 'An unexpected error occurred';
 

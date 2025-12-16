@@ -26,19 +26,17 @@ const Label = React.forwardRef(({
   required = false,
   className = '', 
   ...props 
-}, ref) => {
-  return (
+}, ref) => (
     <label
-      ref={ref}
-      htmlFor={htmlFor}
       className={`label ${className}`}
+      htmlFor={htmlFor}
+      ref={ref}
       {...props}
     >
       {children}
-      {required && <span className="label-required" aria-label="required">*</span>}
+      {required && <span aria-label="required" className="label-required">*</span>}
     </label>
-  );
-});
+  ));
 
 Label.displayName = 'Label';
 

@@ -13,7 +13,6 @@
  * - Zero boilerplate - just wrap your doctor-only pages
  */
 
-import React from 'react';
 import { useAuthGuard } from '@hooks/useAuthGuard';
 import LoadingState from '@components/common/LoadingState';
 
@@ -23,7 +22,7 @@ const DoctorRoute = ({ children }) => {
 
   // Show clean loading state while checking auth/role
   if (isLoading) {
-    return <LoadingState type="full" count={1} />;
+    return <LoadingState count={1} type="full" />;
   }
 
   // If not doctor → already redirected by useAuthGuard

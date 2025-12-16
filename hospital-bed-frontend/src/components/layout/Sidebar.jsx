@@ -17,7 +17,6 @@
  * Used exclusively in AppShell
  */
 
-import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { 
   Activity,      // Dashboard
@@ -91,33 +90,33 @@ const Sidebar = ({ isOpen, onToggle }) => {
 
   return (
     <aside 
-      className={`sidebar ${isOpen ? 'open' : 'collapsed'}`}
       aria-label="Main navigation"
+      className={`sidebar ${isOpen ? 'open' : 'collapsed'}`}
     >
       {/* Brand Header */}
       <div className="sidebarBrand">
         <img 
-          src={logoLight} 
           alt="HBMS Logo" 
-          className="brandLogo"
+          className="brandLogo" 
+          src={logoLight}
         />
         {isOpen && <span className="brandText">HBMS</span>}
       </div>
 
       {/* Navigation List */}
-      <nav className="sidebarNav" aria-label="Primary navigation">
+      <nav aria-label="Primary navigation" className="sidebarNav">
         <ul className="navList">
           {visibleNavItems.map((item) => {
             const Icon = item.icon;
 
             return (
-              <li key={item.path} className="navItem">
+              <li className="navItem" key={item.path}>
                 <NavLink
-                  to={item.path}
+                  aria-current={({ isActive }) => isActive ? 'page' : undefined}
                   className={({ isActive }) => 
                     `navLink ${isActive ? 'active' : ''}`
                   }
-                  aria-current={({ isActive }) => isActive ? 'page' : undefined}
+                  to={item.path}
                 >
                   <Icon className="navIcon" size={22} />
                   {isOpen && <span className="navLabel">{item.label}</span>}
@@ -132,9 +131,9 @@ const Sidebar = ({ isOpen, onToggle }) => {
       <div className="sidebarFooter">
         {/* Logout */}
         <button
-          onClick={handleLogout}
-          className="navLink logoutLink"
           aria-label="Logout"
+          className="navLink logoutLink"
+          onClick={handleLogout}
         >
           <LogOut className="navIcon" size={22} />
           {isOpen && <span className="navLabel">Logout</span>}
@@ -142,10 +141,10 @@ const Sidebar = ({ isOpen, onToggle }) => {
 
         {/* Collapse Toggle */}
         <button
-          onClick={onToggle}
-          className="toggleButton"
-          aria-label={isOpen ? 'Collapse sidebar' : 'Expand sidebar'}
           aria-expanded={isOpen}
+          aria-label={isOpen ? 'Collapse sidebar' : 'Expand sidebar'}
+          className="toggleButton"
+          onClick={onToggle}
         >
           {isOpen ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
         </button>

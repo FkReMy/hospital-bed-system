@@ -15,7 +15,6 @@
  * - No editing - read-only view (settings on separate page)
  */
 
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { User, Mail, Phone, Calendar, Shield, Edit } from 'lucide-react';
 import Card from '@components/ui/card.jsx';
@@ -46,7 +45,7 @@ const ProfilePage = () => {
             </div>
             <div className="profile-info">
               <h1 className="profile-name">{user.full_name || 'Staff Member'}</h1>
-              <Badge variant="primary" className="role-badge">
+              <Badge className="role-badge" variant="primary">
                 {user.role || 'Staff'}
               </Badge>
             </div>

@@ -42,17 +42,15 @@ const Textarea = React.forwardRef(
       ...props
     },
     ref
-  ) => {
-    return (
+  ) => (
       <textarea
-        ref={ref}
-        disabled={disabled}
-        rows={rows}
         className={`textarea ${size} ${variant} ${className}`}
+        disabled={disabled}
+        ref={ref}
+        rows={rows}
         {...props}
       />
-    );
-  }
+    )
 );
 
 Textarea.displayName = 'Textarea';

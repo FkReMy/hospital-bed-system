@@ -5,15 +5,12 @@
  * Content wrapper for dialog body
  */
 
-import React from 'react';
 
-const DialogContent = ({ children, className = '', ...props }) => {
-  return (
+const DialogContent = ({ children, className = '', ...props }) => (
     <div className={`dialog-content-wrapper ${className}`} {...props}>
       {children}
     </div>
   );
-};
 
 DialogContent.displayName = 'DialogContent';
 

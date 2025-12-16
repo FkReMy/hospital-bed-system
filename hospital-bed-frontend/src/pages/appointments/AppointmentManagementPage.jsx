@@ -114,7 +114,7 @@ const AppointmentManagementPage = () => {
   };
 
   if (isLoadingAppointments) {
-    return <LoadingState type="table" count={10} />;
+    return <LoadingState count={10} type="table" />;
   }
 
   if (isErrorAppointments) {
@@ -140,17 +140,17 @@ const AppointmentManagementPage = () => {
         <div className="filters-grid">
           <div className="search-input">
             <Input
+              leftIcon={Search}
               placeholder="Search patient name, phone, or ID..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              leftIcon={Search}
             />
           </div>
 
           <select
+            className="doctor-filter"
             value={selectedDoctor}
             onChange={(e) => setSelectedDoctor(e.target.value)}
-            className="doctor-filter"
           >
             <option value="all">All Doctors</option>
             {doctors.map(doctor => (
@@ -161,9 +161,9 @@ const AppointmentManagementPage = () => {
           </select>
 
           <select
+            className="status-filter"
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="status-filter"
           >
             <option value="all">All Status</option>
             <option value="scheduled">Scheduled</option>
@@ -178,24 +178,24 @@ const AppointmentManagementPage = () => {
       <Card className="table-card">
         {filteredAndSortedAppointments.length === 0 ? (
           <EmptyState
-            title="No appointments found"
             description="Try adjusting your filters or create a new appointment"
             illustration="appointments"
+            title="No appointments found"
           />
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead onClick={() => handleSort('patient_name')} className="sortable">
+                <TableHead className="sortable" onClick={() => handleSort('patient_name')}>
                   Patient
                 </TableHead>
-                <TableHead onClick={() => handleSort('doctor_name')} className="sortable">
+                <TableHead className="sortable" onClick={() => handleSort('doctor_name')}>
                   Doctor
                 </TableHead>
-                <TableHead onClick={() => handleSort('appointment_date')} className="sortable">
+                <TableHead className="sortable" onClick={() => handleSort('appointment_date')}>
                   Date & Time
                 </TableHead>
-                <TableHead onClick={() => handleSort('status')} className="sortable">
+                <TableHead className="sortable" onClick={() => handleSort('status')}>
                   Status
                 </TableHead>
                 <TableHead>Reason</TableHead>
@@ -204,7 +204,7 @@ const AppointmentManagementPage = () => {
             </TableHeader>
             <TableBody>
               {filteredAndSortedAppointments.map(appointment => (
-                <TableRow key={appointment.id} className="clickable">
+                <TableRow className="clickable" key={appointment.id}>
                   <TableCell>
                     <div className="patient-info">
                       <strong>{appointment.patient_name}</strong>
@@ -224,7 +224,7 @@ const AppointmentManagementPage = () => {
                     {appointment.reason || '-'}
                   </TableCell>
                   <TableCell>
-                    <Button variant="ghost" size="icon">
+                    <Button size="icon" variant="ghost">
                       <MoreVertical size={18} />
                     </Button>
                   </TableCell>

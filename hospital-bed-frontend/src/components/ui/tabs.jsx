@@ -32,15 +32,13 @@ const Tabs = ({
   onValueChange, 
   children, 
   className = '' 
-}) => {
-  return (
+}) => (
     <div className={`tabs-root ${className}`} data-value={value}>
       {React.Children.map(children, child => 
         React.cloneElement(child, { value, onValueChange })
       )}
     </div>
   );
-};
 
 /**
  * TabsList - scrollable tab button container
@@ -51,21 +49,19 @@ const TabsList = React.forwardRef(({
   value,
   onValueChange,
   ...props 
-}, ref) => {
-  return (
+}, ref) => (
     <div 
-      ref={ref}
-      role="tablist"
       aria-orientation="horizontal"
       className={`tabs-list ${className}`}
+      ref={ref}
+      role="tablist"
       {...props}
     >
       {React.Children.map(children, child => 
         React.cloneElement(child, { value, onValueChange })
       )}
     </div>
-  );
-});
+  ));
 
 /**
  * TabsTrigger - individual tab button
@@ -98,16 +94,16 @@ const TabsTrigger = React.forwardRef(({
 
   return (
     <button
+      aria-controls={`tabpanel-${tabValue}`}
+      aria-selected={isActive}
+      className={`tabs-trigger ${isActive ? 'active' : ''} ${disabled ? 'disabled' : ''} ${className}`}
+      disabled={disabled}
+      id={`tab-${tabValue}`}
       ref={ref}
       role="tab"
-      aria-selected={isActive}
-      aria-controls={`tabpanel-${tabValue}`}
-      id={`tab-${tabValue}`}
       tabIndex={isActive ? 0 : -1}
-      disabled={disabled}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
-      className={`tabs-trigger ${isActive ? 'active' : ''} ${disabled ? 'disabled' : ''} ${className}`}
       {...props}
     >
       {children}
@@ -131,11 +127,11 @@ const TabsContent = React.forwardRef(({
 
   return (
     <div
-      ref={ref}
-      role="tabpanel"
-      id={`tabpanel-${tabValue}`}
       aria-labelledby={`tab-${tabValue}`}
       className={`tabs-content ${className}`}
+      id={`tabpanel-${tabValue}`}
+      ref={ref}
+      role="tabpanel"
       {...props}
     >
       {children}

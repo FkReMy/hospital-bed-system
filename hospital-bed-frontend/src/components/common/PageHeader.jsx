@@ -18,7 +18,6 @@
  * - Reports, Profile, Settings
  */
 
-import React from 'react';
 import './PageHeader.scss';
 
 /**
@@ -33,8 +32,7 @@ const PageHeader = ({
   subtitle = null,
   children = null,
   className = '',
-}) => {
-  return (
+}) => (
     <header className={`pageHeader ${className}`} role="banner">
       <div className="headerContent">
         {/* Title and Subtitle */}
@@ -54,6 +52,5 @@ const PageHeader = ({
       </div>
     </header>
   );
-};
 
 export default PageHeader;

@@ -77,12 +77,12 @@ const Dialog = ({
 
   return createPortal(
     <div 
-      className="dialog-overlay" 
-      ref={overlayRef}
-      onClick={handleOverlayClick}
-      role="dialog"
+      aria-labelledby={title ? 'dialog-title' : undefined} 
       aria-modal="true"
-      aria-labelledby={title ? 'dialog-title' : undefined}
+      className="dialog-overlay"
+      ref={overlayRef}
+      role="dialog"
+      onClick={handleOverlayClick}
     >
       <Card 
         className={`dialog-content ${className}`}
@@ -91,18 +91,18 @@ const Dialog = ({
       >
         {closeButton && (
           <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => onOpenChange(false)}
-            className="dialog-close-button"
             aria-label="Close dialog"
+            className="dialog-close-button"
+            size="icon"
+            variant="ghost"
+            onClick={() => onOpenChange(false)}
           >
             <X size={20} />
           </Button>
         )}
 
         {title && (
-          <h2 id="dialog-title" className="dialog-title">
+          <h2 className="dialog-title" id="dialog-title">
             {title}
           </h2>
         )}

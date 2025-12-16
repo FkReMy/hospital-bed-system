@@ -16,7 +16,6 @@
  * - Real-time updates via SignalR (bedChannel)
  */
 
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Building2 } from 'lucide-react';
 import Card from '@components/ui/card.jsx';
@@ -48,14 +47,14 @@ const DepartmentsPage = () => {
   });
 
   if (isLoadingBeds) {
-    return <LoadingState type="grid" count={6} />;
+    return <LoadingState count={6} type="grid" />;
   }
 
   if (departments.length === 0) {
     return (
       <EmptyState
-        title="No departments found"
         description="Please contact system administrator"
+        title="No departments found"
       />
     );
   }
@@ -70,11 +69,11 @@ const DepartmentsPage = () => {
       <div className="departments-grid">
         {departmentStats.map(department => (
           <Link
+            className="department-link"
             key={department.id}
             to={`/departments/${department.id}`}
-            className="department-link"
           >
-            <Card className="department-card" interactive>
+            <Card interactive className="department-card">
               <div className="department-header">
                 <Building2 className="department-icon" />
                 <div className="department-info">

@@ -107,7 +107,7 @@ const RegisterPage = () => {
       <div className="registerContainer">
         <Card className="registerCard">
           <div className="registerHeader">
-            <Link to="/login" className="backLink">
+            <Link className="backLink" to="/login">
               <ArrowLeft size={20} />
               Back to Login
             </Link>
@@ -117,45 +117,45 @@ const RegisterPage = () => {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="registerForm">
+          <form className="registerForm" onSubmit={handleSubmit}>
             <div className="formGroup">
               <Input
+                disabled={registerMutation.isPending}
+                leftIcon={User}
                 placeholder="Full Name"
                 value={formData.full_name}
                 onChange={handleChange('full_name')}
-                leftIcon={User}
-                disabled={registerMutation.isPending}
               />
             </div>
 
             <div className="formGroup">
               <Input
-                type="email"
+                disabled={registerMutation.isPending}
+                leftIcon={Mail}
                 placeholder="Email Address"
+                type="email"
                 value={formData.email}
                 onChange={handleChange('email')}
-                leftIcon={Mail}
-                disabled={registerMutation.isPending}
               />
             </div>
 
             <div className="formGroup">
               <Input
-                type="tel"
+                disabled={registerMutation.isPending}
+                leftIcon={Phone}
                 placeholder="Phone Number"
+                type="tel"
                 value={formData.phone}
                 onChange={handleChange('phone')}
-                leftIcon={Phone}
-                disabled={registerMutation.isPending}
               />
             </div>
 
             <div className="formGroup">
               <select
-                value={formData.role}
-                onChange={handleChange('role')}
                 className="roleSelect"
                 disabled={registerMutation.isPending}
+                value={formData.role}
+                onChange={handleChange('role')}
               >
                 <option value={ROLES.DOCTOR}>Doctor</option>
                 <option value={ROLES.NURSE}>Nurse</option>
@@ -166,32 +166,32 @@ const RegisterPage = () => {
 
             <div className="formGroup">
               <Input
-                type="password"
+                disabled={registerMutation.isPending}
+                leftIcon={Lock}
                 placeholder="Password"
+                type="password"
                 value={formData.password}
                 onChange={handleChange('password')}
-                leftIcon={Lock}
-                disabled={registerMutation.isPending}
               />
             </div>
 
             <div className="formGroup">
               <Input
-                type="password"
+                disabled={registerMutation.isPending}
+                leftIcon={Lock}
                 placeholder="Confirm Password"
+                type="password"
                 value={formData.confirmPassword}
                 onChange={handleChange('confirmPassword')}
-                leftIcon={Lock}
-                disabled={registerMutation.isPending}
               />
             </div>
 
             <Button
-              type="submit"
-              size="lg"
               className="registerButton"
-              isLoading={registerMutation.isPending}
               disabled={registerMutation.isPending}
+              isLoading={registerMutation.isPending}
+              size="lg"
+              type="submit"
             >
               <Shield className="mr-2" />
               Create Account

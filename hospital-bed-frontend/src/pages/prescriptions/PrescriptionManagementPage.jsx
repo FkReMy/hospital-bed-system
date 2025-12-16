@@ -113,7 +113,7 @@ const PrescriptionManagementPage = () => {
   };
 
   if (isLoadingPrescriptions) {
-    return <LoadingState type="table" count={10} />;
+    return <LoadingState count={10} type="table" />;
   }
 
   if (isErrorPrescriptions) {
@@ -139,17 +139,17 @@ const PrescriptionManagementPage = () => {
         <div className="filters-grid">
           <div className="search-input">
             <Input
+              leftIcon={Search}
               placeholder="Search patient or medication..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              leftIcon={Search}
             />
           </div>
 
           <select
+            className="doctor-filter"
             value={selectedDoctor}
             onChange={(e) => setSelectedDoctor(e.target.value)}
-            className="doctor-filter"
           >
             <option value="all">All Doctors</option>
             {doctors.map(doctor => (
@@ -160,9 +160,9 @@ const PrescriptionManagementPage = () => {
           </select>
 
           <select
+            className="status-filter"
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="status-filter"
           >
             <option value="all">All Status</option>
             <option value="pending">Pending</option>
@@ -176,27 +176,27 @@ const PrescriptionManagementPage = () => {
       <Card className="table-card">
         {filteredAndSortedPrescriptions.length === 0 ? (
           <EmptyState
-            title="No prescriptions found"
             description="Try adjusting your filters or create a new prescription"
             illustration="prescriptions"
+            title="No prescriptions found"
           />
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead onClick={() => handleSort('patient_name')} className="sortable">
+                <TableHead className="sortable" onClick={() => handleSort('patient_name')}>
                   Patient
                 </TableHead>
-                <TableHead onClick={() => handleSort('medication')} className="sortable">
+                <TableHead className="sortable" onClick={() => handleSort('medication')}>
                   Medication
                 </TableHead>
-                <TableHead onClick={() => handleSort('date')} className="sortable">
+                <TableHead className="sortable" onClick={() => handleSort('date')}>
                   Date
                 </TableHead>
-                <TableHead onClick={() => handleSort('doctor_name')} className="sortable">
+                <TableHead className="sortable" onClick={() => handleSort('doctor_name')}>
                   Doctor
                 </TableHead>
-                <TableHead onClick={() => handleSort('status')} className="sortable">
+                <TableHead className="sortable" onClick={() => handleSort('status')}>
                   Status
                 </TableHead>
                 <TableHead className="actions">Actions</TableHead>
@@ -204,7 +204,7 @@ const PrescriptionManagementPage = () => {
             </TableHeader>
             <TableBody>
               {filteredAndSortedPrescriptions.map(prescription => (
-                <TableRow key={prescription.id} className="clickable">
+                <TableRow className="clickable" key={prescription.id}>
                   <TableCell>
                     <div className="patient-info">
                       <strong>{prescription.patient_name}</strong>
@@ -218,7 +218,7 @@ const PrescriptionManagementPage = () => {
                     <PrescriptionStatusBadge status={prescription.status} />
                   </TableCell>
                   <TableCell>
-                    <Button variant="ghost" size="icon">
+                    <Button size="icon" variant="ghost">
                       <MoreVertical size={18} />
                     </Button>
                   </TableCell>

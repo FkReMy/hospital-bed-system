@@ -29,11 +29,11 @@ const DropdownMenuTrigger = ({ children, asChild = false, className = '' }) => {
 
   return (
     <button
-      type="button"
-      className={`dropdown-menu-trigger ${className}`}
-      onClick={handleClick}
       aria-expanded={isOpen}
       aria-haspopup="true"
+      className={`dropdown-menu-trigger ${className}`}
+      type="button"
+      onClick={handleClick}
     >
       {children}
     </button>

@@ -49,18 +49,14 @@ export const formatDate = (date, formatStr = DATE_FORMATS.DISPLAY) => {
  * @param {Date|string|number} date
  * @returns {string}
  */
-export const formatDateTime = (date) => {
-  return formatDate(date, DATE_FORMATS.DATE_TIME);
-};
+export const formatDateTime = (date) => formatDate(date, DATE_FORMATS.DATE_TIME);
 
 /**
  * Format time only
  * @param {Date|string|number} date
  * @returns {string}
  */
-export const formatTime = (date) => {
-  return formatDate(date, DATE_FORMATS.TIME);
-};
+export const formatTime = (date) => formatDate(date, DATE_FORMATS.TIME);
 
 /**
  * Relative time from now (e.g., "3 days ago")
@@ -103,18 +99,14 @@ export const isPastDate = (date) => {
  * @param {Date} date
  * @returns {Date}
  */
-export const getStartOfDay = (date = new Date()) => {
-  return startOfDay(date);
-};
+export const getStartOfDay = (date = new Date()) => startOfDay(date);
 
 /**
  * Get end of day (23:59:59)
  * @param {Date} date
  * @returns {Date}
  */
-export const getEndOfDay = (date = new Date()) => {
-  return endOfDay(date);
-};
+export const getEndOfDay = (date = new Date()) => endOfDay(date);
 
 /**
  * Add days to date
@@ -122,9 +114,7 @@ export const getEndOfDay = (date = new Date()) => {
  * @param {number} days
  * @returns {Date}
  */
-export const addDaysToDate = (date, days) => {
-  return addDays(date, days);
-};
+export const addDaysToDate = (date, days) => addDays(date, days);
 
 /**
  * Subtract days from date
@@ -132,9 +122,7 @@ export const addDaysToDate = (date, days) => {
  * @param {number} days
  * @returns {Date}
  */
-export const subtractDaysFromDate = (date, days) => {
-  return subDays(date, days);
-};
+export const subtractDaysFromDate = (date, days) => subDays(date, days);
 
 /**
  * Parse ISO string safely

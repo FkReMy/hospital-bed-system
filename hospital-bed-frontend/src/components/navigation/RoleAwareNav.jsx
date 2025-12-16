@@ -37,33 +37,31 @@ const RoleAwareNav = ({ items = [], isSidebarOpen = true }) => {
   const { currentRole } = useAuth();
 
   // Filter items visible to current role
-  const visibleItems = React.useMemo(() => {
-    return items.filter(item => 
+  const visibleItems = React.useMemo(() => items.filter(item => 
       item.roles.includes(currentRole)
-    );
-  }, [items, currentRole]);
+    ), [items, currentRole]);
 
   if (visibleItems.length === 0) {
     return null; // Nothing to show for this role
   }
 
   return (
-    <nav className="role-aware-nav" aria-label="Role-based navigation">
+    <nav aria-label="Role-based navigation" className="role-aware-nav">
       <ul className="nav-list">
         {visibleItems.map((item) => {
           const Icon = item.icon;
 
           return (
-            <li key={item.path} className="nav-item">
+            <li className="nav-item" key={item.path}>
               <NavLink
-                to={item.path}
+                end // Matches exact path for nested routes
+                aria-current={({ isActive }) => isActive ? 'page' : undefined}
                 className={({ isActive }) => 
                   `nav-link ${isActive ? 'active' : ''}`
                 }
-                end // Matches exact path for nested routes
-                aria-current={({ isActive }) => isActive ? 'page' : undefined}
+                to={item.path}
               >
-                {Icon && <Icon className="nav-icon" size={22} aria-hidden="true" />}
+                {Icon && <Icon aria-hidden="true" className="nav-icon" size={22} />}
                 {isSidebarOpen && (
                   <span className="nav-label">{item.label}</span>
                 )}

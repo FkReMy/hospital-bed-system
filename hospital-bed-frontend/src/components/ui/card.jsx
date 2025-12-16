@@ -53,8 +53,8 @@ const Card = React.forwardRef(
 
     return (
       <div
-        ref={ref}
         className={`card ${interactive ? 'interactive' : ''} ${className}`}
+        ref={ref}
         {...interactiveProps}
         {...props}
       >

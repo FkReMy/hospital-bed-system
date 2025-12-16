@@ -25,11 +25,11 @@ const DropdownMenuItem = ({
 
   return (
     <button
-      type="button"
-      role="menuitem"
       className={`dropdown-menu-item ${disabled ? 'disabled' : ''} ${className}`}
-      onClick={handleClick}
       disabled={disabled}
+      role="menuitem"
+      type="button"
+      onClick={handleClick}
       {...props}
     >
       {children}

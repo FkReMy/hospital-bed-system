@@ -79,8 +79,8 @@ const PatientListPage = () => {
 
     if (sortConfig.key) {
       filtered = [...filtered].sort((a, b) => {
-        let aVal = a[sortConfig.key];
-        let bVal = b[sortConfig.key];
+        const aVal = a[sortConfig.key];
+        const bVal = b[sortConfig.key];
 
         if (aVal < bVal) return sortConfig.direction === 'asc' ? -1 : 1;
         if (aVal > bVal) return sortConfig.direction === 'asc' ? 1 : -1;
@@ -130,26 +130,26 @@ const PatientListPage = () => {
         <div className="filtersGrid">
           <div className="searchInput">
             <Input
+              leftIcon={Search}
               placeholder="Search name, ID, or phone..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              leftIcon={Search}
             />
           </div>
 
           <select
+            className="departmentFilter"
             value={selectedDepartment}
             onChange={(e) => setSelectedDepartment(e.target.value)}
-            className="departmentFilter"
           >
             <option value="all">All Departments</option>
             {/* Populate from departments */}
           </select>
 
           <select
+            className="statusFilter"
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="statusFilter"
           >
             <option value="all">All Status</option>
             <option value="admitted">Admitted</option>
@@ -162,26 +162,26 @@ const PatientListPage = () => {
       {/* Patients Table */}
       <Card className="tableCard">
         {isLoading ? (
-          <LoadingState type="table" count={10} />
+          <LoadingState count={10} type="table" />
         ) : filteredAndSortedPatients.length === 0 ? (
           <EmptyState
-            title="No patients found"
             description="Try adjusting your filters or register a new patient"
+            title="No patients found"
           />
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead onClick={() => handleSort('full_name')} className="sortable">
+                <TableHead className="sortable" onClick={() => handleSort('full_name')}>
                   Name
                 </TableHead>
-                <TableHead onClick={() => handleSort('patient_id')} className="sortable">
+                <TableHead className="sortable" onClick={() => handleSort('patient_id')}>
                   Patient ID
                 </TableHead>
-                <TableHead onClick={() => handleSort('age')} className="sortable">
+                <TableHead className="sortable" onClick={() => handleSort('age')}>
                   Age
                 </TableHead>
-                <TableHead onClick={() => handleSort('status')} className="sortable">
+                <TableHead className="sortable" onClick={() => handleSort('status')}>
                   Status
                 </TableHead>
                 <TableHead>Phone</TableHead>
@@ -191,9 +191,9 @@ const PatientListPage = () => {
             </TableHeader>
             <TableBody>
               {filteredAndSortedPatients.map(patient => (
-                <TableRow key={patient.id} className="clickable">
+                <TableRow className="clickable" key={patient.id}>
                   <TableCell>
-                    <Link to={`/patients/${patient.id}`} className="patientName">
+                    <Link className="patientName" to={`/patients/${patient.id}`}>
                       {patient.full_name}
                     </Link>
                   </TableCell>
@@ -207,7 +207,7 @@ const PatientListPage = () => {
                   <TableCell>{patient.phone}</TableCell>
                   <TableCell>{patient.department}</TableCell>
                   <TableCell>
-                    <Button variant="ghost" size="icon">
+                    <Button size="icon" variant="ghost">
                       <MoreVertical size={18} />
                     </Button>
                   </TableCell>

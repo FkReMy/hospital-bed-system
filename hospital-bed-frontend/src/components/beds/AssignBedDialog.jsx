@@ -128,18 +128,18 @@ const AssignBedDialog = ({
           )}
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
           {/* Patient Selection */}
           <div className="space-y-2">
-            <Label htmlFor="patientId" required>
+            <Label required htmlFor="patientId">
               <User className="inline w-4 h-4 mr-2" />
               Patient
             </Label>
             <select
               id="patientId"
               {...register('patientId')}
-              disabled={isSubmitting || bed.status !== 'available'}
               className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+              disabled={isSubmitting || bed.status !== 'available'}
             >
               <option value="">Select a patient...</option>
               {patients.map((patient) => (
@@ -162,9 +162,9 @@ const AssignBedDialog = ({
             <Textarea
               id="notes"
               {...register('notes')}
-              rows={3}
-              placeholder="e.g., Patient requires monitoring every 4 hours..."
               disabled={isSubmitting}
+              placeholder="e.g., Patient requires monitoring every 4 hours..."
+              rows={3}
             />
             {errors.notes && (
               <p className="text-sm text-destructive">{errors.notes.message}</p>
@@ -173,17 +173,17 @@ const AssignBedDialog = ({
 
           <DialogFooter>
             <Button
+              disabled={isSubmitting}
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
-              disabled={isSubmitting}
             >
               Cancel
             </Button>
             <Button
-              type="submit"
-              isLoading={isSubmitting}
               disabled={bed.status !== 'available' || isSubmitting}
+              isLoading={isSubmitting}
+              type="submit"
             >
               Assign Bed
             </Button>

@@ -18,7 +18,6 @@
  * - Dashboard widgets, reports
  */
 
-import React from 'react';
 import Skeleton from '@components/ui/skeleton.jsx';
 import Card from '@components/ui/card.jsx';
 import './LoadingState.scss';
@@ -47,16 +46,14 @@ const LoadingState = ({
   const skeletonHeight = height || defaultHeight;
 
   // Render skeleton items based on type
-  const renderSkeletons = () => {
-    return Array.from({ length: count }, (_, i) => (
-      <Skeleton key={i} className={`loadingSkeleton ${skeletonHeight}`} />
+  const renderSkeletons = () => Array.from({ length: count }, (_, i) => (
+      <Skeleton className={`loadingSkeleton ${skeletonHeight}`} key={i} />
     ));
-  };
 
   // Layout wrappers
   if (type === 'table') {
     return (
-      <div className={`loadingState table ${className}`} role="status" aria-live="polite">
+      <div aria-live="polite" className={`loadingState table ${className}`} role="status">
         <div className="tableSkeletons">
           {renderSkeletons()}
         </div>
@@ -66,7 +63,7 @@ const LoadingState = ({
 
   if (type === 'grid' || type === 'card') {
     return (
-      <div className={`loadingState grid ${className}`} role="status" aria-live="polite">
+      <div aria-live="polite" className={`loadingState grid ${className}`} role="status">
         <div className="gridSkeletons">
           {renderSkeletons()}
         </div>
@@ -76,7 +73,7 @@ const LoadingState = ({
 
   if (type === 'full') {
     return (
-      <Card className={`loadingState full ${className}`} role="status" aria-live="polite">
+      <Card aria-live="polite" className={`loadingState full ${className}`} role="status">
         <div className="fullSkeletonContainer">
           {renderSkeletons()}
         </div>
@@ -86,7 +83,7 @@ const LoadingState = ({
 
   // Fallback: simple vertical stack
   return (
-    <div className={`loadingState ${className}`} role="status" aria-live="polite">
+    <div aria-live="polite" className={`loadingState ${className}`} role="status">
       {renderSkeletons()}
     </div>
   );

@@ -63,7 +63,7 @@ const AppointmentCalendarPage = () => {
         <strong>{appointment.patient_name}</strong>
         <div className="event-details">
           <span>Dr. {appointment.doctor_name}</span>
-          <AppointmentStatusBadge status={appointment.status} size="sm" />
+          <AppointmentStatusBadge size="sm" status={appointment.status} />
         </div>
       </div>
     );
@@ -82,9 +82,9 @@ const AppointmentCalendarPage = () => {
           <div className="calendar-controls">
             {/* Doctor filter */}
             <select 
+              className="doctor-filter"
               value={selectedDoctor}
               onChange={(e) => setSelectedDoctor(e.target.value)}
-              className="doctor-filter"
             >
               <option value="all">All Doctors</option>
               {doctors.map(doctor => (
@@ -98,9 +98,9 @@ const AppointmentCalendarPage = () => {
             <div className="view-buttons">
               {[Views.MONTH, Views.WEEK, Views.DAY].map(view => (
                 <button
+                  className={selectedView === view ? 'active' : ''}
                   key={view}
                   onClick={() => setSelectedView(view)}
-                  className={selectedView === view ? 'active' : ''}
                 >
                   {view.charAt(0) + view.slice(1).toLowerCase()}
                 </button>
@@ -111,30 +111,30 @@ const AppointmentCalendarPage = () => {
 
         {events.length === 0 ? (
           <EmptyState
-            title="No appointments"
             description="No appointments scheduled for the selected period"
             illustration="calendar"
+            title="No appointments"
           />
         ) : (
           <Calendar
-            localizer={localizer}
-            events={events}
-            startAccessor="start"
-            endAccessor="end"
-            style={{ height: 600 }}
-            view={selectedView}
-            onView={setSelectedView}
-            views={[Views.MONTH, Views.WEEK, Views.DAY]}
+            popup
             components={{
               event: EventComponent,
             }}
+            endAccessor="end"
+            events={events}
+            localizer={localizer}
+            startAccessor="start"
+            style={{ height: 600 }}
+            tooltipAccessor="title"
+            view={selectedView}
+            views={[Views.MONTH, Views.WEEK, Views.DAY]}
             onSelectEvent={(event) => {
               // Navigate to appointment detail or open dialog
               // router.push(`/appointments/${event.id}`);
               toast.info(`Selected: ${event.title}`);
             }}
-            popup
-            tooltipAccessor="title"
+            onView={setSelectedView}
           />
         )}
       </Card>
