@@ -34,6 +34,7 @@ import './button.scss';
  * - className: string
  * - type: 'button' | 'submit' | 'reset' (default: 'button')
  * - onClick: () => void
+ * - asChild: boolean - when true, clones the child element and merges props
  * - All standard button HTML attributes
  */
 const Button = React.forwardRef(
@@ -46,18 +47,30 @@ const Button = React.forwardRef(
       children,
       className = '',
       type = 'button',
+      asChild = false,
       ...props
     },
     ref
   ) => {
     const isDisabled = disabled || isLoading;
+    const buttonClasses = `button ${variant} ${size} ${isLoading ? 'loading' : ''} ${className}`;
+
+    // If asChild is true, clone the child element and merge props
+    if (asChild && React.isValidElement(children)) {
+      return React.cloneElement(children, {
+        ...props,
+        ref,
+        className: `${buttonClasses} ${children.props.className || ''}`.trim(),
+        disabled: isDisabled,
+      });
+    }
 
     return (
       <button
         ref={ref}
         type={type}
         disabled={isDisabled}
-        className={`button ${variant} ${size} ${isLoading ? 'loading' : ''} ${className}`}
+        className={buttonClasses}
         {...props}
       >
         {isLoading && (
