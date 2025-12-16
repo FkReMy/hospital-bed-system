@@ -13,8 +13,8 @@
  * - Dark/light theme compatibility
  */
 
-@import '@styles/variables';
-@import '@styles/mixins';
+@use '@styles/variables' as *;
+@use '@styles/mixins' as *;
 
 .prescriptionList {
   // Full width container

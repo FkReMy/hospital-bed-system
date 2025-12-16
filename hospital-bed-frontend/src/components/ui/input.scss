@@ -17,8 +17,8 @@
  * Unified with other form controls (select, textarea, checkbox)
  */
 
-@import '@styles/variables';
-@import '@styles/mixins';
+@use '@styles/variables' as *;
+@use '@styles/mixins' as *;
 
 .inputWrapper {
   // Wrapper for positioning icons

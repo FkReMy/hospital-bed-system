@@ -17,8 +17,8 @@
  * Unified with other form controls (input, radio, switch)
  */
 
-@import '@styles/variables';
-@import '@styles/mixins';
+@use '@styles/variables' as *;
+@use '@styles/mixins' as *;
 
 .checkboxWrapper {
   display: inline-flex;

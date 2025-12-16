@@ -15,8 +15,8 @@
  * All colors, radii, shadows, and typography come from _variables.scss
  */
 
-@import '@styles/variables';
-@import '@styles/mixins';
+@use '@styles/variables' as *;
+@use '@styles/mixins' as *;
 
 .occupancyChartCard {
   // Extend global glass card mixin for premium elevated look

@@ -17,7 +17,7 @@
  * Import this file in components or other partials as needed
  */
 
-@import 'variables';
+@use 'variables' as *;
 
 /* Glassmorphic card base - used in Card, Dialog, NotificationCenter */
 @mixin glass-card {

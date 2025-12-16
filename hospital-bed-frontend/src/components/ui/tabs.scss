@@ -16,8 +16,8 @@
  * Unified with other UI components (button, card, input)
  */
 
-@import '@styles/variables';
-@import '@styles/mixins';
+@use '@styles/variables' as *;
+@use '@styles/mixins' as *;
 
 .tabsRoot {
   // Root container

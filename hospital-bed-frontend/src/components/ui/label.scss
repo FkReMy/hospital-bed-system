@@ -4,8 +4,8 @@
  * Accessible form label with required indicator
  */
 
-@import '@styles/variables';
-@import '@styles/mixins';
+@use '@styles/variables' as *;
+@use '@styles/mixins' as *;
 
 .label {
   display: inline-block;

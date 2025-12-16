@@ -13,8 +13,8 @@
  * - No border/shadow by default (matches content shape)
  */
 
-@import '@styles/variables';
-@import '@styles/mixins';
+@use '@styles/variables' as *;
+@use '@styles/mixins' as *;
 
 .skeleton {
   // Base placeholder styling

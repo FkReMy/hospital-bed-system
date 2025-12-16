@@ -13,8 +13,8 @@
  * - Unified with global variables and mixins
  */
 
-@import '@styles/variables';
-@import '@styles/mixins';
+@use '@styles/variables' as *;
+@use '@styles/mixins' as *;
 
 .occupancyReportPage {
   // Full page container

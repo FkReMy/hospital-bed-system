@@ -181,16 +181,49 @@ hospital_bed_system/
 
 1. **Environment variables:**  
    Copy `.env.example` to `.env` and set API URLs, SignalR endpoints, etc.
-2. **Backend API:**  
-   Start the .NET backend following its instructions. This frontend expects endpoints as described in `/src/services/api/*`.
+
+2. **Backend API (REQUIRED):**  
+   ⚠️ **IMPORTANT:** The frontend requires the .NET backend to be running to avoid `ECONNREFUSED` errors.
+   
+   - The backend is in a separate repository and must be started before running the frontend
+   - By default, the frontend expects the backend at `https://localhost:7150` (configured in `vite.config.js`)
+   - Start the .NET backend following its instructions before running the frontend
+   - **To verify the backend is running:** Open `https://localhost:7150/api/health` (or similar health endpoint) in your browser
+   - **If the backend runs on a different port:** Update the `target` URL in `vite.config.js` proxy configuration to match your backend port
+   
 3. **Install dependencies:**  
    ```sh
    yarn install
+   # or
+   npm install
    ```
+
 4. **Run development build:**  
    ```sh
    yarn dev
+   # or
+   npm run dev
    ```
+   The frontend will be available at `http://localhost:3000`
+
+5. **Build for production:**
+   ```sh
+   yarn build
+   # or
+   npm run build
+   ```
+
+### Troubleshooting
+
+**Issue: `[vite] http proxy error: /api/... ECONNREFUSED`**
+- **Cause:** The .NET backend is not running or is running on a different port
+- **Solution:** 
+  1. Start your .NET backend server
+  2. Verify it's running on `https://localhost:7150` (or update `vite.config.js` if using a different port)
+  3. Restart the frontend development server
+
+**Issue: Sass deprecation warnings about `@import`**
+- **Status:** ✅ Fixed - All SCSS files now use modern `@use` syntax instead of deprecated `@import`
 
 ---
 

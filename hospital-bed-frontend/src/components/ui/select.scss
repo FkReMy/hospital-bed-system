@@ -17,8 +17,8 @@
  * Unified with Input, Textarea, Checkbox
  */
 
-@import '@styles/variables';
-@import '@styles/mixins';
+@use '@styles/variables' as *;
+@use '@styles/mixins' as *;
 
 .selectWrapper {
   // Wrapper for positioning icons

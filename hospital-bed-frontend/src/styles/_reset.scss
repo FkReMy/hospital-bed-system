@@ -18,7 +18,7 @@
  * This is imported first in your global styles
  */
 
-@import 'variables';
+@use 'variables' as *;
 
 /* Box sizing border-box for easier layout */
 *,
