@@ -10,7 +10,7 @@
  * - User avatar with dropdown menu (profile, logout)
  * - RoleSwitcher integration for multi-role users
  * - Notification bell with badge/count
- * - Theme toggle (light/dark/system)
+ * - Theme toggle (light/dark with sun/moon icons)
  * - Sidebar collapse/expand toggle
  * - Unified with global Avatar, Button, DropdownMenu, Badge components
  * - Premium glassmorphic design with blur
