@@ -25,10 +25,7 @@ import {
 import Card from '@components/ui/card.jsx';
 import Badge from '@components/ui/badge.jsx';
 import Button from '@components/ui/button.jsx';
-import Tabs from '@components/ui/tabs.jsx';
-import TabsList from '@components/ui/tabs-list.jsx';
-import TabsTrigger from '@components/ui/tabs-trigger.jsx';
-import TabsContent from '@components/ui/tabs-content.jsx';
+import Tabs, { TabsList, TabsTrigger, TabsContent } from '@components/ui/tabs.jsx';
 import Table from '@components/ui/table.jsx';
 import TableHeader from '@components/ui/table-header.jsx';
 import TableBody from '@components/ui/table-body.jsx';
