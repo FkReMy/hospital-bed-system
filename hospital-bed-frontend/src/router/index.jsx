@@ -25,16 +25,19 @@ import NurseRoute from './NurseRoute';
 import ReceptionRoute from './ReceptionRoute';
 
 // Lazy load pages for performance
-const LoginPage = lazy(() => import('@pages/login/LoginPage'));
-const DashboardPage = lazy(() => import('@pages/dashboard/DashboardPage'));
+const LoginPage = lazy(() => import('@pages/auth/LoginPage'));
+const RegisterPage = lazy(() => import('@pages/auth/RegisterPage'));
+const LandingPage = lazy(() => import('@pages/LandingPage'));
+const AdminDashboard = lazy(() => import('@pages/dashboards/AdminDashboard'));
+const DoctorDashboard = lazy(() => import('@pages/dashboards/DoctorDashboard'));
+const NurseDashboard = lazy(() => import('@pages/dashboards/NurseDashboard'));
+const ReceptionDashboard = lazy(() => import('@pages/dashboards/ReceptionDashboard'));
 const BedManagementPage = lazy(() => import('@pages/beds/BedManagementPage'));
 const PatientListPage = lazy(() => import('@pages/patients/PatientListPage'));
 const PatientDetailPage = lazy(() => import('@pages/patients/PatientDetailPage'));
 const AppointmentManagementPage = lazy(() => import('@pages/appointments/AppointmentManagementPage'));
-const ReportsPage = lazy(() => import('@pages/reports/ReportsPage'));
-const SettingsPage = lazy(() => import('@pages/settings/SettingsPage'));
-const AccessDeniedPage = lazy(() => import('@pages/access-denied/AccessDeniedPage'));
-const NotFoundPage = lazy(() => import('@pages/not-found/NotFoundPage'));
+const AccessDeniedPage = lazy(() => import('@pages/errors/AccessDeniedPage'));
+const NotFoundPage = lazy(() => import('@pages/errors/NotFoundPage'));
 
 // Global error element
 const ErrorBoundary = ({ error }) => (
@@ -48,9 +51,17 @@ const ErrorBoundary = ({ error }) => (
 const router = createBrowserRouter([
   // Public routes
   {
+    path: '/',
+    element: <LandingPage />,
+  },
+  {
     path: '/login',
     element: <LoginPage />,
     errorElement: <ErrorBoundary />,
+  },
+  {
+    path: '/register',
+    element: <RegisterPage />,
   },
   {
     path: '/access-denied',
@@ -59,77 +70,63 @@ const router = createBrowserRouter([
 
   // Protected routes - all authenticated users
   {
-    path: '/',
+    path: '/dashboard',
     element: <ProtectedRoute />,
     children: [
       {
         index: true,
-        element: <DashboardPage />,
+        element: <AdminDashboard />,
       },
       {
-        path: 'dashboard',
-        element: <DashboardPage />,
+        path: 'admin',
+        element: <AdminDashboard />,
       },
       {
-        path: 'beds',
+        path: 'doctor',
+        element: <DoctorDashboard />,
+      },
+      {
+        path: 'nurse',
+        element: <NurseDashboard />,
+      },
+      {
+        path: 'reception',
+        element: <ReceptionDashboard />,
+      },
+    ],
+  },
+  {
+    path: '/beds',
+    element: <ProtectedRoute />,
+    children: [
+      {
+        index: true,
         element: <BedManagementPage />,
       },
+    ],
+  },
+  {
+    path: '/patients',
+    element: <ProtectedRoute />,
+    children: [
       {
-        path: 'patients',
+        index: true,
         element: <PatientListPage />,
       },
       {
-        path: 'patients/:id',
+        path: ':id',
         element: <PatientDetailPage />,
       },
+    ],
+  },
+  {
+    path: '/appointments',
+    element: <ProtectedRoute />,
+    children: [
       {
-        path: 'appointments',
+        index: true,
         element: <AppointmentManagementPage />,
       },
-      {
-        path: 'settings',
-        element: <SettingsPage />,
-      },
-    ],
-  },
-
-  // Admin-only routes
-  {
-    path: '/admin',
-    element: <AdminRoute />,
-    children: [
-      {
-        path: 'reports',
-        element: <ReportsPage />,
-      },
-      // Add more admin routes here (user management, system settings, etc.)
-    ],
-  },
-
-  // Doctor-specific routes (if needed beyond general access)
-  {
-    path: '/doctor',
-    element: <DoctorRoute />,
-    children: [
-      // Doctor-specific views (e.g., patient rounds, prescriptions)
-    ],
-  },
-
-  // Nurse-specific routes
-  {
-    path: '/nurse',
-    element: <NurseRoute />,
-    children: [
-      // Nurse-specific views
-    ],
-  },
-
-  // Reception-specific routes
-  {
-    path: '/reception',
-    element: <ReceptionRoute />,
-    children: [
-      // Reception-specific views
     ],
   },
 

@@ -1,0 +1,58 @@
+// src/components/beds/DischargeBedDialog.module.scss
+/**
+ * DischargeBedDialog Styles
+ * Styling for the discharge bed dialog
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.discharge-bed-dialog {
+  .bed-patient-summary {
+    background: rgb(var(--muted) / 0.3);
+    border: 1px solid rgb(var(--border));
+    
+    .flex {
+      display: flex;
+      
+      &.items-center {
+        align-items: center;
+      }
+      
+      &.justify-between {
+        justify-content: space-between;
+      }
+      
+      &.gap-2 {
+        gap: $spacing-sm;
+      }
+      
+      &.gap-3 {
+        gap: 0.75rem;
+      }
+    }
+    
+    .border-t {
+      border-top: 1px solid rgb(var(--border));
+      padding-top: 0.75rem;
+    }
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+  }
+
+  .space-y-2 > * + * {
+    margin-top: $spacing-sm;
+  }
+
+  .space-y-4 > * + * {
+    margin-top: $spacing-md;
+  }
+
+  .space-y-6 > * + * {
+    margin-top: $spacing-lg;
+  }
+}

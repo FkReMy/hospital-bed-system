@@ -113,12 +113,5 @@ TableHead.displayName = 'TableHead';
 TableCell.displayName = 'TableCell';
 TableCaption.displayName = 'TableCaption';
 
-export {
-  TableHeader,
-  TableBody,
-  TableFooter,
-  TableRow,
-  TableHead,
-  TableCell,
-  TableCaption,
-};
+// Default export
+export default Table;

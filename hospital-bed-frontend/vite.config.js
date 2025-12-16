@@ -10,8 +10,16 @@ export default defineConfig({
   
   esbuild: {
     loader: 'jsx',
-    include: /src\/.*\.jsx?$/,
+    include: /src\/.*\.[jt]sx?$/,
     exclude: [],
+  },
+
+  optimizeDeps: {
+    esbuildOptions: {
+      loader: {
+        '.js': 'jsx',
+      },
+    },
   },
 
   resolve: {
@@ -72,7 +80,6 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "@styles/_variables.scss"; @import "@styles/_mixins.scss";`,
         api: 'modern-compiler', // Faster SCSS compilation
       },
     },

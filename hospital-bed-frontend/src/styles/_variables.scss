@@ -78,6 +78,12 @@ $z-dialog: 1000;
 $z-notification: 1100;
 $z-sidebar: 900;
 
+/* Layout dimensions */
+$sidebar-width-open: 280px;
+$sidebar-width-collapsed: 80px;
+$topbar-height: 64px;
+$max-content-width: 1920px;
+
 /* Animation durations */
 $animation-fast: 0.2s;
 $animation-default: 0.3s;
@@ -102,6 +108,8 @@ $warning-hover: #d97706;
 /* Accent colors */
 $accent-yellow: #FACC15;
 $accent-teal: #14B8A6;
+/* UI element colors */
+$muted-foreground: #6B7280;
 
 /* Export root variables for JS/CSS access if needed */
 :root {
