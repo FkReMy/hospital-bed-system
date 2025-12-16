@@ -90,26 +90,43 @@ $animation-fast: 0.2s;
 $animation-default: 0.3s;
 $animation-slow: 0.5s;
 
-/* Colors (raw values for SCSS use) - Hospital Theme */
-/* Primary: Medical Healing Green */
-$primary: #16A34A;
-$primary-hover: #15803D;
+/* 🟢 Primary Colors (Health & Healing) */
+$primary: #16A34A;             // Medical Healing Green
+$primary-hover: #15803D;       // Deep Health Green
 $primary-active: #166534;
-/* Secondary: Trust Blue */
-$secondary-blue: #2563EB;
-$secondary-blue-hover: #1d4ed8;
-/* Status colors */
-$destructive: #EF4444;
+$primary-soft: #ECFDF5;        // Calm Recovery Green (Backgrounds)
+
+/* 🔵 Secondary Colors (Trust & Professionalism) */
+$secondary-blue: #2563EB;      // Trust Blue
+$secondary-blue-hover: #1D4ED8;
+$secondary-light: #E0F2FE;     // Clean Sky Blue (Info Backgrounds)
+
+/* ⚪ Neutral Colors (Cleanliness & Readability) */
+$bg-white: #FFFFFF;            // Pure White (Cards/Containers)
+$bg-grey: #F9FAFB;             // Light Grey (App Background)
+$border-light: #E5E7EB;        // Soft Grey (Dividers)
+$disabled: #9CA3AF;            // Muted Grey
+
+/* 🟡 Accent Colors (Gentle Attention) */
+$accent-yellow: #FACC15;       // Soft Wellness Amber
+$accent-teal: #14B8A6;         // Clinical Teal
+
+/* ⚠️ Status & Feedback */
+$success: #22C55E;             // Soft Green
+$warning: #F59E0B;             // Amber
+$destructive: #EF4444;         // Soft Red (Error)
+$info: #0EA5E9;                // Sky Blue
+
+/* ✍️ Typography Colors (Patient-Friendly) */
+$text-primary: #111827;        // Near Black (Headers/Main Text)
+$text-secondary: #4B5563;      // Cool Grey (Body Text)
+$text-muted: #6B7280;          // Light Grey (Metadata/Labels)
+
+/* Legacy compatibility */
 $destructive-hover: #dc2626;
 $destructive-active: #b91c1c;
-$success: #22C55E;
 $success-hover: #16a34a;
-$warning: #F59E0B;
 $warning-hover: #d97706;
-/* Accent colors */
-$accent-yellow: #FACC15;
-$accent-teal: #14B8A6;
-/* UI element colors */
 $muted-foreground: #6B7280;
 
 /* Export root variables for JS/CSS access if needed */
