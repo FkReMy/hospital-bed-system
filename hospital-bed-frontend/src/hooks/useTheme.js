@@ -22,10 +22,10 @@ import { createContext, useContext, useState, useEffect } from 'react';
 const ThemeContext = createContext(null);
 
 export const ThemeProvider = ({ children }) => {
-  // Load saved theme or default to 'system'
+  // Load saved theme or default to 'light'
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem('theme');
-    return saved || 'system';
+    return saved || 'light';
   });
 
   // Apply theme to document

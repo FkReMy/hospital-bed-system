@@ -232,6 +232,47 @@ server: {
 
 ---
 
+## Troubleshooting
+
+### ECONNREFUSED / HTTP Proxy Errors
+
+If you see errors like these in your terminal or browser console:
+
+```
+[vite] http proxy error: /api/api/auth/me
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1134:18)
+    at afterConnectMultiple (node:net:1715:7)
+```
+
+Or "Server error. Please try again later." messages in the UI, this means:
+
+**✅ This is EXPECTED BEHAVIOR** - The backend .NET API server is not running.
+
+**Solution:**
+1. Start the backend server first (see [BACKEND_SETUP.md](./BACKEND_SETUP.md))
+2. The backend should be running on `https://localhost:7150`
+3. Then start the frontend with `npm run dev`
+
+The frontend cannot function without the backend - it's a required dependency.
+
+### Security Vulnerabilities (npm audit)
+
+If you see moderate severity vulnerabilities in `esbuild` or `vite`:
+- These are **development-only** dependencies
+- They do NOT affect production builds
+- The vulnerabilities only impact the dev server, not deployed applications
+- Run `npm audit fix --force` only if you understand it may introduce breaking changes
+
+### Theme Not Showing Light Mode
+
+The application now defaults to **light mode**. If you're seeing dark mode:
+- Clear your browser's localStorage: `localStorage.clear()`
+- Refresh the page
+- The theme preference is saved in localStorage as `theme`
+
+---
+
 ## Key Development Guidelines
 
 - **Use global UI primitives** (`/src/components/ui/*`) for all forms, inputs, tables, buttons, dialogs, etc. Do **not** create ad-hoc UI elements.
