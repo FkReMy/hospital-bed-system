@@ -105,11 +105,14 @@ export const announceToScreenReader = (message, priority = 'polite') => {
 
 /**
  * Generate unique ID for ARIA relationships
+ * Uses a counter to ensure uniqueness
  * @param {string} prefix
  * @returns {string}
  */
+let idCounter = 0;
 export const generateAriaId = (prefix = 'aria') => {
-  return `${prefix}-${Math.random().toString(36).substr(2, 9)}`;
+  idCounter += 1;
+  return `${prefix}-${idCounter}-${Date.now().toString(36)}`;
 };
 
 /**

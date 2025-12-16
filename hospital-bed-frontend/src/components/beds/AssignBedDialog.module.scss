@@ -120,7 +120,7 @@
 
           &:focus {
             ring: 2px solid var(--ring);
-            box-shadow: $shadow-md;
+            box-shadow: $shadow-focus;
           }
 
           &:disabled {
