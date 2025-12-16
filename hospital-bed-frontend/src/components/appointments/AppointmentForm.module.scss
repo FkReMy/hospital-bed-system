@@ -71,7 +71,7 @@
         :global(.select),
         :global(.textarea) {
           border-color: $destructive;
-          background-color: $destructive/5;
+          background-color: rgba(239, 68, 68, 0.05);
         }
       }
 

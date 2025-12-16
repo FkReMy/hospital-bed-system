@@ -28,11 +28,11 @@
   }
 
   &.success {
-    border-color: $success/30;
+    border-color: rgba(34, 197, 94, 0.3);
   }
 
   &.error {
-    border-color: $destructive/30;
+    border-color: rgba(239, 68, 68, 0.3);
   }
 
   // Main flex content
@@ -157,7 +157,7 @@
 
       &:hover {
         color: $destructive;
-        background: $destructive/10;
+        background: rgba(239, 68, 68, 0.1);
       }
     }
   }

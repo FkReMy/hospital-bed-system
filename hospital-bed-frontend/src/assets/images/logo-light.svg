@@ -1,0 +1,21 @@
+<svg width="200" height="60" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6366F1;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Icon: Hospital Bed with Plus -->
+  <rect x="10" y="20" width="35" height="20" rx="3" fill="url(#logoGradient)"/>
+  <rect x="8" y="35" width="2" height="8" fill="url(#logoGradient)"/>
+  <rect x="45" y="35" width="2" height="8" fill="url(#logoGradient)"/>
+  <circle cx="9" cy="45" r="3" fill="url(#logoGradient)"/>
+  <circle cx="46" cy="45" r="3" fill="url(#logoGradient)"/>
+  <rect x="48" y="23" width="2" height="14" fill="#10B981"/>
+  <rect x="42" y="29" width="14" height="2" fill="#10B981"/>
+  
+  <!-- Text: HBMS -->
+  <text x="65" y="36" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#1F2937">HBMS</text>
+  <text x="65" y="50" font-family="Arial, sans-serif" font-size="8" fill="#6B7280">Hospital Bed Management</text>
+</svg>

@@ -16,7 +16,7 @@
  */
 
 import React, { Suspense, lazy } from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import LoadingState from '@components/common/LoadingState';
 import ProtectedRoute from './ProtectedRoute';
 import AdminRoute from './AdminRoute';
@@ -39,108 +39,35 @@ const AppointmentManagementPage = lazy(() => import('@pages/appointments/Appoint
 const AccessDeniedPage = lazy(() => import('@pages/errors/AccessDeniedPage'));
 const NotFoundPage = lazy(() => import('@pages/errors/NotFoundPage'));
 
-// Global error element
-const ErrorBoundary = ({ error }) => (
-  <div className="error-boundary">
-    <h2>Something went wrong</h2>
-    <p>{error?.message || 'Unknown error'}</p>
-  </div>
-);
-
-// Router configuration
-const router = createBrowserRouter([
-  // Public routes
-  {
-    path: '/',
-    element: <LandingPage />,
-  },
-  {
-    path: '/login',
-    element: <LoginPage />,
-    errorElement: <ErrorBoundary />,
-  },
-  {
-    path: '/register',
-    element: <RegisterPage />,
-  },
-  {
-    path: '/access-denied',
-    element: <AccessDeniedPage />,
-  },
-
-  // Protected routes - all authenticated users
-  {
-    path: '/dashboard',
-    element: <ProtectedRoute />,
-    children: [
-      {
-        index: true,
-        element: <AdminDashboard />,
-      },
-      {
-        path: 'admin',
-        element: <AdminDashboard />,
-      },
-      {
-        path: 'doctor',
-        element: <DoctorDashboard />,
-      },
-      {
-        path: 'nurse',
-        element: <NurseDashboard />,
-      },
-      {
-        path: 'reception',
-        element: <ReceptionDashboard />,
-      },
-    ],
-  },
-  {
-    path: '/beds',
-    element: <ProtectedRoute />,
-    children: [
-      {
-        index: true,
-        element: <BedManagementPage />,
-      },
-    ],
-  },
-  {
-    path: '/patients',
-    element: <ProtectedRoute />,
-    children: [
-      {
-        index: true,
-        element: <PatientListPage />,
-      },
-      {
-        path: ':id',
-        element: <PatientDetailPage />,
-      },
-    ],
-  },
-  {
-    path: '/appointments',
-    element: <ProtectedRoute />,
-    children: [
-      {
-        index: true,
-        element: <AppointmentManagementPage />,
-      },
-    ],
-  },
-
-  // 404 fallback
-  {
-    path: '*',
-    element: <NotFoundPage />,
-  },
-]);
-
 // Router wrapper with Suspense fallback
 const AppRouter = () => (
   <Suspense fallback={<LoadingState type="full" />}>
-    <RouterProvider router={router} />
+    <Routes>
+      {/* Public routes */}
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route path="/access-denied" element={<AccessDeniedPage />} />
+
+      {/* Protected routes - all authenticated users */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/dashboard" element={<AdminDashboard />} />
+        <Route path="/dashboard/admin" element={<AdminDashboard />} />
+        <Route path="/dashboard/doctor" element={<DoctorDashboard />} />
+        <Route path="/dashboard/nurse" element={<NurseDashboard />} />
+        <Route path="/dashboard/reception" element={<ReceptionDashboard />} />
+        
+        <Route path="/beds" element={<BedManagementPage />} />
+        
+        <Route path="/patients" element={<PatientListPage />} />
+        <Route path="/patients/:id" element={<PatientDetailPage />} />
+        
+        <Route path="/appointments" element={<AppointmentManagementPage />} />
+      </Route>
+
+      {/* 404 fallback */}
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
   </Suspense>
 );
 
