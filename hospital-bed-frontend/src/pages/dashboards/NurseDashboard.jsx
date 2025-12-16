@@ -66,12 +66,12 @@ const NurseDashboard = () => {
     .filter(n => n.type === 'error' || n.type === 'warning')
     .slice(0, 5);
 
-  const handleAssign = (_bed) => {
+  const _handleAssign = (_bed) => {
     setSelectedBed(_bed);
     setAssignDialogOpen(true);
   };
 
-  const handleDischarge = (_bed) => {
+  const _handleDischarge = (_bed) => {
     setSelectedBed(_bed);
     setDischargeDialogOpen(true);
   };
