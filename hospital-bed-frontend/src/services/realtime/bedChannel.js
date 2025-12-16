@@ -84,7 +84,7 @@ export const useBedChannel = () => {
       maintenance: 'under maintenance',
     };
 
-    toast.info(`Bed ${data.bedNumber || data.bedId} ${statusMap[data.status] || data.status}`);
+    toast(`Bed ${data.bedNumber || data.bedId} ${statusMap[data.status] || data.status}`);
   };
 
   // Subscribe to events when connected

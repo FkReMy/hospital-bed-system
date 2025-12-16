@@ -132,7 +132,7 @@ const AppointmentCalendarPage = () => {
             onSelectEvent={(event) => {
               // Navigate to appointment detail or open dialog
               // router.push(`/appointments/${event.id}`);
-              toast.info(`Selected: ${event.title}`);
+              toast(`Selected: ${event.title}`);
             }}
             onView={setSelectedView}
           />

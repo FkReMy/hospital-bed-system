@@ -40,7 +40,7 @@ const LoginPage = () => {
     onSuccess: (userData) => {
       // Check if user must change password
       if (userData.mustChangePassword) {
-        toast.info('You must change your password before continuing');
+        toast('You must change your password before continuing');
         loginSuccess('/change-password');
       } else {
         toast.success('Login successful');
