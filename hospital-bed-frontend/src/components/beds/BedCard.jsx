@@ -20,10 +20,11 @@
  * - Unified with global Card, Badge, Avatar, Button components
  */
 
-import { BedDouble, User, AlertCircle } from 'lucide-react';
+import { BedDouble, AlertCircle } from 'lucide-react';
 import Card from '@components/ui/card.jsx';
 import Badge from '@components/ui/badge.jsx';
 import Avatar from '@components/ui/avatar.jsx';
+import AvatarFallback from '@components/ui/avatar-fallback.jsx';
 import BedStatusBadge from '@components/beds/BedStatusBadge.jsx';
 import './BedCard.scss';
 

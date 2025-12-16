@@ -26,6 +26,7 @@ import {
 import Card from '@components/ui/card.jsx';
 import Badge from '@components/ui/badge.jsx';
 import Avatar from '@components/ui/avatar.jsx';
+import AvatarFallback from '@components/ui/avatar-fallback.jsx';
 import './PrescriptionCard.scss';
 
 /**

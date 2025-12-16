@@ -30,7 +30,6 @@ import {
 } from 'lucide-react';
 import Card from '@components/ui/card.jsx';
 import Badge from '@components/ui/badge.jsx';
-import Button from '@components/ui/button.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
 import LoadingState from '@components/common/LoadingState.jsx';
 import './PatientTimeline.scss';
@@ -45,7 +44,7 @@ import './PatientTimeline.scss';
 const PatientTimeline = ({ 
   events = [], 
   isLoading = false,
-  patientId 
+  patientId: _patientId 
 }) => {
   // Type configuration - icons and colors
   const typeConfig = {

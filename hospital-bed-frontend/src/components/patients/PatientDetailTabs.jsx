@@ -25,7 +25,6 @@ import TabsList from '@components/ui/tabs-list.jsx';
 import TabsTrigger from '@components/ui/tabs-trigger.jsx';
 import TabsContent from '@components/ui/tabs-content.jsx';
 import Card from '@components/ui/card.jsx';
-import Badge from '@components/ui/badge.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
 import LoadingState from '@components/common/LoadingState.jsx';
 import PatientSummaryCard from '@components/patients/PatientSummaryCard.jsx';

@@ -16,12 +16,12 @@
  * - Role-aware (all authenticated users can view)
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import moment from 'moment';
+import toast from 'react-hot-toast';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Card from '@components/ui/card.jsx';
-import Badge from '@components/ui/badge.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
 import LoadingState from '@components/common/LoadingState.jsx';
 import AppointmentStatusBadge from '@components/appointments/AppointmentStatusBadge.jsx';

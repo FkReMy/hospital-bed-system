@@ -46,7 +46,6 @@ const RoleSwitcher = () => {
   }
 
   const currentConfig = roleConfig[currentRole] || roleConfig.reception;
-  const CurrentIcon = currentConfig.icon;
 
   const handleRoleChange = (newRole) => {
     setCurrentRole(newRole);

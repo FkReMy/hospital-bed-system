@@ -30,7 +30,7 @@ import Label from '@components/ui/label.jsx';
 import DialogHeader from '@components/ui/dialog-header.jsx';
 import DialogTitle from '@components/ui/dialog-title.jsx';
 import DialogDescription from '@components/ui/dialog-description.jsx';
-import { CalendarIcon, Clock, User, Stethoscope } from 'lucide-react';
+import { CalendarIcon, User, Stethoscope } from 'lucide-react';
 import './AppointmentForm.scss';
 
 // Validation schema using Zod - strict and healthcare-appropriate
@@ -55,8 +55,6 @@ const AppointmentForm = ({
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
-    watch,
   } = useForm({
     resolver: zodResolver(appointmentSchema),
     defaultValues: initialData

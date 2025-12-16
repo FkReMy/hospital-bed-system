@@ -37,7 +37,7 @@ import './HospitalFloorMap.scss';
  */
 const HospitalFloorMap = ({
   beds = [],
-  departments = [],
+  departments: _departments = [],
   isLoading = false,
   error = null,
   onBedClick,

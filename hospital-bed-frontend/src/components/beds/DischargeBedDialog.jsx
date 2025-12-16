@@ -28,7 +28,6 @@ import DialogFooter from '@components/ui/dialog-footer.jsx';
 import Label from '@components/ui/label.jsx';
 import Textarea from '@components/ui/textarea.jsx';
 import Button from '@components/ui/button.jsx';
-import Badge from '@components/ui/badge.jsx';
 import BedStatusBadge from '@components/beds/BedStatusBadge.jsx';
 import './DischargeBedDialog.scss';
 

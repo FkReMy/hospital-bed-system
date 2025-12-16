@@ -28,11 +28,9 @@ import DialogHeader from '@components/ui/dialog-header.jsx';
 import DialogTitle from '@components/ui/dialog-title.jsx';
 import DialogDescription from '@components/ui/dialog-description.jsx';
 import DialogFooter from '@components/ui/dialog-footer.jsx';
-import Input from '@components/ui/input.jsx';
 import Label from '@components/ui/label.jsx';
 import Textarea from '@components/ui/textarea.jsx';
 import Button from '@components/ui/button.jsx';
-import Badge from '@components/ui/badge.jsx';
 import BedStatusBadge from '@components/beds/BedStatusBadge.jsx';
 import './AssignBedDialog.scss';
 

@@ -17,8 +17,6 @@
  * All components should import from here for consistent display
  */
 
-import { formatFileSize as dateUtilsFileSize } from '@lib/dateUtils'; // Reuse if needed
-
 /**
  * Format phone number (Egyptian format example: +20 100 123 4567 → +20 100 123 4567)
  * Strips non-digits and adds spaces
