@@ -17,12 +17,12 @@
  * Component styles are in their respective .module.scss files
  */
 
-@import './_reset.scss';
-@import './_variables.scss';
-@import './_themes.scss';
-@import './_typography.scss';
-@import './_mixins.scss';
-@import './_animations.scss';
+@use './_reset.scss';
+@use './_variables.scss' as *;
+@use './_themes.scss';
+@use './_typography.scss';
+@use './_mixins.scss' as *;
+@use './_animations.scss';
 
 /* Global HTML and body styles */
 html,

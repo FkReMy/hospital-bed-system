@@ -149,6 +149,7 @@ TabsList.displayName = 'TabsList';
 TabsTrigger.displayName = 'TabsTrigger';
 TabsContent.displayName = 'TabsContent';
 
+export default Tabs;
 export {
   Tabs,
   TabsList,

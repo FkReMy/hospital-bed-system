@@ -1,0 +1,26 @@
+// src/components/ui/label.module.scss
+/**
+ * Label Styles
+ * Accessible form label with required indicator
+ */
+
+.label {
+  display: inline-block;
+  font-size: $text-sm;
+  font-weight: $font-medium;
+  color: rgb(var(--foreground));
+  margin-bottom: $spacing-xs;
+  cursor: pointer;
+  transition: color $animation-fast;
+
+  &:hover {
+    color: rgb(var(--primary));
+  }
+
+  // Required indicator
+  .label-required {
+    color: rgb(var(--destructive));
+    margin-left: 0.25rem;
+    font-weight: $font-bold;
+  }
+}
