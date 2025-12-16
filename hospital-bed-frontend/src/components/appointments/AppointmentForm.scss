@@ -14,8 +14,8 @@
  * - Glassmorphic effects (optional subtle elevation)
  */
 
-@import '@styles/variables';
-@import '@styles/mixins';
+@use '@styles/variables' as *;
+@use '@styles/mixins' as *;
 
 .form {
   // Full width with comfortable max constraint for readability

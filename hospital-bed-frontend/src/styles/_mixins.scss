@@ -6,7 +6,7 @@
  * Centralizes reusable styles for consistent design system implementation.
  */
 
-@import 'variables';
+@use 'variables' as *;
 
 /* Glassmorphic card base - used in Card, Dialog, NotificationCenter */
 @mixin glass-card {

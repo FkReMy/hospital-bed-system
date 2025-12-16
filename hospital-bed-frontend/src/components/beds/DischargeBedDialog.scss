@@ -4,8 +4,8 @@
  * Styling for the discharge bed dialog
  */
 
-@import '@styles/variables';
-@import '@styles/mixins';
+@use '@styles/variables' as *;
+@use '@styles/mixins' as *;
 
 .discharge-bed-dialog {
   .bed-patient-summary {

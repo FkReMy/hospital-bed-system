@@ -16,7 +16,7 @@
  * Import this file in your main _index.scss or globals
  */
 
-@import 'variables';
+@use 'variables' as *;
 
 /* Fade animations */
 @keyframes fadeIn {

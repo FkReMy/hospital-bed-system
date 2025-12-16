@@ -20,8 +20,8 @@
  * Dark/light theme compatible via variables.
  */
 
-@import '@styles/variables';
-@import '@styles/mixins';
+@use '@styles/variables' as *;
+@use '@styles/mixins' as *;
 
 .tableWrapper {
   // Wrapper for horizontal scroll on small screens
