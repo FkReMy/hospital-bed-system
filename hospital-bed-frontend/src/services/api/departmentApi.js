@@ -3,52 +3,31 @@
  * departmentApi Service
  * 
  * Production-ready API client for department-related endpoints.
- * Centralizes operations for fetching departments, rooms, and department statistics.
+ * Now uses Firebase Firestore instead of .NET backend.
  * 
  * Features:
- * - Uses axiosInstance with JWT from httpOnly cookie
- * - Consistent error handling with meaningful messages
- * - Endpoints for departments list, single department, rooms in department
- * - Unified with other api services (bedApi, patientApi, appointmentApi)
- * - Ready for React Query caching and invalidation
+ * - Firebase Firestore for department data
+ * - Consistent interface with previous implementation
+ * - Compatible with existing department management components
  */
 
-import { axiosInstance } from './axiosInstance';
-
-/**
- * Base path for department endpoints
- */
-const BASE_PATH = '/api/departments';
+import departmentFirebase from '../firebase/departmentFirebase';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '../firebase/firebaseConfig';
 
 /**
  * Get all departments (with optional bed/room counts)
  * @param {Object} params - optional query params (includeStats, etc.)
  * @returns {Promise<Array>} departments
  */
-export const getAll = async (params = {}) => {
-  try {
-    const response = await axiosInstance.get(BASE_PATH, { params });
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch departments');
-  }
-};
+export const getAll = departmentFirebase.getAll;
 
 /**
  * Get single department by ID
  * @param {string|number} id
  * @returns {Promise<Object>} department with rooms/beds
  */
-export const getById = async (id) => {
-  if (!id) throw new Error('Department ID is required');
-  
-  try {
-    const response = await axiosInstance.get(`${BASE_PATH}/${id}`);
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch department');
-  }
-};
+export const getById = departmentFirebase.getById;
 
 /**
  * Get rooms in a department
@@ -59,10 +38,14 @@ export const getRooms = async (departmentId) => {
   if (!departmentId) throw new Error('Department ID is required');
   
   try {
-    const response = await axiosInstance.get(`${BASE_PATH}/${departmentId}/rooms`);
-    return response.data;
+    const roomsQuery = query(
+      collection(db, 'rooms'),
+      where('department_id', '==', departmentId)
+    );
+    const snapshot = await getDocs(roomsQuery);
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch rooms');
+    throw new Error(error.message || 'Failed to fetch rooms');
   }
 };
 
@@ -75,10 +58,29 @@ export const getStats = async (departmentId) => {
   if (!departmentId) throw new Error('Department ID is required');
   
   try {
-    const response = await axiosInstance.get(`${BASE_PATH}/${departmentId}/stats`);
-    return response.data;
+    // Get all beds in this department
+    const bedsQuery = query(
+      collection(db, 'beds'),
+      where('department_id', '==', departmentId)
+    );
+    const bedsSnapshot = await getDocs(bedsQuery);
+    const beds = bedsSnapshot.docs.map(doc => doc.data());
+    
+    const totalBeds = beds.length;
+    const occupiedBeds = beds.filter(bed => bed.status === 'occupied').length;
+    const availableBeds = beds.filter(bed => bed.status === 'available').length;
+    const maintenanceBeds = beds.filter(bed => bed.status === 'maintenance').length;
+    
+    return {
+      department_id: departmentId,
+      total_beds: totalBeds,
+      occupied_beds: occupiedBeds,
+      available_beds: availableBeds,
+      maintenance_beds: maintenanceBeds,
+      occupancy_rate: totalBeds > 0 ? (occupiedBeds / totalBeds) * 100 : 0,
+    };
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch department statistics');
+    throw new Error(error.message || 'Failed to fetch department statistics');
   }
 };
 

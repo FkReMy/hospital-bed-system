@@ -3,66 +3,36 @@
  * appointmentApi Service
  * 
  * Production-ready API client for all appointment-related endpoints.
- * Centralizes HTTP requests with proper error handling, auth, and base URL.
+ * Now uses Firebase Firestore instead of .NET backend.
  * 
  * Features:
- * - Uses axiosInstance with JWT from httpOnly cookie
- * - Consistent error handling with meaningful messages
- * - Type-safe ready endpoints
- * - Unified with other api services (bedApi, patientApi, etc.)
- * - Ready for React Query integration
+ * - Firebase Firestore for appointment data
+ * - Consistent interface with previous implementation
+ * - Compatible with existing appointment management hooks
  */
 
-import { axiosInstance } from './axiosInstance';
-
-/**
- * Base path for appointment endpoints
- */
-const BASE_PATH = '/api/appointments';
+import appointmentFirebase from '../firebase/appointmentFirebase';
 
 /**
  * Get all appointments (with optional filters)
  * @param {Object} params - query params (patientId, doctorId, date, status)
  * @returns {Promise<Array>} appointments
  */
-export const getAll = async (params = {}) => {
-  try {
-    const response = await axiosInstance.get(BASE_PATH, { params });
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch appointments');
-  }
-};
+export const getAll = appointmentFirebase.getAll;
 
 /**
  * Get appointment by ID
  * @param {string|number} id
  * @returns {Promise<Object>} appointment
  */
-export const getById = async (id) => {
-  if (!id) throw new Error('Appointment ID is required');
-  
-  try {
-    const response = await axiosInstance.get(`${BASE_PATH}/${id}`);
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch appointment');
-  }
-};
+export const getById = appointmentFirebase.getById;
 
 /**
  * Create new appointment
  * @param {Object} data - appointment payload
  * @returns {Promise<Object>} created appointment
  */
-export const create = async (data) => {
-  try {
-    const response = await axiosInstance.post(BASE_PATH, data);
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to schedule appointment');
-  }
-};
+export const create = appointmentFirebase.create;
 
 /**
  * Update existing appointment
@@ -70,31 +40,14 @@ export const create = async (data) => {
  * @param {Object} data - updated fields
  * @returns {Promise<Object>} updated appointment
  */
-export const update = async (id, data) => {
-  if (!id) throw new Error('Appointment ID is required');
-  
-  try {
-    const response = await axiosInstance.put(`${BASE_PATH}/${id}`, data);
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to update appointment');
-  }
-};
+export const update = appointmentFirebase.update;
 
 /**
  * Delete/cancel appointment
  * @param {string|number} id
  * @returns {Promise<void>}
  */
-export const cancel = async (id) => {
-  if (!id) throw new Error('Appointment ID is required');
-  
-  try {
-    await axiosInstance.delete(`${BASE_PATH}/${id}`);
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to cancel appointment');
-  }
-};
+export const cancel = appointmentFirebase.cancel;
 
 /**
  * Update appointment status (complete, no-show, etc.)
@@ -102,16 +55,7 @@ export const cancel = async (id) => {
  * @param {string} status - 'completed', 'no_show', etc.
  * @returns {Promise<Object>}
  */
-export const updateStatus = async (id, status) => {
-  if (!id || !status) throw new Error('Appointment ID and status are required');
-  
-  try {
-    const response = await axiosInstance.patch(`${BASE_PATH}/${id}/status`, { status });
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to update appointment status');
-  }
-};
+export const updateStatus = appointmentFirebase.updateStatus;
 
 // Export as default object
 export const appointmentApi = {

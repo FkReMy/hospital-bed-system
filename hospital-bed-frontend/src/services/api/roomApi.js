@@ -3,52 +3,31 @@
  * roomApi Service
  * 
  * Production-ready API client for room-related endpoints.
- * Centralizes operations for fetching rooms, room details, and beds in rooms.
+ * Now uses Firebase Firestore instead of .NET backend.
  * 
  * Features:
- * - Uses axiosInstance with JWT from httpOnly cookie
- * - Consistent error handling with meaningful messages
- * - Endpoints for rooms list, single room, beds in room
- * - Unified with other api services (bedApi, departmentApi)
- * - Ready for React Query caching and invalidation
+ * - Firebase Firestore for room data
+ * - Consistent interface with previous implementation
+ * - Compatible with existing room management components
  */
 
-import { axiosInstance } from './axiosInstance';
-
-/**
- * Base path for room endpoints
- */
-const BASE_PATH = '/api/rooms';
+import roomFirebase from '../firebase/roomFirebase';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '../firebase/firebaseConfig';
 
 /**
  * Get all rooms (with optional filters)
  * @param {Object} params - query params (departmentId, includeBeds, etc.)
  * @returns {Promise<Array>} rooms
  */
-export const getAll = async (params = {}) => {
-  try {
-    const response = await axiosInstance.get(BASE_PATH, { params });
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch rooms');
-  }
-};
+export const getAll = roomFirebase.getAll;
 
 /**
  * Get single room by ID
  * @param {string|number} id
  * @returns {Promise<Object>} room with beds
  */
-export const getById = async (id) => {
-  if (!id) throw new Error('Room ID is required');
-  
-  try {
-    const response = await axiosInstance.get(`${BASE_PATH}/${id}`);
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch room');
-  }
-};
+export const getById = roomFirebase.getById;
 
 /**
  * Get beds in a specific room
@@ -59,10 +38,14 @@ export const getBeds = async (roomId) => {
   if (!roomId) throw new Error('Room ID is required');
   
   try {
-    const response = await axiosInstance.get(`${BASE_PATH}/${roomId}/beds`);
-    return response.data;
+    const bedsQuery = query(
+      collection(db, 'beds'),
+      where('room_id', '==', roomId)
+    );
+    const snapshot = await getDocs(bedsQuery);
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch beds in room');
+    throw new Error(error.message || 'Failed to fetch beds in room');
   }
 };
 
@@ -75,10 +58,14 @@ export const getByDepartment = async (departmentId) => {
   if (!departmentId) throw new Error('Department ID is required');
   
   try {
-    const response = await axiosInstance.get(`${BASE_PATH}/department/${departmentId}`);
-    return response.data;
+    const roomsQuery = query(
+      collection(db, 'rooms'),
+      where('department_id', '==', departmentId)
+    );
+    const snapshot = await getDocs(roomsQuery);
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch rooms in department');
+    throw new Error(error.message || 'Failed to fetch rooms in department');
   }
 };
 
