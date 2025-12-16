@@ -86,7 +86,7 @@ export const getById = async (id) => {
  */
 export const create = async (data) => {
   try {
-    const { email, password, full_name, role, department_id } = data;
+    const { email, password, full_name, role, department_id: _department_id } = data;
 
     // Create Firebase Auth user
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);

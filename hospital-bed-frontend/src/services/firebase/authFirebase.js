@@ -50,11 +50,10 @@ export const login = async (credentials) => {
     return {
       id: user.uid,
       email: user.email,
-      full_name: userData.full_name || '',
-      role: userData.role || 'Nurse',
-      roles: userData.roles || [userData.role || 'Nurse'],
-      department_id: userData.department_id || null,
-      mustChangePassword: userData.mustChangePassword || false,
+      full_name: userData.fullName || userData.full_name || '',
+      role: userData.role || 'nurse',
+      roles: userData.roles || [userData.role || 'nurse'],
+      department_id: userData.departmentId || userData.department_id || null,
       ...userData,
     };
   } catch (error) {
@@ -105,11 +104,10 @@ export const me = async () => {
     return {
       id: user.uid,
       email: user.email,
-      full_name: userData.full_name || '',
-      role: userData.role || 'Nurse',
-      roles: userData.roles || [userData.role || 'Nurse'],
-      department_id: userData.department_id || null,
-      mustChangePassword: userData.mustChangePassword || false,
+      full_name: userData.fullName || userData.full_name || '',
+      role: userData.role || 'nurse',
+      roles: userData.roles || [userData.role || 'nurse'],
+      department_id: userData.departmentId || userData.department_id || null,
       ...userData,
     };
   } catch (error) {

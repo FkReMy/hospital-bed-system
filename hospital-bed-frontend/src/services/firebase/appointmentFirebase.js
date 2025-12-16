@@ -21,11 +21,84 @@ import {
   query, 
   where,
   orderBy,
+  onSnapshot,
   Timestamp 
 } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 
 const APPOINTMENTS_COLLECTION = 'appointments';
+const PATIENTS_COLLECTION = 'patients';
+const USERS_COLLECTION = 'users';
+
+/**
+ * Transform Firestore appointment data to match expected UI format
+ * @param {Object} appointmentData - raw Firestore appointment data
+ * @param {string} appointmentId - appointment document ID
+ * @returns {Object} transformed appointment data
+ */
+const transformAppointmentData = async (appointmentData, appointmentId) => {
+  try {
+    let patientName = 'Unknown Patient';
+    let doctorName = 'Unknown Doctor';
+
+    // Get patient info
+    if (appointmentData.patientId) {
+      const patientDoc = await getDoc(doc(db, PATIENTS_COLLECTION, appointmentData.patientId));
+      if (patientDoc.exists()) {
+        const patientData = patientDoc.data();
+        patientName = patientData.fullName || patientData.full_name || 'Unknown Patient';
+      }
+    }
+
+    // Get doctor info
+    if (appointmentData.doctorId) {
+      const doctorDoc = await getDoc(doc(db, USERS_COLLECTION, appointmentData.doctorId));
+      if (doctorDoc.exists()) {
+        const doctorData = doctorDoc.data();
+        doctorName = doctorData.fullName || doctorData.full_name || 'Unknown Doctor';
+      }
+    }
+
+    // Convert Timestamp to ISO string if needed
+    let appointmentDate = appointmentData.appointmentDate;
+    if (appointmentDate && appointmentDate.toDate) {
+      appointmentDate = appointmentDate.toDate().toISOString();
+    }
+
+    return {
+      id: appointmentId,
+      patient_id: appointmentData.patientId,
+      doctor_user_id: appointmentData.doctorId,
+      patient_name: patientName,
+      doctor_name: doctorName,
+      appointment_date: appointmentDate,
+      status: appointmentData.status || 'scheduled',
+      reason: appointmentData.reason,
+      notes: appointmentData.notes,
+      created_by: appointmentData.createdBy,
+      created_at: appointmentData.createdAt,
+    };
+  } catch (error) {
+    console.error('Transform appointment data error:', error);
+    // Return basic appointment data if transformation fails
+    let appointmentDate = appointmentData.appointmentDate;
+    if (appointmentDate && appointmentDate.toDate) {
+      appointmentDate = appointmentDate.toDate().toISOString();
+    }
+    
+    return {
+      id: appointmentId,
+      patient_id: appointmentData.patientId,
+      doctor_user_id: appointmentData.doctorId,
+      patient_name: 'Unknown Patient',
+      doctor_name: 'Unknown Doctor',
+      appointment_date: appointmentDate,
+      status: appointmentData.status || 'scheduled',
+      reason: appointmentData.reason,
+      notes: appointmentData.notes,
+    };
+  }
+};
 
 /**
  * Get all appointments (with optional filters)
@@ -55,7 +128,14 @@ export const getAll = async (params = {}) => {
     }
 
     const snapshot = await getDocs(appointmentsQuery);
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const appointments = [];
+    
+    for (const docSnap of snapshot.docs) {
+      const transformedAppointment = await transformAppointmentData(docSnap.data(), docSnap.id);
+      appointments.push(transformedAppointment);
+    }
+    
+    return appointments;
   } catch (error) {
     console.error('Get appointments error:', error);
     throw new Error(error.message || 'Failed to fetch appointments');
@@ -208,6 +288,50 @@ export const updateStatus = async (id, status) => {
   }
 };
 
+/**
+ * Subscribe to real-time appointment updates
+ * @param {Function} callback - called when appointments change
+ * @param {Object} params - optional filters
+ * @returns {Function} unsubscribe function
+ */
+export const subscribeToAppointments = (callback, params = {}) => {
+  try {
+    let appointmentsQuery = collection(db, APPOINTMENTS_COLLECTION);
+    
+    const constraints = [];
+    
+    if (params.patientId) {
+      constraints.push(where('patientId', '==', params.patientId));
+    }
+    if (params.doctorId) {
+      constraints.push(where('doctorId', '==', params.doctorId));
+    }
+    if (params.status) {
+      constraints.push(where('status', '==', params.status));
+    }
+    
+    constraints.push(orderBy('appointmentDate', 'desc'));
+    
+    if (constraints.length > 0) {
+      appointmentsQuery = query(appointmentsQuery, ...constraints);
+    }
+
+    return onSnapshot(appointmentsQuery, async (snapshot) => {
+      const appointments = [];
+      for (const docSnap of snapshot.docs) {
+        const transformedAppointment = await transformAppointmentData(docSnap.data(), docSnap.id);
+        appointments.push(transformedAppointment);
+      }
+      callback(appointments);
+    }, (error) => {
+      console.error('Appointment subscription error:', error);
+    });
+  } catch (error) {
+    console.error('Subscribe to appointments error:', error);
+    throw new Error(error.message || 'Failed to subscribe to appointments');
+  }
+};
+
 // Export as default object
 export const appointmentFirebase = {
   getAll,
@@ -216,6 +340,7 @@ export const appointmentFirebase = {
   update,
   cancel,
   updateStatus,
+  subscribeToAppointments,
 };
 
 export default appointmentFirebase;

@@ -19,8 +19,7 @@ import {
   updateDoc, 
   deleteDoc,
   query,
-  where,
-  Timestamp 
+  where
 } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 
