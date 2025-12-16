@@ -1,0 +1,158 @@
+// src/components/patients/PatientCard.module.scss
+/**
+ * PatientCard Module Styles
+ * 
+ * Clean and spacious card styling following the Hospital Palette design.
+ * Implements the "Clean, Calm, and Trustworthy" aesthetic with:
+ * - Generous padding (24px) for cleanliness
+ * - Subtle shadows, not heavy
+ * - Primary text colors for headers
+ * - Secondary text colors for body (easy on eyes)
+ * - Muted text for labels
+ * - Primary green buttons for main actions
+ * - Secondary blue outline buttons for secondary actions
+ */
+
+@use '../../styles/variables' as *;
+
+.card {
+  background-color: rgb(var(--card));
+  border: 1px solid rgb(var(--border));
+  border-radius: var(--radius);
+  padding: $spacing-lg; // Generous padding (24px) for cleanliness
+  box-shadow: $shadow-sm; // Subtle shadow, not heavy
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: $shadow-md;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $spacing-lg;
+  padding-bottom: $spacing-md;
+  border-bottom: 1px solid rgb(var(--border));
+}
+
+.name {
+  color: rgb(var(--foreground)); // #111827
+  font-weight: $font-semibold;
+  font-size: $text-lg;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.statusBadge {
+  flex-shrink: 0;
+}
+
+.content {
+  margin-bottom: $spacing-lg;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.infoRow {
+  color: rgb(var(--text-secondary)); // #4B5563 - Easy on eyes
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  font-size: $text-base;
+  line-height: 1.5;
+}
+
+.label {
+  color: rgb(var(--text-muted)); // #6B7280
+  font-size: $text-sm;
+  font-weight: $font-medium;
+  min-width: 100px;
+}
+
+.value {
+  color: rgb(var(--foreground));
+  font-weight: $font-normal;
+}
+
+.actions {
+  display: flex;
+  gap: $spacing-md;
+  justify-content: flex-end;
+}
+
+.btnPrimary {
+  background-color: rgb(var(--primary)); // #16A34A
+  color: rgb(var(--primary-foreground));
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-md;
+  border: none;
+  font-size: $text-sm;
+  font-weight: $font-medium;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background-color: $primary-hover; // #15803D
+    transform: translateY(-1px);
+    box-shadow: $shadow-md;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgb(var(--ring));
+    outline-offset: 2px;
+  }
+}
+
+.btnSecondary {
+  background-color: transparent;
+  color: $secondary-blue; // #2563EB
+  border: 1px solid $secondary-blue;
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-md;
+  font-size: $text-sm;
+  font-weight: $font-medium;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background-color: $secondary-light; // #E0F2FE
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgb(var(--ring));
+    outline-offset: 2px;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: $breakpoint-sm) {
+  .card {
+    padding: $spacing-md;
+  }
+
+  .actions {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .label {
+    min-width: 80px;
+    font-size: $text-xs;
+  }
+}
