@@ -22,7 +22,7 @@ import {
   User,           // Profile
   LogOut,
 } from 'lucide-react';
-import Avatar, { AvatarFallback } from '@components/ui/avatar.jsx';
+import Avatar from '@components/ui/avatar.jsx';
 import Button from '@components/ui/button.jsx';
 import DropdownMenu from '@components/ui/dropdown-menu.jsx';
 import DropdownMenuTrigger from '@components/ui/dropdown-menu-trigger.jsx';
@@ -80,14 +80,10 @@ const Topbar = ({ sidebarOpen, onSidebarToggle }) => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button className="userMenuTrigger" variant="ghost">
-                <Avatar className="userAvatar">
-                  <div className="avatarInitial">
-                    {user.full_name?.charAt(0).toUpperCase() || 'U'}
-                  </div>
-                  <AvatarFallback>
-                    {user.full_name?.slice(0, 2).toUpperCase() || 'USER'}
-                  </AvatarFallback>
-                </Avatar>
+                <Avatar 
+                  className="userAvatar"
+                  initials={user.full_name?.slice(0, 2).toUpperCase() || 'US'}
+                />
                 <span className="userName">{user.full_name}</span>
               </Button>
             </DropdownMenuTrigger>

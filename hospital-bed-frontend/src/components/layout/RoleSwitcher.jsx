@@ -17,7 +17,7 @@
  */
 
 import { ChevronDown, Shield, Stethoscope, UserPlus, User } from 'lucide-react';
-import Avatar, { AvatarFallback } from '@components/ui/avatar.jsx';
+import Avatar from '@components/ui/avatar.jsx';
 import DropdownMenu from '@components/ui/dropdown-menu.jsx';
 import DropdownMenuTrigger from '@components/ui/dropdown-menu-trigger.jsx';
 import DropdownMenuContent from '@components/ui/dropdown-menu-content.jsx';
@@ -57,14 +57,10 @@ const RoleSwitcher = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button className="roleSwitcherTrigger">
-          <Avatar className="roleAvatar">
-            <div className="avatarIcon">
-              <CurrentIcon size={18} />
-            </div>
-            <AvatarFallback>
-              {user.full_name?.charAt(0).toUpperCase() || 'U'}
-            </AvatarFallback>
-          </Avatar>
+          <Avatar 
+            className="roleAvatar"
+            initials={user.full_name?.slice(0, 2).toUpperCase() || 'US'}
+          />
 
           <div className="roleInfo">
             <span className="currentRoleLabel">
