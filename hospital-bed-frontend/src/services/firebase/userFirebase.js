@@ -23,7 +23,7 @@ import {
   orderBy,
   Timestamp 
 } from 'firebase/firestore';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth, db } from './firebaseConfig';
 
 const USERS_COLLECTION = 'users';
@@ -208,22 +208,69 @@ export const updateRoles = async (id, roles) => {
 
 /**
  * Reset user password (admin only)
- * @param {string} id
- * @param {string} newPassword
+ * Sends password reset email via Firebase Auth
+ * @param {string} id - User ID
+ * @param {string} email - User email (required for Firebase)
  * @returns {Promise<void>}
  */
-export const resetPassword = async (id, newPassword) => {
+export const resetPassword = async (id, email) => {
   if (!id) throw new Error('User ID is required');
-  if (!newPassword) throw new Error('New password is required');
+  if (!email) throw new Error('User email is required');
   
   try {
-    // Note: Firebase Admin SDK is required for server-side password reset
-    // For client-side, we can only send password reset email
-    // This is a limitation - in production, this should be handled by Cloud Functions
-    throw new Error('Password reset requires Firebase Admin SDK (backend implementation)');
+    // Verify user exists in Firestore
+    const userRef = doc(db, USERS_COLLECTION, id);
+    const userDoc = await getDoc(userRef);
+    
+    if (!userDoc.exists()) {
+      throw new Error('User not found');
+    }
+
+    // Send password reset email via Firebase Auth
+    await sendPasswordResetEmail(auth, email);
+
+    // Note: We could also set mustChangePassword flag here if needed
+    // await updateDoc(userRef, {
+    //   mustChangePassword: true,
+    //   updated_at: Timestamp.now(),
+    // });
+
+    return { message: 'Password reset email sent successfully' };
   } catch (error) {
     console.error('Reset password error:', error);
-    throw new Error(error.message || 'Failed to reset password');
+    if (error.code === 'auth/user-not-found') {
+      throw new Error('No user found with this email address');
+    }
+    throw new Error(error.message || 'Failed to send password reset email');
+  }
+};
+
+/**
+ * Force user to change password on next login (admin only)
+ * @param {string} id - User ID
+ * @param {boolean} mustChange - Whether to force password change
+ * @returns {Promise<void>}
+ */
+export const forcePasswordChange = async (id, mustChange = true) => {
+  if (!id) throw new Error('User ID is required');
+  
+  try {
+    const userRef = doc(db, USERS_COLLECTION, id);
+    const userDoc = await getDoc(userRef);
+    
+    if (!userDoc.exists()) {
+      throw new Error('User not found');
+    }
+
+    await updateDoc(userRef, {
+      mustChangePassword: mustChange,
+      updated_at: Timestamp.now(),
+    });
+
+    return { message: `User will ${mustChange ? 'be required to' : 'not be required to'} change password on next login` };
+  } catch (error) {
+    console.error('Force password change error:', error);
+    throw new Error(error.message || 'Failed to update password change requirement');
   }
 };
 
@@ -236,6 +283,7 @@ export const userFirebase = {
   remove,
   updateRoles,
   resetPassword,
+  forcePasswordChange,
 };
 
 export default userFirebase;

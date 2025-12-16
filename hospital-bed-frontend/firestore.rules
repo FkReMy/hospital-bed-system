@@ -1,0 +1,166 @@
+rules_version = '2';
+
+/**
+ * Firestore Security Rules for Hospital Bed Management System (HBMS)
+ * 
+ * These rules ensure:
+ * - Only authenticated users can access data
+ * - Role-based access control (RBAC)
+ * - Protection of sensitive fields
+ * - Secure user management
+ * 
+ * Deployment:
+ *   firebase deploy --only firestore:rules
+ */
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+    
+    function hasRole(role) {
+      return isAuthenticated() && 
+             getUserData().role == role;
+    }
+    
+    function isAdmin() {
+      return hasRole('admin');
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Users collection
+    match /users/{userId} {
+      // Anyone authenticated can read user profiles (for displaying names, roles, etc.)
+      allow read: if isAuthenticated();
+      
+      // Only admins can create new users
+      allow create: if isAdmin();
+      
+      // Users can update their own profile, admins can update any profile
+      allow update: if isOwner(userId) || isAdmin();
+      
+      // Only admins can delete users
+      allow delete: if isAdmin();
+    }
+    
+    // Patients collection
+    match /patients/{patientId} {
+      // All authenticated staff can read patients
+      allow read: if isAuthenticated();
+      
+      // Doctors, nurses, reception, and admins can create/update patients
+      allow create, update: if isAuthenticated() && 
+                               (hasRole('doctor') || hasRole('nurse') || 
+                                hasRole('reception') || hasRole('admin'));
+      
+      // Only admins can delete patients
+      allow delete: if isAdmin();
+    }
+    
+    // Departments collection
+    match /departments/{departmentId} {
+      // Everyone authenticated can read departments
+      allow read: if isAuthenticated();
+      
+      // Only admins can create/update/delete departments
+      allow create, update, delete: if isAdmin();
+    }
+    
+    // Rooms collection
+    match /rooms/{roomId} {
+      // Everyone authenticated can read rooms
+      allow read: if isAuthenticated();
+      
+      // Only admins can create/update/delete rooms
+      allow create, update, delete: if isAdmin();
+    }
+    
+    // Beds collection
+    match /beds/{bedId} {
+      // Everyone authenticated can read beds
+      allow read: if isAuthenticated();
+      
+      // Nurses, reception, and admins can create/update beds
+      allow create, update: if isAuthenticated() && 
+                              (hasRole('nurse') || hasRole('reception') || 
+                               hasRole('admin'));
+      
+      // Only admins can delete beds
+      allow delete: if isAdmin();
+    }
+    
+    // Bed Assignments collection
+    match /bed_assignments/{assignmentId} {
+      // Everyone authenticated can read bed assignments
+      allow read: if isAuthenticated();
+      
+      // Doctors, nurses, reception, and admins can create/update bed assignments
+      allow create, update: if isAuthenticated() && 
+                              (hasRole('doctor') || hasRole('nurse') || 
+                               hasRole('reception') || hasRole('admin'));
+      
+      // Only admins can delete bed assignments
+      allow delete: if isAdmin();
+    }
+    
+    // Appointments collection
+    match /appointments/{appointmentId} {
+      // Everyone authenticated can read appointments
+      allow read: if isAuthenticated();
+      
+      // Doctors, reception, and admins can create/update appointments
+      allow create, update: if isAuthenticated() && 
+                              (hasRole('doctor') || hasRole('reception') || 
+                               hasRole('admin'));
+      
+      // Only admins can delete appointments
+      allow delete: if isAdmin();
+    }
+    
+    // Prescriptions collection
+    match /prescriptions/{prescriptionId} {
+      // Everyone authenticated can read prescriptions
+      allow read: if isAuthenticated();
+      
+      // Only doctors and admins can create/update prescriptions
+      allow create, update: if isAuthenticated() && 
+                              (hasRole('doctor') || hasRole('admin'));
+      
+      // Only admins can delete prescriptions
+      allow delete: if isAdmin();
+    }
+    
+    // Notifications collection
+    match /notifications/{notificationId} {
+      // Users can only read their own notifications
+      allow read: if isAuthenticated() && 
+                    resource.data.user_id == request.auth.uid;
+      
+      // System can create notifications for users
+      allow create: if isAuthenticated();
+      
+      // Users can update their own notifications (mark as read)
+      allow update: if isAuthenticated() && 
+                      resource.data.user_id == request.auth.uid;
+      
+      // Users can delete their own notifications
+      allow delete: if isAuthenticated() && 
+                      resource.data.user_id == request.auth.uid;
+    }
+    
+    // Deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

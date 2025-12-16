@@ -37,9 +37,15 @@ const LoginPage = () => {
 
   const loginMutation = useMutation({
     mutationFn: authApi.login,
-    onSuccess: () => {
-      toast.success('Login successful');
-      loginSuccess('/dashboard');
+    onSuccess: (userData) => {
+      // Check if user must change password
+      if (userData.mustChangePassword) {
+        toast.info('You must change your password before continuing');
+        loginSuccess('/change-password');
+      } else {
+        toast.success('Login successful');
+        loginSuccess('/dashboard');
+      }
     },
     onError: (error) => {
       toast.error(error.message || 'Invalid credentials');
