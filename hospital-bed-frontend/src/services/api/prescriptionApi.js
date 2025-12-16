@@ -3,36 +3,24 @@
  * prescriptionApi Service
  * 
  * Production-ready API client for all prescription-related endpoints.
- * Centralizes HTTP requests with proper error handling, auth, and base URL.
+ * Now uses Firebase Firestore instead of .NET backend.
  * 
  * Features:
- * - Uses axiosInstance with JWT from httpOnly cookie
- * - Consistent error handling with meaningful messages
- * - Endpoints for list, detail, create, update, dispense
- * - Unified with other api services (bedApi, patientApi, appointmentApi)
- * - Ready for React Query caching and invalidation
+ * - Firebase Firestore for prescription data
+ * - Consistent interface with previous implementation
+ * - Compatible with existing prescription management components
  */
 
-import { axiosInstance } from './axiosInstance';
-
-/**
- * Base path for prescription endpoints
- */
-const BASE_PATH = '/api/prescriptions';
+import prescriptionFirebase from '../firebase/prescriptionFirebase';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '../firebase/firebaseConfig';
 
 /**
  * Get all prescriptions (with optional filters)
  * @param {Object} params - query params (patientId, doctorId, status, date range)
  * @returns {Promise<Array>} prescriptions
  */
-export const getAll = async (params = {}) => {
-  try {
-    const response = await axiosInstance.get(BASE_PATH, { params });
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch prescriptions');
-  }
-};
+export const getAll = prescriptionFirebase.getAll;
 
 /**
  * Get prescriptions for a specific patient
@@ -43,10 +31,14 @@ export const getByPatient = async (patientId) => {
   if (!patientId) throw new Error('Patient ID is required');
   
   try {
-    const response = await axiosInstance.get(`${BASE_PATH}/patient/${patientId}`);
-    return response.data;
+    const prescriptionsQuery = query(
+      collection(db, 'prescriptions'),
+      where('patient_id', '==', patientId)
+    );
+    const snapshot = await getDocs(prescriptionsQuery);
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch patient prescriptions');
+    throw new Error(error.message || 'Failed to fetch patient prescriptions');
   }
 };
 
@@ -55,30 +47,14 @@ export const getByPatient = async (patientId) => {
  * @param {string|number} id
  * @returns {Promise<Object>} prescription
  */
-export const getById = async (id) => {
-  if (!id) throw new Error('Prescription ID is required');
-  
-  try {
-    const response = await axiosInstance.get(`${BASE_PATH}/${id}`);
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch prescription');
-  }
-};
+export const getById = prescriptionFirebase.getById;
 
 /**
  * Create new prescription
  * @param {Object} data - prescription payload
  * @returns {Promise<Object>} created prescription
  */
-export const create = async (data) => {
-  try {
-    const response = await axiosInstance.post(BASE_PATH, data);
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to create prescription');
-  }
-};
+export const create = prescriptionFirebase.create;
 
 /**
  * Update existing prescription
@@ -86,16 +62,7 @@ export const create = async (data) => {
  * @param {Object} data - updated fields
  * @returns {Promise<Object>} updated prescription
  */
-export const update = async (id, data) => {
-  if (!id) throw new Error('Prescription ID is required');
-  
-  try {
-    const response = await axiosInstance.put(`${BASE_PATH}/${id}`, data);
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to update prescription');
-  }
-};
+export const update = prescriptionFirebase.update;
 
 /**
  * Mark prescription as dispensed
@@ -107,10 +74,14 @@ export const dispense = async (id, payload = {}) => {
   if (!id) throw new Error('Prescription ID is required');
   
   try {
-    const response = await axiosInstance.post(`${BASE_PATH}/${id}/dispense`, payload);
-    return response.data;
+    return await prescriptionFirebase.update(id, {
+      status: 'dispensed',
+      dispensed_by: payload.dispensed_by || 'system',
+      dispensed_at: new Date().toISOString(),
+      notes: payload.notes || '',
+    });
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to mark prescription as dispensed');
+    throw new Error(error.message || 'Failed to mark prescription as dispensed');
   }
 };
 
