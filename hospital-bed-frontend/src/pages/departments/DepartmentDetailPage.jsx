@@ -17,14 +17,16 @@
  * - Unified with global Card, Badge, Button, Progress components
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { 
   Building2, 
   BedDouble, 
   UserCheck,
   UserX,
-  Wrench
+  Wrench,
+  Users,
+  Activity
 } from 'lucide-react';
 import Card from '@components/ui/card.jsx';
 import Badge from '@components/ui/badge.jsx';

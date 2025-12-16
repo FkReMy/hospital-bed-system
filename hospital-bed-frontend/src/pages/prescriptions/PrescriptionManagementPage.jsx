@@ -19,21 +19,15 @@
  * - Real-time updates via notificationChannel (when prescription changes)
  */
 
-import React, { useState, useMemo } from 'react';
-import { format } from 'date-fns';
+import { useState, useMemo } from 'react';
 import { 
   Search,
-  Filter,
   Plus,
-  Pill,
-  CheckCircle,
-  XCircle,
   MoreVertical,
 } from 'lucide-react';
 import Card from '@components/ui/card.jsx';
 import Button from '@components/ui/button.jsx';
 import Input from '@components/ui/input.jsx';
-import Badge from '@components/ui/badge.jsx';
 import {
   Table,
   TableHeader,
@@ -51,7 +45,7 @@ import { formatDateTime } from '@lib/dateUtils';
 import './PrescriptionManagementPage.scss';
 
 const PrescriptionManagementPage = () => {
-  const { user } = useAuth();
+  const { user: _user } = useAuth();
   const { prescriptions, doctors, isLoadingPrescriptions, isErrorPrescriptions } = usePrescriptionManagement();
 
   const [searchTerm, setSearchTerm] = useState('');

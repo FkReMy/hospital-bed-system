@@ -17,12 +17,10 @@
  * - Real-time updates via SignalR (patientChannel when implemented)
  */
 
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Search, 
-  Filter, 
-  Plus, 
   MoreVertical, 
   UserPlus 
 } from 'lucide-react';
@@ -40,9 +38,7 @@ import {
 } from '@components/ui/table.jsx';
 import LoadingState from '@components/common/LoadingState.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
-import { usePatientProfile } from '@hooks/usePatientProfile'; // Note: adapt for list
 import { useRoleAccess } from '@hooks/useRoleAccess';
-import { formatDateTime } from '@lib/dateUtils';
 import './PatientListPage.scss';
 
 const PatientListPage = () => {
@@ -100,7 +96,7 @@ const PatientListPage = () => {
   };
 
   // Mock data - remove in production
-  React.useEffect(() => {
+  useEffect(() => {
     // Simulate API call
     setIsLoading(true);
     setTimeout(() => {
