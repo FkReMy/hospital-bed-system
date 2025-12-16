@@ -9,7 +9,7 @@
  * - Collapsible with smooth transition
  * - Persistent open/closed state (localStorage)
  * - Role-based menu items (filtered by current role)
- * - Brand logo with light/dark variants
+ * - Brand logo
  * - Toggle button integration
  * - Fully accessible (ARIA labels, keyboard navigation)
  * - Premium glassmorphic design
@@ -31,7 +31,6 @@ import {
   ChevronRight,  // Expand
 } from 'lucide-react';
 import logoLight from '@assets/images/logo-light.svg';
-import logoDark from '@assets/images/logo-dark.svg';
 import { useAuth } from '@hooks/useAuth';
 import './Sidebar.scss';
 
@@ -98,7 +97,7 @@ const Sidebar = ({ isOpen, onToggle }) => {
       {/* Brand Header */}
       <div className="sidebarBrand">
         <img 
-          src={isOpen ? logoLight : logoDark} 
+          src={logoLight} 
           alt="HBMS Logo" 
           className="brandLogo"
         />

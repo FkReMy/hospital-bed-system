@@ -93,13 +93,6 @@ export const NOTIFICATIONS = {
   MAX_DISPLAY: 50,
 };
 
-// Theme options
-export const THEMES = {
-  LIGHT: 'light',
-  DARK: 'dark',
-  SYSTEM: 'system',
-};
-
 // Routes (for navigation guards or links)
 export const ROUTES = {
   LOGIN: '/login',

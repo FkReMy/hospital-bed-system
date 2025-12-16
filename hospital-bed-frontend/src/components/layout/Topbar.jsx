@@ -3,27 +3,22 @@
  * Topbar Component
  * 
  * Production-ready top navigation bar for the authenticated staff dashboard.
- * Displays current user, role switcher, notifications, theme toggle, and sidebar toggle.
+ * Displays current user, role switcher, notifications, and sidebar toggle.
  * 
  * Features:
  * - Responsive layout with mobile menu support
  * - User avatar with dropdown menu (profile, logout)
  * - RoleSwitcher integration for multi-role users
  * - Notification bell with badge/count
- * - Theme toggle (light/dark with sun/moon icons)
  * - Sidebar collapse/expand toggle
- * - Unified with global Avatar, Button, DropdownMenu, Badge components
+ * - Unified with global Avatar, Button, DropdownMenu components
  * - Premium glassmorphic design with blur
  * 
  * Used exclusively in AppShell
  */
 
-import React from 'react';
 import { 
   Menu,           // Mobile sidebar toggle
-  Bell,           // Notifications
-  Moon,           // Dark mode
-  Sun,            // Light mode
   User,           // Profile
   LogOut,
 } from 'lucide-react';
@@ -33,10 +28,8 @@ import DropdownMenu from '@components/ui/dropdown-menu.jsx';
 import DropdownMenuTrigger from '@components/ui/dropdown-menu-trigger.jsx';
 import DropdownMenuContent from '@components/ui/dropdown-menu-content.jsx';
 import DropdownMenuItem from '@components/ui/dropdown-menu-item.jsx';
-import Badge from '@components/ui/badge.jsx';
 import RoleSwitcher from '@components/layout/RoleSwitcher.jsx';
 import { useAuth } from '@hooks/useAuth';
-import { useTheme } from '@hooks/useTheme';
 import NotificationBell from '@components/notifications/NotificationBell.jsx';
 import './Topbar.scss';
 
@@ -47,18 +40,9 @@ import './Topbar.scss';
  */
 const Topbar = ({ sidebarOpen, onSidebarToggle }) => {
   const { user, logout } = useAuth();
-  const { theme, setTheme } = useTheme();
 
   const handleLogout = () => {
     logout();
-  };
-
-  // Determine if current theme is dark (handles system preference)
-  const isDarkMode = theme === 'dark' || (theme === 'system' && document.documentElement.classList.contains('dark'));
-  
-  // Toggle between light and dark themes
-  const toggleTheme = () => {
-    setTheme(isDarkMode ? 'light' : 'dark');
   };
 
   if (!user) return null;
@@ -86,17 +70,6 @@ const Topbar = ({ sidebarOpen, onSidebarToggle }) => {
 
         {/* Right: User actions */}
         <div className="rightSection">
-          {/* Theme Toggle - Sun/Moon Button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleTheme}
-            aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-            className="themeToggle"
-          >
-            {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
-          </Button>
-
           {/* Notifications */}
           <NotificationBell />
 

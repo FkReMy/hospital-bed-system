@@ -4,13 +4,12 @@
  * 
  * Production-ready user profile settings page for HBMS staff.
  * Allows viewing and editing personal information, password change,
- * notification preferences, and theme settings.
+ * and notification preferences.
  * 
  * Features:
  * - Profile information display and edit
  * - Password change form with validation
  * - Notification preferences (email, in-app)
- * - Theme selection (light/dark/system)
  * - Secure password change (no current password required - uses backend auth)
  * - Loading and success/error states
  * - Unified with global Card, Input, Button, Switch components
@@ -26,12 +25,10 @@ import Card from '@components/ui/card.jsx';
 import Input from '@components/ui/input.jsx';
 import Button from '@components/ui/button.jsx';
 import Switch from '@components/ui/switch.jsx';
-import { useTheme } from '@hooks/useTheme';
 import './ProfileSettingsPage.scss';
 
 const ProfileSettingsPage = () => {
   const { user, updateUser } = useAuth();
-  const { theme, setTheme } = useTheme();
 
   const [formData, setFormData] = useState({
     full_name: user?.full_name || '',
@@ -213,22 +210,6 @@ const ProfileSettingsPage = () => {
             <Button onClick={() => updateProfileMutation.mutate({ notifications: formData.notifications })}>
               Save Notification Preferences
             </Button>
-          </div>
-        </Card>
-
-        {/* Theme Settings */}
-        <Card className="theme-card">
-          <h2 className="section-title">Theme Settings</h2>
-          <div className="theme-options">
-            {['light', 'dark', 'system'].map(option => (
-              <Button
-                key={option}
-                variant={theme === option ? 'primary' : 'outline'}
-                onClick={() => setTheme(option)}
-              >
-                {option.charAt(0).toUpperCase() + option.slice(1)}
-              </Button>
-            ))}
           </div>
         </Card>
       </div>
