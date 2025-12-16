@@ -3,79 +3,48 @@
  * authApi Service
  * 
  * Production-ready API client for authentication endpoints.
- * Centralizes login, logout, me (current user), and token refresh operations.
+ * Now uses Firebase Authentication instead of .NET backend.
  * 
  * Features:
- * - Uses axiosInstance with httpOnly cookie authentication
- * - Consistent error handling
- * - Unified with other api services
- * - No token storage on client (secure)
- * - Ready for React Query (useAuth hook)
+ * - Firebase Authentication (Email/Password)
+ * - Firestore for user profiles
+ * - Consistent interface with previous implementation
+ * - Compatible with existing useAuth hook
  */
 
-import { axiosInstance } from './axiosInstance';
+import authFirebase from '../firebase/authFirebase';
 
 /**
- * Base path for auth endpoints
- */
-const BASE_PATH = '/api/auth';
-
-/**
- * Login - sends credentials, backend sets httpOnly JWT cookie
+ * Login - authenticates with Firebase
  * @param {Object} credentials - { email, password }
  * @returns {Promise<Object>} user data
  */
-export const login = async (credentials) => {
-  try {
-    const response = await axiosInstance.post(`${BASE_PATH}/login`, credentials);
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Login failed. Please check your credentials.');
-  }
-};
+export const login = authFirebase.login;
 
 /**
- * Logout - clears httpOnly cookie on backend
+ * Logout - signs out from Firebase
  * @returns {Promise<void>}
  */
-export const logout = async () => {
-  try {
-    await axiosInstance.post(`${BASE_PATH}/logout`);
-  } catch (error) {
-    // Continue logout even if API fails (cookie might already be cleared)
-    console.warn('Logout API error:', error);
-    throw new Error(error.response?.data?.message || 'Logout failed');
-  }
-};
+export const logout = authFirebase.logout;
 
 /**
  * Get current authenticated user
- * @returns {Promise<Object>} user with roles
+ * @returns {Promise<Object|null>} user with roles
  */
-export const me = async () => {
-  try {
-    const response = await axiosInstance.get(`${BASE_PATH}/me`);
-    return response.data;
-  } catch (error) {
-    // 401 means not authenticated - expected on fresh load
-    if (error.response?.status === 401) {
-      return null;
-    }
-    throw new Error(error.response?.data?.message || 'Failed to fetch user data');
-  }
-};
+export const me = authFirebase.me;
 
 /**
- * Refresh token - called automatically by axios interceptors if needed
+ * Refresh token - Firebase handles this automatically
  * @returns {Promise<void>}
  */
-export const refresh = async () => {
-  try {
-    await axiosInstance.post(`${BASE_PATH}/refresh`);
-  } catch (error) {
-    throw new Error('Session expired. Please log in again.');
-  }
-};
+export const refresh = authFirebase.refresh;
+
+/**
+ * Register new user (exposed for completeness)
+ * @param {Object} userData - user registration data
+ * @returns {Promise<Object>} created user
+ */
+export const register = authFirebase.register;
 
 // Export as named object and default
 export const authApi = {
@@ -83,6 +52,7 @@ export const authApi = {
   logout,
   me,
   refresh,
+  register,
 };
 
 export default authApi;

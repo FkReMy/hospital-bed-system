@@ -3,23 +3,17 @@
  * notificationApi Service
  * 
  * Production-ready API client for all notification-related endpoints.
- * Centralizes HTTP requests with proper error handling, auth, and base URL.
+ * Now uses Firebase Firestore instead of .NET backend.
  * 
  * Features:
- * - Uses axiosInstance with JWT from httpOnly cookie
- * - Consistent error handling with meaningful messages
- * - Real-time notification polling and updates
- * - Mark as read/unread functionality
- * - Unified with other api services (bedApi, appointmentApi, etc.)
- * - Ready for React Query integration and SignalR real-time updates
+ * - Firebase Firestore for notification data
+ * - Real-time notifications via Firestore listeners
+ * - Consistent interface with previous implementation
+ * - Compatible with existing notification components
  */
 
-import { axiosInstance } from './axiosInstance';
-
-/**
- * Base path for notification endpoints
- */
-const BASE_PATH = '/api/notifications';
+import notificationFirebase from '../firebase/notificationFirebase';
+import { auth } from '../firebase/firebaseConfig';
 
 /**
  * Get recent notifications for the current user
@@ -28,12 +22,12 @@ const BASE_PATH = '/api/notifications';
  */
 export const getRecent = async (limit = 50) => {
   try {
-    const response = await axiosInstance.get(BASE_PATH, { 
-      params: { limit } 
-    });
-    return response.data;
+    const user = auth.currentUser;
+    if (!user) throw new Error('Not authenticated');
+    
+    return await notificationFirebase.getAll({ userId: user.uid, limit });
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch notifications');
+    throw new Error(error.message || 'Failed to fetch notifications');
   }
 };
 
@@ -44,10 +38,12 @@ export const getRecent = async (limit = 50) => {
  */
 export const getAll = async (params = {}) => {
   try {
-    const response = await axiosInstance.get(BASE_PATH, { params });
-    return response.data;
+    const user = auth.currentUser;
+    if (!user) throw new Error('Not authenticated');
+    
+    return await notificationFirebase.getAll({ userId: user.uid, ...params });
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch notifications');
+    throw new Error(error.message || 'Failed to fetch notifications');
   }
 };
 
@@ -56,32 +52,14 @@ export const getAll = async (params = {}) => {
  * @param {string|number} id
  * @returns {Promise<Object>} notification
  */
-export const getById = async (id) => {
-  if (!id) throw new Error('Notification ID is required');
-  
-  try {
-    const response = await axiosInstance.get(`${BASE_PATH}/${id}`);
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch notification');
-  }
-};
+export const getById = notificationFirebase.getById;
 
 /**
  * Mark a single notification as read
  * @param {string|number} id - notification ID
  * @returns {Promise<Object>} updated notification
  */
-export const markAsRead = async (id) => {
-  if (!id) throw new Error('Notification ID is required');
-  
-  try {
-    const response = await axiosInstance.patch(`${BASE_PATH}/${id}/read`, { read: true });
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to mark notification as read');
-  }
-};
+export const markAsRead = notificationFirebase.markAsRead;
 
 /**
  * Mark a single notification as unread
@@ -92,10 +70,10 @@ export const markAsUnread = async (id) => {
   if (!id) throw new Error('Notification ID is required');
   
   try {
-    const response = await axiosInstance.patch(`${BASE_PATH}/${id}/read`, { read: false });
-    return response.data;
+    // Not implemented in Firebase adapter yet - add if needed
+    throw new Error('Mark as unread not yet implemented for Firebase');
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to mark notification as unread');
+    throw new Error(error.message || 'Failed to mark notification as unread');
   }
 };
 
@@ -105,10 +83,13 @@ export const markAsUnread = async (id) => {
  */
 export const markAllAsRead = async () => {
   try {
-    const response = await axiosInstance.post(`${BASE_PATH}/mark-all-read`);
-    return response.data;
+    const user = auth.currentUser;
+    if (!user) throw new Error('Not authenticated');
+    
+    await notificationFirebase.markAllAsRead(user.uid);
+    return { success: true };
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to mark all notifications as read');
+    throw new Error(error.message || 'Failed to mark all notifications as read');
   }
 };
 
@@ -121,10 +102,10 @@ export const deleteNotification = async (id) => {
   if (!id) throw new Error('Notification ID is required');
   
   try {
-    const response = await axiosInstance.delete(`${BASE_PATH}/${id}`);
-    return response.data;
+    // Implement soft delete by marking as deleted
+    throw new Error('Delete notification not yet implemented for Firebase');
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to delete notification');
+    throw new Error(error.message || 'Failed to delete notification');
   }
 };
 
@@ -134,10 +115,13 @@ export const deleteNotification = async (id) => {
  */
 export const getUnreadCount = async () => {
   try {
-    const response = await axiosInstance.get(`${BASE_PATH}/unread-count`);
-    return response.data?.count || 0;
+    const user = auth.currentUser;
+    if (!user) return 0;
+    
+    const notifications = await notificationFirebase.getAll({ userId: user.uid, read: false });
+    return notifications.length;
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch unread count');
+    throw new Error(error.message || 'Failed to fetch unread count');
   }
 };
 
@@ -146,14 +130,7 @@ export const getUnreadCount = async () => {
  * @param {Object} data - notification payload
  * @returns {Promise<Object>} created notification
  */
-export const create = async (data) => {
-  try {
-    const response = await axiosInstance.post(BASE_PATH, data);
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to create notification');
-  }
-};
+export const create = notificationFirebase.create;
 
 // Export all functions as a named export object for convenience
 export const notificationApi = {
@@ -167,3 +144,5 @@ export const notificationApi = {
   getUnreadCount,
   create,
 };
+
+export default notificationApi;

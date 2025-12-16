@@ -3,24 +3,15 @@
  * bedAssignmentApi Service
  * 
  * Production-ready API client for bed assignment-specific endpoints.
- * Centralizes operations related to patient-bed assignments (assign, discharge, history).
+ * Now uses Firebase Firestore instead of .NET backend.
  * 
  * Features:
- * - Uses axiosInstance with JWT from httpOnly cookie
- * - Consistent error handling with meaningful messages
- * - Endpoints for assign, discharge, and assignment history
- * - Unified with other api services (bedApi, patientApi)
- * - Ready for React Query mutations and optimistic updates
- * 
- * Note: General bed CRUD/status is in bedApi.js
+ * - Firebase Firestore for bed assignment data
+ * - Consistent interface with previous implementation
+ * - Compatible with existing bed management components
  */
 
-import { axiosInstance } from './axiosInstance';
-
-/**
- * Base path for bed assignment endpoints
- */
-const BASE_PATH = '/api/bed-assignments';
+import bedAssignmentFirebase from '../firebase/bedAssignmentFirebase';
 
 /**
  * Assign patient to bed
@@ -33,10 +24,9 @@ export const assignPatient = async (payload) => {
   }
   
   try {
-    const response = await axiosInstance.post(BASE_PATH, payload);
-    return response.data;
+    return await bedAssignmentFirebase.create(payload);
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to assign patient to bed');
+    throw new Error(error.message || 'Failed to assign patient to bed');
   }
 };
 
@@ -50,10 +40,14 @@ export const dischargePatient = async (assignmentId, payload = {}) => {
   if (!assignmentId) throw new Error('Assignment ID is required');
   
   try {
-    const response = await axiosInstance.post(`${BASE_PATH}/${assignmentId}/discharge`, payload);
-    return response.data;
+    return await bedAssignmentFirebase.update(assignmentId, {
+      status: 'discharged',
+      discharged_by: payload.discharged_by || 'system',
+      discharged_at: new Date().toISOString(),
+      notes: payload.notes || '',
+    });
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to discharge patient');
+    throw new Error(error.message || 'Failed to discharge patient');
   }
 };
 
@@ -62,32 +56,14 @@ export const dischargePatient = async (assignmentId, payload = {}) => {
  * @param {string|number} patientId
  * @returns {Promise<Array>} assignment history
  */
-export const getHistoryByPatient = async (patientId) => {
-  if (!patientId) throw new Error('Patient ID is required');
-  
-  try {
-    const response = await axiosInstance.get(`${BASE_PATH}/patient/${patientId}`);
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch assignment history');
-  }
-};
+export const getHistoryByPatient = bedAssignmentFirebase.getHistoryByPatientId;
 
 /**
  * Get assignment history for a bed
  * @param {string|number} bedId
  * @returns {Promise<Array>} assignment history
  */
-export const getHistoryByBed = async (bedId) => {
-  if (!bedId) throw new Error('Bed ID is required');
-  
-  try {
-    const response = await axiosInstance.get(`${BASE_PATH}/bed/${bedId}`);
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch bed assignment history');
-  }
-};
+export const getHistoryByBed = bedAssignmentFirebase.getHistoryByBedId;
 
 /**
  * Get current active assignment for a bed
@@ -98,13 +74,11 @@ export const getCurrentByBed = async (bedId) => {
   if (!bedId) throw new Error('Bed ID is required');
   
   try {
-    const response = await axiosInstance.get(`${BASE_PATH}/bed/${bedId}/current`);
-    return response.data;
+    const history = await bedAssignmentFirebase.getHistoryByBedId(bedId);
+    const activeAssignment = history.find(assignment => assignment.status === 'active');
+    return activeAssignment || null;
   } catch (error) {
-    if (error.response?.status === 404) {
-      return null; // No active assignment
-    }
-    throw new Error(error.response?.data?.message || 'Failed to fetch current assignment');
+    throw new Error(error.message || 'Failed to fetch current assignment');
   }
 };
 
