@@ -21,7 +21,7 @@ import { Bell } from 'lucide-react';
 import Button from '@components/ui/button.jsx';
 import Badge from '@components/ui/badge.jsx';
 import NotificationCenter from '@components/notifications/NotificationCenter.jsx';
-import { useNotifications } from '@hooks/useNotifications.jsx';
+import { useNotifications } from '@hooks/useNotifications';
 import './NotificationBell.module.scss';
 
 /**

@@ -36,8 +36,8 @@ import DropdownMenuContent from '@components/ui/dropdown-menu-content.jsx';
 import DropdownMenuItem from '@components/ui/dropdown-menu-item.jsx';
 import Badge from '@components/ui/badge.jsx';
 import RoleSwitcher from '@components/layout/RoleSwitcher.jsx';
-import { useAuth } from '@hooks/useAuth.jsx';
-import { useTheme } from '@hooks/useTheme.jsx';
+import { useAuth } from '@hooks/useAuth';
+import { useTheme } from '@hooks/useTheme';
 import NotificationBell from '@components/notifications/NotificationBell.jsx';
 import './Topbar.module.scss';
 

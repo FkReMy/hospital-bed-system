@@ -54,13 +54,13 @@ const OccupancyChart = ({
   error = null,
   title = 'Bed Occupancy Trend',
 }) => {
-  // Department color mapping - consistent with your design system
+  // Department color mapping - Hospital theme colors
   const departmentColors = {
-    ICU: '#6366f1',        // indigo-500
-    ER: '#ef4444',         // rose-500
-    Emergency: '#ef4444',
-    'General Ward': '#10b981', // emerald-500
-    Surgery: '#06b6d4',    // cyan-500
+    ICU: '#2563EB',        // Trust Blue - for critical care
+    ER: '#EF4444',         // Soft Red - for emergency
+    Emergency: '#EF4444',  // Soft Red - for emergency
+    'General Ward': '#16A34A', // Medical Healing Green - for general care
+    Surgery: '#14B8A6',    // Clinical Teal - for surgical departments
   };
 
   // Extract unique departments from data for dynamic lines
