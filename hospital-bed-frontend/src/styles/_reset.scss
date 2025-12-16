@@ -6,7 +6,7 @@
  * Based on best practices (normalize + sensible defaults).
  */
 
-@import 'variables';
+@use 'variables' as *;
 
 /* Box sizing border-box for easier layout */
 *,

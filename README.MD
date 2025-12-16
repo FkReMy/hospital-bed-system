@@ -176,21 +176,59 @@ hospital_bed_system/
 - [Node.js](https://nodejs.org/) (LTS)
 - [Yarn](https://yarnpkg.com/) or [npm](https://www.npmjs.com/)
 - [Visual Studio Code](https://code.visualstudio.com/) recommended
+- **.NET 8 SDK** for running the backend API
+- **SQL Server** (LocalDB, Express, or Full Edition)
 
-### Configuration
+### ⚠️ Important: Backend Must Be Running
 
-1. **Environment variables:**  
-   Copy `.env.example` to `.env` and set API URLs, SignalR endpoints, etc.
-2. **Backend API:**  
-   Start the .NET backend following its instructions. This frontend expects endpoints as described in `/src/services/api/*`.
-3. **Install dependencies:**  
+**The frontend will not work without the backend server running.** You will see `ECONNREFUSED` errors if the backend is not started.
+
+**📖 See [BACKEND_SETUP.md](./BACKEND_SETUP.md) for detailed backend setup instructions.**
+
+### Quick Start
+
+1. **Start the Backend API** (see [BACKEND_SETUP.md](./BACKEND_SETUP.md) for details)
    ```sh
-   yarn install
+   # In a separate terminal, navigate to backend repository
+   cd path/to/backend
+   dotnet run
+   # Should start on https://localhost:7150
    ```
-4. **Run development build:**  
+
+2. **Install Frontend Dependencies:**  
+   ```sh
+   cd hospital-bed-frontend
+   yarn install
+   # or: npm install
+   ```
+
+3. **Configure Environment Variables (Optional):**  
+   Copy `.env.example` to `.env` if custom configuration is needed.
+
+4. **Start Frontend Development Server:**  
    ```sh
    yarn dev
+   # or: npm run dev
    ```
+
+5. **Access the Application:**  
+   Open your browser to `http://localhost:5000`
+
+### Backend Configuration
+
+The frontend is configured to proxy API requests to `https://localhost:7150` (default ASP.NET Core HTTPS port).
+
+If your backend runs on a different port, update the `target` in `vite.config.js`:
+```javascript
+server: {
+  proxy: {
+    '/api': {
+      target: 'https://localhost:YOUR_PORT', // Update this
+      // ...
+    }
+  }
+}
+```
 
 ---
 

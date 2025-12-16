@@ -16,8 +16,8 @@
  * - Mobile-first responsive design
  */
 
-@import '@styles/variables';
-@import '@styles/mixins';
+@use '@styles/variables' as *;
+@use '@styles/mixins' as *;
 
 .landingPage {
   min-height: 100vh;

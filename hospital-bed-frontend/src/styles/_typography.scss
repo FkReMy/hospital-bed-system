@@ -17,7 +17,7 @@
  * Uses CSS variables for font family and sizes
  */
 
-@import 'variables';
+@use 'variables' as *;
 
 /* Font family variables */
 :root {

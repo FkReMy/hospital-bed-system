@@ -17,8 +17,8 @@
  * Uses global variables and mixins for consistency.
  */
 
-@import '@styles/variables';
-@import '@styles/mixins';
+@use '@styles/variables' as *;
+@use '@styles/mixins' as *;
 
 .bedCard {
   // Base glassmorphic card - extended from global mixin
