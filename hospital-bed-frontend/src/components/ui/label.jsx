@@ -18,7 +18,7 @@
  */
 
 import React from 'react';
-import './label.module.scss';
+import './label.scss';
 
 const Label = React.forwardRef(({ 
   children, 

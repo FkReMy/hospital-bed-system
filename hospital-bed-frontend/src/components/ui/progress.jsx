@@ -16,7 +16,7 @@
  */
 
 import React from 'react';
-import './progress.module.scss';
+import './progress.scss';
 
 /**
  * Props:

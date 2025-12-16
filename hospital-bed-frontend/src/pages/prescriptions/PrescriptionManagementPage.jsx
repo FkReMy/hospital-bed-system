@@ -48,7 +48,7 @@ import EmptyState from '@components/common/EmptyState.jsx';
 import { usePrescriptionManagement } from '@hooks/usePrescriptionManagement';
 import { useAuth } from '@hooks/useAuth';
 import { formatDateTime } from '@lib/dateUtils';
-import './PrescriptionManagementPage.module.scss';
+import './PrescriptionManagementPage.scss';
 
 const PrescriptionManagementPage = () => {
   const { user } = useAuth();

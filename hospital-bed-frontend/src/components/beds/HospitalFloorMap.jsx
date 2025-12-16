@@ -24,7 +24,7 @@ import PageHeader from '@components/common/PageHeader.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
 import Skeleton from '@components/ui/skeleton.jsx';
 import Card from '@components/ui/card.jsx';
-import './HospitalFloorMap.module.scss';
+import './HospitalFloorMap.scss';
 
 /**
  * Props:

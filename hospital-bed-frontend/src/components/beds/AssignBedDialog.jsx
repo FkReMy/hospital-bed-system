@@ -34,7 +34,7 @@ import Textarea from '@components/ui/textarea.jsx';
 import Button from '@components/ui/button.jsx';
 import Badge from '@components/ui/badge.jsx';
 import BedStatusBadge from '@components/beds/BedStatusBadge.jsx';
-import './AssignBedDialog.module.scss';
+import './AssignBedDialog.scss';
 
 /**
  * Validation schema - ensures valid patient selection and notes
@@ -97,7 +97,7 @@ const AssignBedDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="assign-bed-dialog max-w-lg">
+      <DialogContent className="assignBedDialog max-w-lg">
         <DialogHeader>
           <DialogTitle>Assign Bed to Patient</DialogTitle>
           <DialogDescription>
@@ -106,7 +106,7 @@ const AssignBedDialog = ({
         </DialogHeader>
 
         {/* Bed Information Summary */}
-        <div className="bed-summary space-y-4 p-4 rounded-lg bg-muted/30">
+        <div className="bedSummary space-y-4 p-4 rounded-lg bg-muted/30">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <BedDouble className="w-8 h-8 text-primary" />

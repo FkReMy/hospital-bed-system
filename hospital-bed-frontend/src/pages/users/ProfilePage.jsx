@@ -23,7 +23,7 @@ import Badge from '@components/ui/badge.jsx';
 import Button from '@components/ui/button.jsx';
 import { useAuth } from '@hooks/useAuth';
 import { formatDate } from '@lib/dateUtils';
-import './ProfilePage.module.scss';
+import './ProfilePage.scss';
 
 const ProfilePage = () => {
   const { user } = useAuth();

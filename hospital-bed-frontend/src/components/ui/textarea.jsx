@@ -20,7 +20,7 @@
  */
 
 import React from 'react';
-import './textarea.module.scss';
+import './textarea.scss';
 
 /**
  * Props:

@@ -30,7 +30,7 @@ import Avatar from '@components/ui/avatar.jsx';
 import Badge from '@components/ui/badge.jsx';
 import Card from '@components/ui/card.jsx';
 import BedStatusBadge from '@components/beds/BedStatusBadge.jsx';
-import './PatientSummaryCard.module.scss';
+import './PatientSummaryCard.scss';
 
 /**
  * Props:

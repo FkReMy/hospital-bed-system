@@ -46,7 +46,7 @@ import DropdownMenuContent from '@components/ui/dropdown-menu-content.jsx';
 import DropdownMenuItem from '@components/ui/dropdown-menu-item.jsx';
 import Skeleton from '@components/ui/skeleton.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
-import './AppointmentList.module.scss';
+import './AppointmentList.scss';
 
 /**
  * Props:

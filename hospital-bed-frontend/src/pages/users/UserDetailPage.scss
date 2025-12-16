@@ -1,0 +1,132 @@
+// src/pages/patients/PatientListPage.module.scss
+/**
+ * PatientListPage Module Styles
+ * 
+ * Scoped styles for the PatientListPage component.
+ * Provides premium, responsive layout for patient directory with search, filters, and table.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing, typography, colors, borders, shadows
+ * - Glassmorphic elevation
+ * - Responsive table behavior
+ * - Dark/light theme compatibility
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.patientListPage {
+  // Full page container
+  width: 100%;
+  padding: $spacing-xl;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-lg;
+  }
+
+  // Page header
+  .pageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $spacing-2xl;
+    flex-wrap: wrap;
+    gap: $spacing-xl;
+
+    .pageTitle {
+      font-size: $text-4xl;
+      font-weight: $font-bold;
+      color: var(--foreground);
+      margin: 0;
+    }
+  }
+
+  // Filters card
+  .filtersCard {
+    @include glass-card;
+    border-radius: $radius-2xl;
+    padding: $spacing-xl;
+    margin-bottom: $spacing-2xl;
+
+    .filtersGrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: $spacing-xl;
+      align-items: end;
+
+      @media (max-width: $breakpoint-lg) {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      @media (max-width: $breakpoint-md) {
+        grid-template-columns: 1fr;
+      }
+
+      // Search input wrapper
+      .searchInput {
+        position: relative;
+      }
+
+      // Select filters
+      select {
+        width: 100%;
+        padding: $spacing-md $spacing-lg;
+        border-radius: $radius-lg;
+        border: 1px solid var(--border);
+        background: var(--background);
+        color: var(--foreground);
+        font-size: $text-base;
+
+        &:focus {
+          @include focus-ring;
+        }
+      }
+    }
+  }
+
+  // Table card
+  .tableCard {
+    @include glass-card-elevated;
+    border-radius: $radius-2xl;
+    overflow: hidden;
+
+    // Clickable row
+    .clickable {
+      cursor: pointer;
+      transition: background 0.2s ease;
+
+      &:hover {
+        background: var(--muted-30);
+      }
+    }
+
+    // Patient name column
+    .patientName {
+      font-weight: $font-semibold;
+      color: var(--primary);
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: var(--primary-hover);
+      }
+    }
+
+    // Actions column
+    .actions {
+      text-align: right;
+      width: 60px;
+    }
+  }
+
+  // Error card
+  .errorCard {
+    @include glass-card;
+    padding: $spacing-2xl;
+    text-align: center;
+
+    .errorMessage {
+      font-size: $text-lg;
+      color: $destructive;
+    }
+  }
+}

@@ -18,7 +18,7 @@
  */
 
 import React from 'react';
-import './tooltip.module.scss';
+import './tooltip.scss';
 
 /**
  * Props:

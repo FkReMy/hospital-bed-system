@@ -22,7 +22,7 @@
 
 import React from 'react';
 import { ChevronDown } from 'lucide-react';
-import './select.module.scss';
+import './select.scss';
 
 /**
  * Props:

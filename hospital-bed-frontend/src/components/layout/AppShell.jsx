@@ -20,7 +20,7 @@
 import React from 'react';
 import Sidebar from '@components/layout/Sidebar.jsx';
 import Topbar from '@components/layout/Topbar.jsx';
-import './AppShell.module.scss';
+import './AppShell.scss';
 
 /**
  * Props:
@@ -47,7 +47,7 @@ const AppShell = ({
   };
 
   return (
-    <div className={`app-shell ${sidebarOpen ? 'sidebar-open' : 'sidebar-collapsed'}`}>
+    <div className={`appShell ${sidebarOpen ? 'sidebarOpen' : 'sidebarCollapsed'}`}>
       {/* Sidebar - fixed position */}
       <Sidebar 
         isOpen={sidebarOpen} 
@@ -55,7 +55,7 @@ const AppShell = ({
       />
 
       {/* Main layout container */}
-      <div className="main-layout">
+      <div className="mainLayout">
         {/* Topbar - sticky */}
         <Topbar 
           sidebarOpen={sidebarOpen}
@@ -63,8 +63,8 @@ const AppShell = ({
         />
 
         {/* Main content area */}
-        <main className="main-content" role="main">
-          <div className="content-wrapper">
+        <main className="mainContent" role="main">
+          <div className="contentWrapper">
             {children}
           </div>
         </main>

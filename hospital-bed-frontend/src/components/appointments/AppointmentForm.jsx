@@ -32,7 +32,7 @@ import DialogHeader from '@components/ui/dialog-header.jsx';
 import DialogTitle from '@components/ui/dialog-title.jsx';
 import DialogDescription from '@components/ui/dialog-description.jsx';
 import { CalendarIcon, Clock, User, Stethoscope } from 'lucide-react';
-import './AppointmentForm.module.scss';
+import './AppointmentForm.scss';
 
 // Validation schema using Zod - strict and healthcare-appropriate
 const appointmentSchema = z.object({

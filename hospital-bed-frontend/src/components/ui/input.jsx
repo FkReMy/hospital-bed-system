@@ -21,7 +21,7 @@
  */
 
 import React from 'react';
-import './input.module.scss';
+import './input.scss';
 
 /**
  * Props:

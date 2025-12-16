@@ -33,7 +33,7 @@ import PatientSummaryCard from '@components/patients/PatientSummaryCard.jsx';
 import PatientTimeline from '@components/patients/PatientTimeline.jsx';
 import AppointmentList from '@components/appointments/AppointmentList.jsx';
 import PrescriptionList from '@components/prescriptions/PrescriptionList.jsx';
-import './PatientDetailTabs.module.scss';
+import './PatientDetailTabs.scss';
 
 /**
  * Props:

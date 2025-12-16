@@ -1,0 +1,134 @@
+// src/pages/profile/ProfilePage.module.scss
+/**
+ * ProfilePage Module Styles
+ * 
+ * Scoped styles for the ProfilePage component.
+ * Provides premium, centered, glassmorphic profile card with clean layout.
+ * 
+ * Features:
+ * - Centered profile card with photo, name, role badge
+ * - Key details grid (email, phone, join date, role)
+ * - Edit profile button
+ * - Responsive design
+ * - Dark/light theme compatibility
+ * - Unified with global variables and mixins
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.profilePage {
+  // Full viewport background
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--primary-5) 0%, var(--background) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xl;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-lg;
+  }
+}
+
+.profileContainer {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-3xl;
+  align-items: center;
+}
+
+.profileCard {
+  @include glass-card-elevated;
+  border-radius: $radius-2xl;
+  padding: $spacing-3xl;
+  width: 100%;
+  text-align: center;
+}
+
+.profileHeader {
+  margin-bottom: $spacing-2xl;
+
+  .profilePhoto {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto $spacing-lg;
+    border-radius: $radius-full;
+    background: var(--primary-10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    box-shadow: $shadow-lg;
+  }
+
+  .profileInfo {
+    .profileName {
+      font-size: $text-4xl;
+      font-weight: $font-bold;
+      color: var(--foreground);
+      margin-bottom: $spacing-sm;
+    }
+
+    .roleBadge {
+      font-size: $text-lg;
+    }
+  }
+}
+
+.profileDetails {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: $spacing-xl;
+  margin-bottom: $spacing-2xl;
+
+  .detailItem {
+    display: flex;
+    align-items: center;
+    gap: $spacing-lg;
+    padding: $spacing-lg;
+    background: var(--muted-20);
+    border-radius: $radius-xl;
+
+    .detailIcon {
+      width: 40px;
+      height: 40px;
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    .detailText {
+      .detailLabel {
+        font-size: $text-sm;
+        color: var(--muted-foreground);
+        margin-bottom: $spacing-xs;
+      }
+
+      .detailValue {
+        font-size: $text-base;
+        font-weight: $font-medium;
+        color: var(--foreground);
+      }
+    }
+  }
+}
+
+.profileActions {
+  .editButton {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+}
+
+.pageFooter {
+  text-align: center;
+  color: var(--muted-foreground);
+  font-size: $text-sm;
+
+  p {
+    margin: $spacing-xs 0;
+  }
+}

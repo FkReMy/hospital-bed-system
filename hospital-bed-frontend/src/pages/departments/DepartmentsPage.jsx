@@ -25,7 +25,7 @@ import Progress from '@components/ui/progress.jsx';
 import LoadingState from '@components/common/LoadingState.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
 import { useBedManagement } from '@hooks/useBedManagement';
-import './DepartmentsPage.module.scss';
+import './DepartmentsPage.scss';
 
 const DepartmentsPage = () => {
   const { beds, departments, isLoadingBeds } = useBedManagement();

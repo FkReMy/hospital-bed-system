@@ -47,7 +47,7 @@ import EmptyState from '@components/common/EmptyState.jsx';
 import { useUsers } from '@hooks/useUsers'; // Custom hook for user list
 import { useRoleAccess } from '@hooks/useRoleAccess';
 import { formatDateTime } from '@lib/dateUtils';
-import './UserManagementPage.module.scss';
+import './UserManagementPage.scss';
 
 const UserManagementPage = () => {
   const { users, isLoadingUsers, isErrorUsers } = useUsers();

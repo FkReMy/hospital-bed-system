@@ -3,18 +3,7 @@
  * global.scss
  * 
  * Main global stylesheet for the HBMS application.
- * Entry point for all styles - imported in main.jsx via import './styles/global.scss'
- * 
- * Import order:
- * 1. Reset - normalize browser defaults
- * 2. Variables - design tokens
- * 3. Themes - light/dark mode CSS variables
- * 4. Typography - font styles and utilities
- * 5. Mixins - reusable style blocks
- * 6. Animations - keyframes and animation utilities
- * 
- * This file should NOT contain component-specific styles
- * Component styles are in their respective .module.scss files
+ * Entry point for all styles - imported in main.jsx
  */
 
 @import './_reset.scss';
@@ -59,7 +48,7 @@ body,
 
 /* Selection highlight */
 ::selection {
-  background: var(--primary/30);
+  background: var(--primary-30);
   color: var(--primary-foreground);
 }
 

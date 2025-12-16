@@ -15,7 +15,7 @@
  */
 
 import React from 'react';
-import './avatar.module.scss';
+import './avatar.scss';
 
 /**
  * Props:

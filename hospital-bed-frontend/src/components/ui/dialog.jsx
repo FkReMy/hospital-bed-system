@@ -23,7 +23,7 @@ import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import Button from '@components/ui/button.jsx';
 import Card from '@components/ui/card.jsx';
-import './dialog.module.scss';
+import './dialog.scss';
 
 /**
  * Props:

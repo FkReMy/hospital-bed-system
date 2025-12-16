@@ -19,29 +19,29 @@ import { Link } from 'react-router-dom';
 import { Home, ArrowLeft, Search } from 'lucide-react';
 import Card from '@components/ui/card.jsx';
 import Button from '@components/ui/button.jsx';
-import './NotFoundPage.module.scss';
+import './NotFoundPage.scss';
 
 const NotFoundPage = () => {
   return (
-    <div className="not-found-page">
-      <div className="error-container">
-        <Card className="error-card">
-          <div className="error-icon">
-            <div className="not-found-illustration" />
+    <div className="notFoundPage">
+      <div className="errorContainer">
+        <Card className="errorCard">
+          <div className="errorIcon">
+            <div className="notFoundIllustration" />
           </div>
 
-          <div className="error-content">
-            <h1 className="error-title">404 - Page Not Found</h1>
-            <p className="error-message">
+          <div className="errorContent">
+            <h1 className="errorTitle">404 - Page Not Found</h1>
+            <p className="errorMessage">
               The page you are looking for might have been removed, had its name changed, 
               or is temporarily unavailable.
             </p>
-            <p className="error-help">
+            <p className="errorHelp">
               Please check the URL or return to the dashboard.
             </p>
           </div>
 
-          <div className="error-actions">
+          <div className="errorActions">
             <Button asChild size="lg">
               <Link to="/dashboard">
                 <Home className="mr-2" size={20} />
@@ -58,7 +58,7 @@ const NotFoundPage = () => {
           </div>
         </Card>
 
-        <div className="page-footer">
+        <div className="pageFooter">
           <p>Hospital Bed Management System</p>
           <p>For authorized staff only</p>
         </div>

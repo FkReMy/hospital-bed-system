@@ -19,7 +19,7 @@
  */
 
 import React from 'react';
-import './PageHeader.module.scss';
+import './PageHeader.scss';
 
 /**
  * Props:
@@ -35,19 +35,19 @@ const PageHeader = ({
   className = '',
 }) => {
   return (
-    <header className={`page-header ${className}`} role="banner">
-      <div className="header-content">
+    <header className={`pageHeader ${className}`} role="banner">
+      <div className="headerContent">
         {/* Title and Subtitle */}
-        <div className="title-section">
-          <h1 className="page-title">{title}</h1>
+        <div className="titleSection">
+          <h1 className="pageTitle">{title}</h1>
           {subtitle && (
-            <p className="page-subtitle">{subtitle}</p>
+            <p className="pageSubtitle">{subtitle}</p>
           )}
         </div>
 
         {/* Optional Actions */}
         {children && (
-          <div className="actions-section">
+          <div className="actionsSection">
             {children}
           </div>
         )}

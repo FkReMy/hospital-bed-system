@@ -45,7 +45,7 @@ import LoadingState from '@components/common/LoadingState.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
 import { useAppointmentManagement } from '@hooks/useAppointmentManagement';
 import { formatDateTime } from '@lib/dateUtils';
-import './AppointmentManagementPage.module.scss';
+import './AppointmentManagementPage.scss';
 
 const AppointmentManagementPage = () => {
   const {

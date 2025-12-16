@@ -39,7 +39,7 @@ import PatientSummaryCard from '@components/patients/PatientSummaryCard.jsx';
 import { usePatientProfile } from '@hooks/usePatientProfile';
 import { useBedManagement } from '@hooks/useBedManagement';
 import { formatDateTime } from '@lib/dateUtils';
-import './PatientDetailPage.module.scss';
+import './PatientDetailPage.scss';
 
 const PatientDetailPage = () => {
   const { patientId } = useParams();
@@ -65,7 +65,7 @@ const PatientDetailPage = () => {
 
   if (!patient) {
     return (
-      <Card className="error-card">
+      <Card className="errorCard">
         <EmptyState
           title="Patient not found"
           description="Please check the patient ID or contact administrator"
@@ -75,13 +75,13 @@ const PatientDetailPage = () => {
   }
 
   return (
-    <div className="patient-detail-page">
+    <div className="patientDetailPage">
       {/* Patient Summary */}
       <PatientSummaryCard patient={patient} />
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="patient-tabs">
+        <TabsList className="patientTabs">
           {tabs.map(tab => (
             <TabsTrigger key={tab.id} value={tab.id}>
               {tab.label}
@@ -91,21 +91,21 @@ const PatientDetailPage = () => {
 
         {/* Overview Tab */}
         <TabsContent value="overview">
-          <div className="overview-grid">
+          <div className="overviewGrid">
             {/* Current Bed */}
-            <Card className="bed-info-card">
-              <h3 className="section-title">Current Bed Assignment</h3>
+            <Card className="bedInfoCard">
+              <h3 className="sectionTitle">Current Bed Assignment</h3>
               {currentBed ? (
-                <div className="bed-details">
-                  <div className="bed-number">
+                <div className="bedDetails">
+                  <div className="bedNumber">
                     <BedDouble className="icon" />
                     <span>Bed {currentBed.bed_number}</span>
                   </div>
-                  <div className="bed-department">
+                  <div className="bedDepartment">
                     <span className="label">Department:</span>
                     <span>{currentBed.department?.name || 'General'}</span>
                   </div>
-                  <div className="bed-status">
+                  <div className="bedStatus">
                     <BedStatusBadge status={currentBed.status} />
                   </div>
                   <Button variant="destructive" size="sm">
@@ -122,22 +122,22 @@ const PatientDetailPage = () => {
             </Card>
 
             {/* Vital Stats */}
-            <Card className="vitals-card">
-              <h3 className="section-title">Vital Statistics</h3>
-              <div className="vitals-grid">
-                <div className="vital-item">
+            <Card className="vitalsCard">
+              <h3 className="sectionTitle">Vital Statistics</h3>
+              <div className="vitalsGrid">
+                <div className="vitalItem">
                   <span className="label">Age</span>
                   <span className="value">{patient.age || 'N/A'}</span>
                 </div>
-                <div className="vital-item">
+                <div className="vitalItem">
                   <span className="label">Blood Group</span>
                   <span className="value">{patient.blood_group || 'N/A'}</span>
                 </div>
-                <div className="vital-item">
+                <div className="vitalItem">
                   <span className="label">Last Admission</span>
                   <span className="value">{formatDateTime(patient.last_admission) || 'N/A'}</span>
                 </div>
-                <div className="vital-item">
+                <div className="vitalItem">
                   <span className="label">Allergies</span>
                   <span className="value">{patient.allergies?.join(', ') || 'None'}</span>
                 </div>
@@ -148,8 +148,8 @@ const PatientDetailPage = () => {
 
         {/* Appointments Tab */}
         <TabsContent value="appointments">
-          <Card className="appointments-card">
-            <h3 className="section-title">Appointment History</h3>
+          <Card className="appointmentsCard">
+            <h3 className="sectionTitle">Appointment History</h3>
             {patient.appointments?.length === 0 ? (
               <EmptyState
                 title="No appointments"
@@ -184,8 +184,8 @@ const PatientDetailPage = () => {
 
         {/* Prescriptions Tab */}
         <TabsContent value="prescriptions">
-          <Card className="prescriptions-card">
-            <h3 className="section-title">Prescription History</h3>
+          <Card className="prescriptionsCard">
+            <h3 className="sectionTitle">Prescription History</h3>
             {patient.prescriptions?.length === 0 ? (
               <EmptyState
                 title="No prescriptions"
@@ -222,24 +222,24 @@ const PatientDetailPage = () => {
 
         {/* Timeline Tab */}
         <TabsContent value="timeline">
-          <Card className="timeline-card">
-            <h3 className="section-title">Patient Timeline</h3>
+          <Card className="timelineCard">
+            <h3 className="sectionTitle">Patient Timeline</h3>
             {timelineEvents?.length === 0 ? (
               <EmptyState
                 title="No timeline events"
                 description="Patient activity will appear here"
               />
             ) : (
-              <div className="timeline-list">
+              <div className="timelineList">
                 {timelineEvents.map(event => (
-                  <div key={event.id} className="timeline-item">
-                    <div className="timeline-time">
+                  <div key={event.id} className="timelineItem">
+                    <div className="timelineTime">
                       {formatDateTime(event.timestamp)}
                     </div>
-                    <div className="timeline-content">
-                      <h4 className="timeline-title">{event.title}</h4>
-                      <p className="timeline-description">{event.description}</p>
-                      <p className="timeline-user">By {event.user}</p>
+                    <div className="timelineContent">
+                      <h4 className="timelineTitle">{event.title}</h4>
+                      <p className="timelineDescription">{event.description}</p>
+                      <p className="timelineUser">By {event.user}</p>
                     </div>
                   </div>
                 ))}

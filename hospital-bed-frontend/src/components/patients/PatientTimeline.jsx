@@ -34,7 +34,7 @@ import Badge from '@components/ui/badge.jsx';
 import Button from '@components/ui/button.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
 import LoadingState from '@components/common/LoadingState.jsx';
-import './PatientTimeline.module.scss';
+import './PatientTimeline.scss';
 
 /**
  * Props:

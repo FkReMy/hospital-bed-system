@@ -38,7 +38,7 @@ import { usePatientProfile } from '@hooks/usePatientProfile';
 import { useBedManagement } from '@hooks/useBedManagement';
 import { useRoleAccess } from '@hooks/useRoleAccess';
 import { formatDateTime } from '@lib/dateUtils';
-import './PatientDetailPage.module.scss';
+import './PatientDetailPage.scss';
 
 const PatientDetailPage = () => {
   const { patientId } = useParams();

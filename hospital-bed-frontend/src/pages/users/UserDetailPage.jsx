@@ -38,7 +38,7 @@ import EmptyState from '@components/common/EmptyState.jsx';
 import { useUserDetail } from '@hooks/useUserDetail'; // Custom hook (to be implemented)
 import { useRoleAccess } from '@hooks/useRoleAccess';
 import { formatDate } from '@lib/dateUtils';
-import './UserDetailPage.module.scss';
+import './UserDetailPage.scss';
 
 const UserDetailPage = () => {
   const { userId } = useParams();

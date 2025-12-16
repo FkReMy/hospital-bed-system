@@ -39,7 +39,7 @@ import DischargeBedDialog from '@components/beds/DischargeBedDialog.jsx';
 import { useBedManagement } from '@hooks/useBedManagement';
 import { useRoleAccess } from '@hooks/useRoleAccess';
 import { BED_STATUS } from '@lib/constants';
-import './BedManagementPage.module.scss';
+import './BedManagementPage.scss';
 
 const BedManagementPage = () => {
   const { beds, departments, isLoadingBeds } = useBedManagement();
@@ -98,21 +98,21 @@ const BedManagementPage = () => {
   }
 
   return (
-    <div className="bed-management-page">
-      <div className="page-header">
-        <h1 className="page-title">Bed Management</h1>
-        <div className="header-actions">
+    <div className="bedManagementPage">
+      <div className="pageHeader">
+        <h1 className="pageTitle">Bed Management</h1>
+        <div className="headerActions">
           <Input
             placeholder="Search bed number or patient..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             leftIcon={Search}
-            className="search-input"
+            className="searchInput"
           />
           <select
             value={selectedDepartment}
             onChange={(e) => setSelectedDepartment(e.target.value)}
-            className="department-filter"
+            className="departmentFilter"
           >
             <option value="all">All Departments</option>
             {departments.map(dept => (
@@ -130,15 +130,15 @@ const BedManagementPage = () => {
           description="Please contact administrator"
         />
       ) : (
-        <div className="departments-grid">
+        <div className="departmentsGrid">
           {departments.map(department => {
             const deptBeds = bedsByDepartment[department.id]?.beds || [];
             
             return (
-              <Card key={department.id} className="department-card">
-                <div className="department-header">
-                  <h2 className="department-name">{department.name}</h2>
-                  <div className="department-stats">
+              <Card key={department.id} className="departmentCard">
+                <div className="departmentHeader">
+                  <h2 className="departmentName">{department.name}</h2>
+                  <div className="departmentStats">
                     <span>{deptBeds.length} beds</span>
                     <span>•</span>
                     <span>{deptBeds.filter(b => b.status === 'available').length} available</span>
@@ -146,7 +146,7 @@ const BedManagementPage = () => {
                 </div>
 
                 {deptBeds.length === 0 ? (
-                  <div className="empty-department">
+                  <div className="emptyDepartment">
                     <EmptyState
                       title="No beds"
                       description="No beds in this department"
@@ -154,12 +154,12 @@ const BedManagementPage = () => {
                     />
                   </div>
                 ) : (
-                  <div className="beds-grid">
+                  <div className="bedsGrid">
                     {deptBeds.map(bed => (
-                      <Card key={bed.id} className="bed-card" interactive>
-                        <div className="bed-header">
-                          <div className="bed-info">
-                            <h3 className="bed-number">{bed.bed_number}</h3>
+                      <Card key={bed.id} className="bedCard" interactive>
+                        <div className="bedHeader">
+                          <div className="bedInfo">
+                            <h3 className="bedNumber">{bed.bed_number}</h3>
                             <BedStatusBadge status={bed.status} />
                           </div>
                           <Button variant="ghost" size="icon">
@@ -167,19 +167,19 @@ const BedManagementPage = () => {
                           </Button>
                         </div>
 
-                        <div className="bed-content">
+                        <div className="bedContent">
                           {bed.current_patient ? (
-                            <div className="patient-info">
-                              <p className="patient-name">{bed.current_patient.full_name}</p>
-                              <p className="patient-id">ID: {bed.current_patient.patient_id}</p>
+                            <div className="patientInfo">
+                              <p className="patientName">{bed.current_patient.full_name}</p>
+                              <p className="patientId">ID: {bed.current_patient.patient_id}</p>
                             </div>
                           ) : (
-                            <p className="no-patient">No patient assigned</p>
+                            <p className="noPatient">No patient assigned</p>
                           )}
                         </div>
 
                         {canManageBeds && (
-                          <div className="bed-actions">
+                          <div className="bedActions">
                             {bed.status === 'available' ? (
                               <Button 
                                 size="sm" 

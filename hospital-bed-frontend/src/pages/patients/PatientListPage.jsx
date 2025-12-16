@@ -43,7 +43,7 @@ import EmptyState from '@components/common/EmptyState.jsx';
 import { usePatientProfile } from '@hooks/usePatientProfile'; // Note: adapt for list
 import { useRoleAccess } from '@hooks/useRoleAccess';
 import { formatDateTime } from '@lib/dateUtils';
-import './PatientListPage.module.scss';
+import './PatientListPage.scss';
 
 const PatientListPage = () => {
   const { hasAccess: canManagePatients } = useRoleAccess(['admin', 'doctor', 'nurse', 'reception']);
@@ -114,9 +114,9 @@ const PatientListPage = () => {
   }, []);
 
   return (
-    <div className="patient-list-page">
-      <div className="page-header">
-        <h1 className="page-title">Patient Management</h1>
+    <div className="patientListPage">
+      <div className="pageHeader">
+        <h1 className="pageTitle">Patient Management</h1>
         {canManagePatients && (
           <Button size="lg">
             <UserPlus className="mr-2" />
@@ -126,9 +126,9 @@ const PatientListPage = () => {
       </div>
 
       {/* Filters */}
-      <Card className="filters-card">
-        <div className="filters-grid">
-          <div className="search-input">
+      <Card className="filtersCard">
+        <div className="filtersGrid">
+          <div className="searchInput">
             <Input
               placeholder="Search name, ID, or phone..."
               value={searchTerm}
@@ -140,7 +140,7 @@ const PatientListPage = () => {
           <select
             value={selectedDepartment}
             onChange={(e) => setSelectedDepartment(e.target.value)}
-            className="department-filter"
+            className="departmentFilter"
           >
             <option value="all">All Departments</option>
             {/* Populate from departments */}
@@ -149,7 +149,7 @@ const PatientListPage = () => {
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="status-filter"
+            className="statusFilter"
           >
             <option value="all">All Status</option>
             <option value="admitted">Admitted</option>
@@ -160,7 +160,7 @@ const PatientListPage = () => {
       </Card>
 
       {/* Patients Table */}
-      <Card className="table-card">
+      <Card className="tableCard">
         {isLoading ? (
           <LoadingState type="table" count={10} />
         ) : filteredAndSortedPatients.length === 0 ? (
@@ -193,7 +193,7 @@ const PatientListPage = () => {
               {filteredAndSortedPatients.map(patient => (
                 <TableRow key={patient.id} className="clickable">
                   <TableCell>
-                    <Link to={`/patients/${patient.id}`} className="patient-name">
+                    <Link to={`/patients/${patient.id}`} className="patientName">
                       {patient.full_name}
                     </Link>
                   </TableCell>

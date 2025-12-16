@@ -33,7 +33,7 @@ import Card from '@components/ui/card.jsx';
 import Badge from '@components/ui/badge.jsx';
 import Button from '@components/ui/button.jsx';
 import Progress from '@components/ui/progress.jsx';
-import './FileUploadItem.module.scss';
+import './FileUploadItem.scss';
 
 /**
  * Props:

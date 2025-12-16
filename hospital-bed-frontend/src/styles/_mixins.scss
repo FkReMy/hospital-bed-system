@@ -4,34 +4,24 @@
  * 
  * Global SCSS mixins for the HBMS application.
  * Centralizes reusable styles for consistent design system implementation.
- * 
- * Features:
- * - Glassmorphic card/elevation mixins
- * - Responsive spacing utilities
- * - Flex/grid helpers
- * - Text truncation
- * - Focus ring
- * - Button variants (can be extended)
- * - Dark/light theme safe (uses CSS variables)
- * 
- * Import this file in components or other partials as needed
  */
 
 @import 'variables';
 
 /* Glassmorphic card base - used in Card, Dialog, NotificationCenter */
 @mixin glass-card {
-  background: rgba(var(--background-rgb), 0.8);
+  background: rgba(var(--background-rgb), 0.9);
   backdrop-filter: blur(20px);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-lg);
+  border-radius: $radius-xl;
 }
 
 /* Glassmorphic card with stronger elevation */
 @mixin glass-card-elevated {
   @include glass-card;
   box-shadow: var(--shadow-2xl);
-  border-color: var(--border/50);
+  border-color: var(--border-50);
 }
 
 /* Flex centering helpers */

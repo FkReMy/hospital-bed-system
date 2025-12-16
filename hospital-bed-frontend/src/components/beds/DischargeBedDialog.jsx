@@ -30,7 +30,7 @@ import Textarea from '@components/ui/textarea.jsx';
 import Button from '@components/ui/button.jsx';
 import Badge from '@components/ui/badge.jsx';
 import BedStatusBadge from '@components/beds/BedStatusBadge.jsx';
-import './DischargeBedDialog.module.scss';
+import './DischargeBedDialog.scss';
 
 /**
  * Props:

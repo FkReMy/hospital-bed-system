@@ -1,0 +1,188 @@
+// src/components/notifications/NotificationCenter.module.scss
+/**
+ * NotificationCenter Module Styles
+ * 
+ * Scoped styles for the NotificationCenter dropdown panel.
+ * Provides premium glassmorphic popover with header, scrollable list,
+ * notification items, and empty state.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing, typography, colors, borders, shadows
+ * - Glassmorphic elevation and blur
+ * - Responsive behavior
+ * - Dark/light theme compatibility
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.notificationCenterPopover {
+  // Positioned relative to trigger (handled by parent positioning)
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: $spacing-sm;
+  z-index: 50;
+  width: 380px;
+  max-width: 96vw;
+
+  @media (max-width: $breakpoint-sm) {
+    width: 320px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+  }
+}
+
+.notificationCenter {
+  @include glass-card;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-2xl;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+
+  // Header
+  .centerHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $spacing-lg $spacing-xl;
+    background: var(--muted-30);
+    border-bottom: 1px solid var(--border);
+
+    .headerTitle {
+      display: flex;
+      align-items: center;
+      gap: $spacing-md;
+
+      .headerIcon {
+        color: var(--primary);
+      }
+
+      .headerText {
+        font-size: $text-lg;
+        font-weight: $font-semibold;
+        color: var(--foreground);
+      }
+
+      .unreadCount {
+        margin-left: auto;
+      }
+    }
+
+    .markAllRead {
+      font-size: $text-sm;
+      padding: $spacing-sm $spacing-md;
+
+      &:hover {
+        background: var(--muted-50);
+      }
+    }
+  }
+
+  // Body - scrollable
+  .centerBody {
+    flex: 1;
+    overflow-y: auto;
+    padding: $spacing-md 0;
+
+    // Notification list
+    .notificationList {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      .notificationItem {
+        display: flex;
+        align-items: flex-start;
+        gap: $spacing-lg;
+        padding: $spacing-md $spacing-xl;
+        transition: background 0.2s ease;
+
+        &:hover {
+          background: var(--muted-20);
+        }
+
+        // Unread indicator
+        &.unread {
+          background: var(--primary-10);
+          border-left: 4px solid var(--primary);
+
+          .itemMessage {
+            font-weight: $font-semibold;
+          }
+        }
+
+        // Icon wrapper with type-based color
+        .itemIcon {
+          flex-shrink: 0;
+          margin-top: $spacing-xs;
+
+          .iconWrapper {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+
+            &.success {
+              background: $success;
+            }
+
+            &.secondary {
+              background: $warning;
+            }
+
+            &.destructive {
+              background: $destructive;
+            }
+
+            &.default {
+              background: var(--primary);
+            }
+          }
+        }
+
+        // Content
+        .itemContent {
+          flex: 1;
+          min-width: 0;
+
+          .itemMessage {
+            font-size: $text-base;
+            color: var(--foreground);
+            margin: 0 0 $spacing-xs;
+            line-height: 1.5;
+          }
+
+          .itemTime {
+            font-size: $text-xs;
+            color: var(--muted-foreground);
+          }
+        }
+
+        // Mark read button (appears on hover/unread)
+        .markReadButton {
+          opacity: 0;
+          transition: opacity 0.2s ease;
+          margin-left: auto;
+          flex-shrink: 0;
+
+          .notificationItem.unread:hover &,
+          &:hover {
+            opacity: 1;
+          }
+        }
+      }
+    }
+
+    // Empty state
+    .centerEmpty {
+      padding: $spacing-3xl $spacing-xl;
+    }
+  }
+}

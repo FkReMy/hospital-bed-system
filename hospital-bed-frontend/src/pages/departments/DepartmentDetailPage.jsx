@@ -37,7 +37,7 @@ import AssignBedDialog from '@components/beds/AssignBedDialog.jsx';
 import DischargeBedDialog from '@components/beds/DischargeBedDialog.jsx';
 import { useBedManagement } from '@hooks/useBedManagement';
 import { useRoleAccess } from '@hooks/useRoleAccess';
-import './DepartmentDetailPage.module.scss';
+import './DepartmentDetailPage.scss';
 
 const DepartmentDetailPage = () => {
   const { departmentId } = useParams();

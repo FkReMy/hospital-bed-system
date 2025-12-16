@@ -27,7 +27,7 @@ import Input from '@components/ui/input.jsx';
 import Button from '@components/ui/button.jsx';
 import Switch from '@components/ui/switch.jsx';
 import { useTheme } from '@hooks/useTheme';
-import './ProfileSettingsPage.module.scss';
+import './ProfileSettingsPage.scss';
 
 const ProfileSettingsPage = () => {
   const { user, updateUser } = useAuth();

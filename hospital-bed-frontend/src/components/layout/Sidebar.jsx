@@ -33,7 +33,7 @@ import {
 import logoLight from '@assets/images/logo-light.svg';
 import logoDark from '@assets/images/logo-dark.svg';
 import { useAuth } from '@hooks/useAuth';
-import './Sidebar.module.scss';
+import './Sidebar.scss';
 
 /**
  * Navigation configuration - defines all possible routes with role permissions
@@ -96,32 +96,32 @@ const Sidebar = ({ isOpen, onToggle }) => {
       aria-label="Main navigation"
     >
       {/* Brand Header */}
-      <div className="sidebar-brand">
+      <div className="sidebarBrand">
         <img 
           src={isOpen ? logoLight : logoDark} 
           alt="HBMS Logo" 
-          className="brand-logo"
+          className="brandLogo"
         />
-        {isOpen && <span className="brand-text">HBMS</span>}
+        {isOpen && <span className="brandText">HBMS</span>}
       </div>
 
       {/* Navigation List */}
-      <nav className="sidebar-nav" aria-label="Primary navigation">
-        <ul className="nav-list">
+      <nav className="sidebarNav" aria-label="Primary navigation">
+        <ul className="navList">
           {visibleNavItems.map((item) => {
             const Icon = item.icon;
 
             return (
-              <li key={item.path} className="nav-item">
+              <li key={item.path} className="navItem">
                 <NavLink
                   to={item.path}
                   className={({ isActive }) => 
-                    `nav-link ${isActive ? 'active' : ''}`
+                    `navLink ${isActive ? 'active' : ''}`
                   }
                   aria-current={({ isActive }) => isActive ? 'page' : undefined}
                 >
-                  <Icon className="nav-icon" size={22} />
-                  {isOpen && <span className="nav-label">{item.label}</span>}
+                  <Icon className="navIcon" size={22} />
+                  {isOpen && <span className="navLabel">{item.label}</span>}
                 </NavLink>
               </li>
             );
@@ -130,21 +130,21 @@ const Sidebar = ({ isOpen, onToggle }) => {
       </nav>
 
       {/* Footer Actions */}
-      <div className="sidebar-footer">
+      <div className="sidebarFooter">
         {/* Logout */}
         <button
           onClick={handleLogout}
-          className="nav-link logout-link"
+          className="navLink logoutLink"
           aria-label="Logout"
         >
-          <LogOut className="nav-icon" size={22} />
-          {isOpen && <span className="nav-label">Logout</span>}
+          <LogOut className="navIcon" size={22} />
+          {isOpen && <span className="navLabel">Logout</span>}
         </button>
 
         {/* Collapse Toggle */}
         <button
           onClick={onToggle}
-          className="toggle-button"
+          className="toggleButton"
           aria-label={isOpen ? 'Collapse sidebar' : 'Expand sidebar'}
           aria-expanded={isOpen}
         >

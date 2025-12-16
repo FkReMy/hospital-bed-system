@@ -21,7 +21,7 @@ import { Shield, Home, LogOut } from 'lucide-react';
 import Card from '@components/ui/card.jsx';
 import Button from '@components/ui/button.jsx';
 import { useAuth } from '@hooks/useAuth';
-import './AccessDeniedPage.module.scss';
+import './AccessDeniedPage.scss';
 
 const AccessDeniedPage = () => {
   const { user, logout } = useAuth();
@@ -31,29 +31,29 @@ const AccessDeniedPage = () => {
   };
 
   return (
-    <div className="access-denied-page">
-      <div className="error-container">
-        <Card className="error-card">
-          <div className="error-icon">
-            <Shield size={80} className="shield-icon" />
+    <div className="accessDeniedPage">
+      <div className="errorContainer">
+        <Card className="errorCard">
+          <div className="errorIcon">
+            <Shield size={80} className="shieldIcon" />
           </div>
 
-          <div className="error-content">
-            <h1 className="error-title">Access Denied</h1>
-            <p className="error-message">
+          <div className="errorContent">
+            <h1 className="errorTitle">Access Denied</h1>
+            <p className="errorMessage">
               You do not have permission to view this page.
             </p>
             {user && (
-              <p className="role-info">
+              <p className="roleInfo">
                 Current role: <strong>{user.current_role || user.role}</strong>
               </p>
             )}
-            <p className="error-help">
+            <p className="errorHelp">
               Please contact your administrator if you believe this is an error.
             </p>
           </div>
 
-          <div className="error-actions">
+          <div className="errorActions">
             <Button asChild size="lg">
               <Link to="/dashboard">
                 <Home className="mr-2" size={20} />
@@ -68,7 +68,7 @@ const AccessDeniedPage = () => {
           </div>
         </Card>
 
-        <div className="page-footer">
+        <div className="pageFooter">
           <p>Hospital Bed Management System</p>
           <p>For authorized personnel only</p>
         </div>

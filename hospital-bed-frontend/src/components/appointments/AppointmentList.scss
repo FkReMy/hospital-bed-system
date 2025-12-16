@@ -1,0 +1,158 @@
+// src/components/appointments/AppointmentList.module.scss
+/**
+ * AppointmentList Module Styles
+ * 
+ * Scoped styles for the AppointmentList component.
+ * Ensures professional, readable table layout with proper spacing,
+ * hover states, mobile responsiveness, and consistent badge/action styling.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing, typography, colors, borders, shadows
+ * - Glassmorphic enhancements (subtle elevation)
+ * - Dark/light theme compatibility via CSS variables
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.appointmentList {
+  // Full width container with comfortable constraints
+  width: 100%;
+  overflow-x: auto; // Horizontal scroll on small screens for table
+
+  // Optional glass card wrapper for elevated look
+  .listWrapper {
+    @include glass-card;
+    border-radius: $radius-xl;
+    overflow: hidden; // Clip inner table corners
+  }
+
+  // Table enhancements
+  :global(.table) {
+    width: 100%;
+    min-width: 640px; // Prevent collapse on mobile
+
+    :global(.tableHead) {
+      background: var(--muted);
+      border-bottom: 1px solid var(--border);
+
+      :global(.tableHeadCell) {
+        font-size: $text-sm;
+        font-weight: $font-semibold;
+        color: var(--muted-foreground);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: $spacing-md $spacing-lg;
+      }
+    }
+
+    :global(.tableRow) {
+      transition: background-color 0.2s ease;
+      border-bottom: 1px solid var(--border);
+
+      &:hover {
+        background: var(--muted-50);
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+
+    :global(.tableCell) {
+      padding: $spacing-lg;
+      vertical-align: middle;
+      font-size: $text-base;
+
+      // Icon + text alignment
+      .cellContent {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+
+        .icon {
+          color: var(--muted-foreground);
+          flex-shrink: 0;
+        }
+      }
+
+      // Truncate long reason text
+      &.reasonCell {
+        max-width: 300px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      // Right-aligned actions
+      &.actionsCell {
+        text-align: right;
+      }
+    }
+  }
+
+  // Badge consistency
+  :global(.badge) {
+    font-size: $text-xs;
+    font-weight: $font-semibold;
+    padding: $spacing-xs $spacing-sm;
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-xs;
+
+    .badgeIcon {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  // Dropdown menu trigger button
+  :global(.dropdownTrigger) {
+    &:hover {
+      background: var(--muted);
+    }
+  }
+
+  // Mobile card fallback (optional - can be implemented via JS media query)
+  .mobileCard {
+    @media (max-width: $breakpoint-md) {
+      display: block;
+
+      :global(.table),
+      :global(.tableHead) {
+        display: none;
+      }
+
+      :global(.tableBody) {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-md;
+      }
+
+      :global(.tableRow) {
+        @include glass-card;
+        padding: $spacing-lg;
+        border-radius: $radius-lg;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: $spacing-md;
+
+        .cellContent {
+          grid-column: 1 / -1;
+          font-weight: $font-medium;
+        }
+
+        &.actionsCell {
+          grid-column: 2 / -1;
+          text-align: right;
+        }
+      }
+    }
+  }
+
+  // Empty state centering
+  .emptyContainer {
+    padding: $spacing-2xl;
+    text-align: center;
+  }
+}

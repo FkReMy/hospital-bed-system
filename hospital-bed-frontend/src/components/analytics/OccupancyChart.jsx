@@ -35,7 +35,7 @@ import CardContent from '@components/ui/card-content.jsx';
 import CardTitle from '@components/ui/card-title.jsx';
 import Skeleton from '@components/ui/skeleton.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
-import './OccupancyChart.module.scss';
+import './OccupancyChart.scss';
 
 /**
  * Props:

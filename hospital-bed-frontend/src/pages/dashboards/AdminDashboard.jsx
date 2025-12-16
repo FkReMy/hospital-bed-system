@@ -24,7 +24,9 @@ import {
   Calendar, 
   Activity,
   TrendingUp,
-  AlertCircle
+  AlertCircle,
+  CheckCircle,
+  Shield
 } from 'lucide-react';
 import Card from '@components/ui/card.jsx';
 import Badge from '@components/ui/badge.jsx';
@@ -35,7 +37,7 @@ import { useBedManagement } from '@hooks/useBedManagement';
 import { useAppointmentManagement } from '@hooks/useAppointmentManagement';
 import { useNotificationFeed } from '@hooks/useNotificationFeed';
 import { Link } from 'react-router-dom';
-import './AdminDashboard.module.scss';
+import './AdminDashboard.scss';
 
 const AdminDashboard = () => {
   const { beds, departments, isLoadingBeds } = useBedManagement();
@@ -61,96 +63,96 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="admin-dashboard">
-      <div className="dashboard-header">
-        <h1 className="dashboard-title">Admin Dashboard</h1>
-        <p className="dashboard-subtitle">Hospital-wide overview and management</p>
+    <div className="adminDashboard">
+      <div className="dashboardHeader">
+        <h1 className="dashboardTitle">Admin Dashboard</h1>
+        <p className="dashboardSubtitle">Hospital-wide overview and management</p>
       </div>
 
       {/* Key Metrics Grid */}
-      <div className="metrics-grid">
-        <Card className="metric-card total-beds">
-          <div className="metric-icon">
+      <div className="metricsGrid">
+        <Card className="metricCard totalBeds">
+          <div className="metricIcon">
             <BedDouble size={32} />
           </div>
-          <div className="metric-content">
-            <p className="metric-label">Total Beds</p>
-            <p className="metric-value">{totalBeds}</p>
+          <div className="metricContent">
+            <p className="metricLabel">Total Beds</p>
+            <p className="metricValue">{totalBeds}</p>
           </div>
         </Card>
 
-        <Card className="metric-card available-beds">
-          <div className="metric-icon success">
+        <Card className="metricCard availableBeds">
+          <div className="metricIcon success">
             <CheckCircle size={32} />
           </div>
-          <div className="metric-content">
-            <p className="metric-label">Available</p>
-            <p className="metric-value">{availableBeds}</p>
+          <div className="metricContent">
+            <p className="metricLabel">Available</p>
+            <p className="metricValue">{availableBeds}</p>
           </div>
         </Card>
 
-        <Card className="metric-card occupancy">
-          <div className="metric-icon">
+        <Card className="metricCard occupancy">
+          <div className="metricIcon">
             <TrendingUp size={32} />
           </div>
-          <div className="metric-content">
-            <p className="metric-label">Occupancy Rate</p>
-            <p className="metric-value">{occupancyRate}%</p>
-            <Progress value={occupancyRate} className="metric-progress" />
+          <div className="metricContent">
+            <p className="metricLabel">Occupancy Rate</p>
+            <p className="metricValue">{occupancyRate}%</p>
+            <Progress value={occupancyRate} className="metricProgress" />
           </div>
         </Card>
 
-        <Card className="metric-card today-appointments">
-          <div className="metric-icon">
+        <Card className="metricCard todayAppointments">
+          <div className="metricIcon">
             <Calendar size={32} />
           </div>
-          <div className="metric-content">
-            <p className="metric-label">Today's Appointments</p>
-            <p className="metric-value">{todayAppointments}</p>
+          <div className="metricContent">
+            <p className="metricLabel">Today's Appointments</p>
+            <p className="metricValue">{todayAppointments}</p>
           </div>
         </Card>
 
-        <Card className="metric-card critical-alerts">
-          <div className="metric-icon destructive">
+        <Card className="metricCard criticalAlerts">
+          <div className="metricIcon destructive">
             <AlertCircle size={32} />
           </div>
-          <div className="metric-content">
-            <p className="metric-label">Critical Alerts</p>
-            <p className="metric-value">{criticalNotifications}</p>
+          <div className="metricContent">
+            <p className="metricLabel">Critical Alerts</p>
+            <p className="metricValue">{criticalNotifications}</p>
           </div>
         </Card>
 
-        <Card className="metric-card total-patients">
-          <div className="metric-icon">
+        <Card className="metricCard totalPatients">
+          <div className="metricIcon">
             <Users size={32} />
           </div>
-          <div className="metric-content">
-            <p className="metric-label">Current Patients</p>
-            <p className="metric-value">{occupiedBeds}</p>
+          <div className="metricContent">
+            <p className="metricLabel">Current Patients</p>
+            <p className="metricValue">{occupiedBeds}</p>
           </div>
         </Card>
       </div>
 
       {/* Department Overview */}
-      <Card className="department-overview">
-        <h2 className="section-title">Department Bed Status</h2>
-        <div className="departments-list">
+      <Card className="departmentOverview">
+        <h2 className="sectionTitle">Department Bed Status</h2>
+        <div className="departmentsList">
           {departments.map(dept => {
             const deptBeds = beds.filter(b => b.department_id === dept.id);
             const deptOccupied = deptBeds.filter(b => b.status === 'occupied').length;
             const deptRate = deptBeds.length > 0 ? Math.round((deptOccupied / deptBeds.length) * 100) : 0;
 
             return (
-              <div key={dept.id} className="department-item">
-                <div className="department-info">
-                  <h3 className="department-name">{dept.name}</h3>
-                  <p className="department-stats">
+              <div key={dept.id} className="departmentItem">
+                <div className="departmentInfo">
+                  <h3 className="departmentName">{dept.name}</h3>
+                  <p className="departmentStats">
                     {deptBeds.length} beds • {deptOccupied} occupied
                   </p>
                 </div>
-                <div className="department-progress">
+                <div className="departmentProgress">
                   <Progress value={deptRate} />
-                  <span className="progress-label">{deptRate}%</span>
+                  <span className="progressLabel">{deptRate}%</span>
                 </div>
               </div>
             );
@@ -159,9 +161,9 @@ const AdminDashboard = () => {
       </Card>
 
       {/* Quick Actions */}
-      <Card className="quick-actions">
-        <h2 className="section-title">Quick Actions</h2>
-        <div className="actions-grid">
+      <Card className="quickActions">
+        <h2 className="sectionTitle">Quick Actions</h2>
+        <div className="actionsGrid">
           <Button asChild size="lg">
             <Link to="/beds">
               <BedDouble className="mr-2" />
@@ -190,20 +192,20 @@ const AdminDashboard = () => {
       </Card>
 
       {/* Recent Activity */}
-      <Card className="recent-activity">
-        <h2 className="section-title">
+      <Card className="recentActivity">
+        <h2 className="sectionTitle">
           Recent Notifications 
           {unreadCount > 0 && <Badge className="ml-2">{unreadCount}</Badge>}
         </h2>
         {notifications.length === 0 ? (
-          <p className="empty-notifications">No recent notifications</p>
+          <p className="emptyNotifications">No recent notifications</p>
         ) : (
-          <div className="notifications-list">
+          <div className="notificationsList">
             {notifications.slice(0, 5).map(notification => (
-              <div key={notification.id} className="notification-item">
-                <div className="notification-content">
-                  <p className="notification-message">{notification.message}</p>
-                  <p className="notification-time">
+              <div key={notification.id} className="notificationItem">
+                <div className="notificationContent">
+                  <p className="notificationMessage">{notification.message}</p>
+                  <p className="notificationTime">
                     {new Date(notification.created_at).toLocaleString()}
                   </p>
                 </div>

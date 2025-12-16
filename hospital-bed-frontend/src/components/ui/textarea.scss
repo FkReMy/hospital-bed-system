@@ -1,0 +1,87 @@
+// src/components/ui/textarea.module.scss
+/**
+ * Textarea Module Styles
+ * 
+ * Scoped styles for the Textarea component - premium glassmorphic multi-line input
+ * with size variants, error state, and focus ring.
+ * 
+ * Features:
+ * - Glassmorphic background with blur
+ * - Error variant with red border/tint
+ * - Size variants with scaled padding/font
+ * - Focus ring and hover states
+ * - Disabled state
+ * - Vertical resize support
+ * - Dark/light theme compatibility
+ * 
+ * Unified with Input, Select, Checkbox
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.textarea {
+  // Base textarea styling
+  @include glass-card;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: $radius-lg;
+  font-size: $text-base;
+  font-weight: $font-medium;
+  color: var(--foreground);
+  transition: all 0.2s ease;
+  background: transparent;
+  resize: vertical;
+  min-height: 80px;
+
+  // Focus state
+  &:focus {
+    outline: none;
+    border-color: var(--ring);
+    box-shadow: 0 0 0 3px var(--primary-30);
+  }
+
+  // Disabled state
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: var(--muted-20);
+    resize: none;
+  }
+
+  // Placeholder
+  &::placeholder {
+    color: var(--muted-foreground);
+    opacity: 0.8;
+  }
+
+  // Size variants
+  &.sm {
+    padding: $spacing-sm;
+    font-size: $text-sm;
+    min-height: 60px;
+  }
+
+  &.md {
+    padding: $spacing-md;
+    font-size: $text-base;
+    min-height: 80px;
+  }
+
+  &.lg {
+    padding: $spacing-lg;
+    font-size: $text-lg;
+    min-height: 100px;
+  }
+
+  // Error variant
+  &.error {
+    border-color: $destructive;
+    background: rgba(239, 68, 68, 0.05);
+
+    &:focus {
+      border-color: $destructive;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3);
+    }
+  }
+}

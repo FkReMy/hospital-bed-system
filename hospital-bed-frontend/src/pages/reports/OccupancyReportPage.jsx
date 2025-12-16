@@ -35,7 +35,7 @@ import EmptyState from '@components/common/EmptyState.jsx';
 import { useBedManagement } from '@hooks/useBedManagement';
 import { useAuth } from '@hooks/useAuth';
 import { formatDateTime } from '@lib/dateUtils';
-import './DepartmentLoadReportPage.module.scss';
+import './DepartmentLoadReportPage.scss';
 
 const DepartmentLoadReportPage = () => {
   const { beds, departments, isLoadingBeds } = useBedManagement();

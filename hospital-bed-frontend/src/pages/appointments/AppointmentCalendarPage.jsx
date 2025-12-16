@@ -26,7 +26,7 @@ import EmptyState from '@components/common/EmptyState.jsx';
 import LoadingState from '@components/common/LoadingState.jsx';
 import AppointmentStatusBadge from '@components/appointments/AppointmentStatusBadge.jsx';
 import { useAppointmentManagement } from '@hooks/useAppointmentManagement';
-import './AppointmentCalendarPage.module.scss';
+import './AppointmentCalendarPage.scss';
 
 const localizer = momentLocalizer(moment);
 

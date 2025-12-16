@@ -25,7 +25,7 @@ import DropdownMenuContent from '@components/ui/dropdown-menu-content.jsx';
 import DropdownMenuItem from '@components/ui/dropdown-menu-item.jsx';
 import Badge from '@components/ui/badge.jsx';
 import { useAuth } from '@hooks/useAuth';
-import './RoleSwitcher.module.scss';
+import './RoleSwitcher.scss';
 
 /**
  * Role configuration - maps role name to icon and color variant
@@ -57,9 +57,9 @@ const RoleSwitcher = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="role-switcher-trigger">
-          <Avatar className="role-avatar">
-            <div className="avatar-icon">
+        <button className="roleSwitcherTrigger">
+          <Avatar className="roleAvatar">
+            <div className="avatarIcon">
               <CurrentIcon size={18} />
             </div>
             <AvatarFallback>
@@ -67,8 +67,8 @@ const RoleSwitcher = () => {
             </AvatarFallback>
           </Avatar>
 
-          <div className="role-info">
-            <span className="current-role-label">
+          <div className="roleInfo">
+            <span className="currentRoleLabel">
               {currentConfig.label}
             </span>
             <Badge variant={currentConfig.variant} size="sm">
@@ -76,11 +76,11 @@ const RoleSwitcher = () => {
             </Badge>
           </div>
 
-          <ChevronDown className="chevron-icon" size={16} />
+          <ChevronDown className="chevronIcon" size={16} />
         </button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" className="role-menu">
+      <DropdownMenuContent align="end" className="roleMenu">
         {userRoles.map((role) => {
           const config = roleConfig[role] || { icon: User, label: role };
           const RoleIcon = config.icon;
@@ -90,12 +90,12 @@ const RoleSwitcher = () => {
               key={role}
               onClick={() => handleRoleChange(role)}
               disabled={role === currentRole}
-              className="role-item"
+              className="roleItem"
             >
-              <RoleIcon className="role-item-icon" size={16} />
-              <span className="role-item-label">{config.label}</span>
+              <RoleIcon className="roleItemIcon" size={16} />
+              <span className="roleItemLabel">{config.label}</span>
               {role === currentRole && (
-                <Badge variant="outline" size="sm" className="current-indicator">
+                <Badge variant="outline" size="sm" className="currentIndicator">
                   Current
                 </Badge>
               )}

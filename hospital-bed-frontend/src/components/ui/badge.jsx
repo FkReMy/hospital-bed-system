@@ -16,7 +16,7 @@
  */
 
 import React from 'react';
-import './badge.module.scss';
+import './badge.scss';
 
 /**
  * Props:

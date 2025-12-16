@@ -27,7 +27,7 @@ import {
 import Card from '@components/ui/card.jsx';
 import Badge from '@components/ui/badge.jsx';
 import Avatar from '@components/ui/avatar.jsx';
-import './PrescriptionCard.module.scss';
+import './PrescriptionCard.scss';
 
 /**
  * Props:

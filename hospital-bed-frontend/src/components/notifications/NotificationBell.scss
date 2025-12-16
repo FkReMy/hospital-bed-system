@@ -1,0 +1,131 @@
+// src/components/notifications/NotificationBell.module.scss
+/**
+ * NotificationBell Module Styles
+ * 
+ * Scoped styles for the NotificationBell component.
+ * Provides premium bell icon with unread badge, pulse ring animation,
+ * and hover/focus states in the topbar.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing, colors, shadows, radii
+ * - Pulse animations
+ * - Dark/light theme compatibility
+ * - Glassmorphic integration
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.notificationBellContainer {
+  position: relative;
+  display: inline-block;
+
+  // Bell button trigger
+  .notificationBell {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: $radius-lg;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: var(--muted-50);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--ring);
+      outline-offset: 2px;
+    }
+
+    // Bell icon
+    .bellIcon {
+      color: var(--foreground);
+      transition: transform 0.2s ease;
+    }
+
+    // Unread state enhancements
+    &.hasUnread {
+      .bellIcon {
+        animation: bellRing 0.6s ease-in-out;
+      }
+    }
+  }
+
+  // Unread count badge
+  .unreadBadge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 $spacing-xs;
+    font-size: $text-xs;
+    font-weight: $font-bold;
+    line-height: 18px;
+    border-radius: 9999px;
+    border: 2px solid var(--background);
+    background: $destructive;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: badgePop 0.3s ease-out;
+    z-index: 10;
+  }
+
+  // Pulse ring for new notifications
+  .pulseRing {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: $destructive;
+    opacity: 0.3;
+    animation: pulseRing 1.5s infinite ease-out;
+    pointer-events: none;
+  }
+}
+
+// Keyframe animations
+@keyframes bellRing {
+  0%, 100% {
+    transform: rotate(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: rotate(10deg);
+  }
+  20%, 40%, 60%, 80% {
+    transform: rotate(-10deg);
+  }
+}
+
+@keyframes pulseRing {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  70% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+@keyframes badgePop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

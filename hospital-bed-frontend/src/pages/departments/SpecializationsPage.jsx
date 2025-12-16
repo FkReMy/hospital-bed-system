@@ -19,7 +19,7 @@
  */
 
 import React from 'react';
-import './SpecializationsPage.module.scss';
+import './SpecializationsPage.scss';
 
 const SpecializationsPage = () => {
   return (

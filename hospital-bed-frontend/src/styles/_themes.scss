@@ -6,102 +6,144 @@
  * Defines light/dark mode using CSS custom properties (variables).
  * Applied via .light and .dark classes on <html> element.
  * 
- * Features:
- * - Complete color palette for both themes
- * - Smooth theme transition
- * - Glassmorphic compatible (semi-transparent backgrounds)
- * - Unified with all components (cards, buttons, inputs, tables)
- * - Ready for 'system' preference via useTheme hook
- * 
- * Theme applied by useTheme hook in main.jsx
+ * Hospital Color Palette:
+ * - Primary Green (#16A34A) - Health, Healing, Calm
+ * - Secondary Blue (#2563EB) - Trust, Professionalism
+ * - Neutral colors for cleanliness and readability
+ * - Status colors for feedback
  */
 
 :root {
   /* 🏥 Light Theme - Hospital Clean & Calm */
   
   /* Backgrounds */
-  --background: 255 255 255;             /* Pure White #FFFFFF */
-  --foreground: 17 24 39;                /* Near Black #111827 */
-  --muted: 249 250 251;                  /* Light Grey #F9FAFB (App Background) */
+  --background: #FFFFFF;
+  --background-rgb: 255, 255, 255;
+  --foreground: #111827;
+  --muted: #F9FAFB;
+  --muted-5: rgba(249, 250, 251, 0.05);
+  --muted-10: rgba(249, 250, 251, 0.1);
+  --muted-20: rgba(249, 250, 251, 0.2);
+  --muted-30: rgba(249, 250, 251, 0.3);
+  --muted-50: rgba(249, 250, 251, 0.5);
   
   /* Cards & Surfaces */
-  --card: 255 255 255;                   /* Pure White */
-  --card-foreground: 17 24 39;
-  --popover: 255 255 255;
-  --popover-foreground: 17 24 39;
+  --card: #FFFFFF;
+  --card-foreground: #111827;
+  --popover: #FFFFFF;
+  --popover-foreground: #111827;
   
   /* 🟢 Primary Actions (Healing Green) */
-  --primary: 22 163 74;                  /* #16A34A */
-  --primary-foreground: 255 255 255;     /* White Text */
-  --primary-hover: 21 128 61;            /* #15803D */
+  --primary: #16A34A;
+  --primary-foreground: #FFFFFF;
+  --primary-hover: #15803D;
+  --primary-active: #166534;
+  --primary-5: rgba(22, 163, 74, 0.05);
+  --primary-10: rgba(22, 163, 74, 0.1);
+  --primary-20: rgba(22, 163, 74, 0.2);
+  --primary-30: rgba(22, 163, 74, 0.3);
   
   /* 🔵 Secondary Actions (Trust Blue) */
-  --secondary: 37 99 235;                /* #2563EB */
-  --secondary-foreground: 255 255 255;
-  --accent: 236 253 245;                 /* Soft Green #ECFDF5 (Active States) */
-  --accent-foreground: 22 163 74;
+  --secondary: #2563EB;
+  --secondary-foreground: #FFFFFF;
+  --secondary-hover: #1D4ED8;
+  
+  /* Accent (Soft Green Background) */
+  --accent: #ECFDF5;
+  --accent-foreground: #16A34A;
   
   /* ✍️ Text Hierarchy */
-  --text-main: 17 24 39;                 /* #111827 */
-  --text-secondary: 75 85 99;            /* #4B5563 (Reading Text) */
-  --text-muted: 107 114 128;             /* #6B7280 (Labels) */
+  --text-main: #111827;
+  --text-secondary: #4B5563;
+  --muted-foreground: #6B7280;
   
-  /* Status & UI Borders */
-  --destructive: 239 68 68;              /* #EF4444 */
-  --success: 34 197 94;                  /* #22C55E */
-  --border: 229 231 235;                 /* #E5E7EB */
-  --input: 229 231 235;
-  --ring: 22 163 74;                     /* Focus Ring (Green) */
+  /* Status & Feedback */
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+  --destructive-hover: #DC2626;
+  --success: #22C55E;
+  --success-hover: #16A34A;
+  --warning: #F59E0B;
+  --warning-hover: #D97706;
+  --info: #0EA5E9;
   
-  --radius: 0.5rem;                      /* 8px - Soft & Friendly */
+  /* UI Borders & Inputs */
+  --border: #E5E7EB;
+  --border-50: rgba(229, 231, 235, 0.5);
+  --input: #E5E7EB;
+  --ring: #16A34A;
+  
+  --radius: 0.5rem;
   
   /* Sidebar Specific */
-  --sidebar-bg: 17 24 39;                /* #111827 */
-  --sidebar-foreground: 249 250 251;     /* #F9FAFB */
-  
-  /* Legacy compatibility */
-  --muted-foreground: 75 85 99;          /* #4B5563 */
-  --destructive-foreground: 255 255 255;
-  --primary-active: 22 101 52;
+  --sidebar-bg: #111827;
+  --sidebar-foreground: #F9FAFB;
   --sidebar-hover: rgba(22, 163, 74, 0.1);
+  
+  /* Shadows as CSS variables */
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  
+  /* Font */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 .dark {
   /* 🌙 Dark Theme - Comfortable & Low Strain */
-  /* Optimized for night shifts and low-light environments */
   
-  --background: 17 24 39;                /* #111827 */
-  --foreground: 249 250 251;             /* #F9FAFB */
-  --muted: 31 41 55;                     /* #1F2937 */
+  --background: #111827;
+  --background-rgb: 17, 24, 39;
+  --foreground: #F9FAFB;
+  --muted: #1F2937;
+  --muted-5: rgba(31, 41, 55, 0.05);
+  --muted-10: rgba(31, 41, 55, 0.1);
+  --muted-20: rgba(31, 41, 55, 0.2);
+  --muted-30: rgba(31, 41, 55, 0.3);
+  --muted-50: rgba(31, 41, 55, 0.5);
   
-  --card: 31 41 55;                      /* #1F2937 */
-  --card-foreground: 249 250 251;
+  --card: #1F2937;
+  --card-foreground: #F9FAFB;
+  --popover: #1F2937;
+  --popover-foreground: #F9FAFB;
   
   /* Primary shifts to slightly brighter green for contrast */
-  --primary: 34 197 94;                  /* #22C55E */
-  --primary-foreground: 17 24 39;
+  --primary: #22C55E;
+  --primary-foreground: #111827;
+  --primary-hover: #4ADE80;
+  --primary-active: #16A34A;
+  --primary-5: rgba(34, 197, 94, 0.05);
+  --primary-10: rgba(34, 197, 94, 0.1);
+  --primary-20: rgba(34, 197, 94, 0.2);
+  --primary-30: rgba(34, 197, 94, 0.3);
   
-  --secondary: 59 130 246;               /* #3B82F6 */
-  --secondary-foreground: 255 255 255;
+  --secondary: #3B82F6;
+  --secondary-foreground: #FFFFFF;
+  --secondary-hover: #60A5FA;
   
-  --text-secondary: 156 163 175;         /* #9CA3AF */
-  --text-muted: 107 114 128;             /* #6B7280 */
+  --accent: #064E3B;
+  --accent-foreground: #A7F3D0;
   
-  --border: 55 65 81;                    /* #374151 */
-  --input: 55 65 81;
+  --text-secondary: #9CA3AF;
+  --muted-foreground: #9CA3AF;
   
-  /* Legacy compatibility */
-  --muted-foreground: 156 163 175;
-  --accent: 6 78 59;
-  --accent-foreground: 167 243 208;
-  --destructive: 248 113 113;
-  --destructive-foreground: 17 24 39;
-  --success: 74 222 128;
-  --ring: 34 197 94;
-  --primary-hover: 74 222 128;
-  --primary-active: 22 163 74;
-  --sidebar-bg: 3 7 18;
-  --sidebar-foreground: 243 244 246;
+  --border: #374151;
+  --border-50: rgba(55, 65, 81, 0.5);
+  --input: #374151;
+  
+  --destructive: #F87171;
+  --destructive-foreground: #111827;
+  --destructive-hover: #EF4444;
+  --success: #4ADE80;
+  --success-hover: #22C55E;
+  --warning: #FBBF24;
+  --warning-hover: #F59E0B;
+  --info: #38BDF8;
+  --ring: #22C55E;
+  
+  --sidebar-bg: #030712;
+  --sidebar-foreground: #F3F4F6;
   --sidebar-hover: rgba(34, 197, 94, 0.1);
 }
 
@@ -109,10 +151,10 @@
 *,
 *::before,
 *::after {
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-/* Optional: reduce motion for users who prefer it */
+/* Disable color transitions for reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

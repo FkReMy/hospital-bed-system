@@ -27,7 +27,7 @@ import {
   UserX,        // no_show
 } from 'lucide-react';
 import Badge from '@components/ui/badge.jsx';
-import './AppointmentStatusBadge.module.scss';
+import './AppointmentStatusBadge.scss';
 
 /**
  * Props:

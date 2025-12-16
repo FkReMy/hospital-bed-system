@@ -29,7 +29,7 @@ import Button from '@components/ui/button.jsx';
 import Card from '@components/ui/card.jsx';
 import Badge from '@components/ui/badge.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
-import './NotificationCenter.module.scss';
+import './NotificationCenter.scss';
 
 /**
  * Props:

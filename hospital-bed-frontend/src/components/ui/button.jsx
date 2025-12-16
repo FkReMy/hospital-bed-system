@@ -22,7 +22,7 @@
 
 import React from 'react';
 import { Loader2 } from 'lucide-react';
-import './button.module.scss';
+import './button.scss';
 
 /**
  * Props:

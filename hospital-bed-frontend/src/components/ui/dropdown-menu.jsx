@@ -26,7 +26,7 @@
  */
 
 import React from 'react';
-import './dropdown-menu.module.scss';
+import './dropdown-menu.scss';
 
 const DropdownMenuContext = React.createContext({
   isOpen: false,

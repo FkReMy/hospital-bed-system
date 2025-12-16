@@ -21,7 +21,7 @@ import { UploadCloud, FileText, XCircle, AlertCircle } from 'lucide-react';
 import Button from '@components/ui/button.jsx';
 import Progress from '@components/ui/progress.jsx';
 import FileUploadItem from '@components/uploads/FileUploadItem.jsx';
-import './FileUploadZone.module.scss';
+import './FileUploadZone.scss';
 
 /**
  * Props:

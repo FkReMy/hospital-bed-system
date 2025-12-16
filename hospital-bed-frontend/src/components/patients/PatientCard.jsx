@@ -16,7 +16,7 @@
  */
 
 import Badge from '@components/ui/badge.jsx';
-import styles from './PatientCard.module.scss';
+import styles from './PatientCard.scss';
 
 /**
  * Props:

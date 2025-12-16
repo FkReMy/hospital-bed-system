@@ -27,7 +27,7 @@
  */
 
 import React from 'react';
-import './table.module.scss';
+import './table.scss';
 
 /**
  * Table - root container

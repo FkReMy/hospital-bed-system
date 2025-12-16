@@ -4,18 +4,6 @@
  * 
  * Modern, minimal CSS reset for the HBMS application.
  * Based on best practices (normalize + sensible defaults).
- * 
- * Features:
- * - Box-sizing border-box globally
- * - Remove default margins/paddings
- * - Smooth scrolling
- * - Improved text rendering
- * - Accessible focus outlines
- * - Consistent form element styling
- * - Dark/light theme safe
- * - No heavy reset (keeps useful browser defaults)
- * 
- * This is imported first in your global styles
  */
 
 @import 'variables';
@@ -71,6 +59,7 @@ body {
   text-rendering: optimizeSpeed;
   background: var(--background);
   color: var(--foreground);
+  font-family: var(--font-sans);
 }
 
 /* Make images easier to work with */

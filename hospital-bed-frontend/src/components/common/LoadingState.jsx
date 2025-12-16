@@ -21,7 +21,7 @@
 import React from 'react';
 import Skeleton from '@components/ui/skeleton.jsx';
 import Card from '@components/ui/card.jsx';
-import './LoadingState.module.scss';
+import './LoadingState.scss';
 
 /**
  * Props:
@@ -49,15 +49,15 @@ const LoadingState = ({
   // Render skeleton items based on type
   const renderSkeletons = () => {
     return Array.from({ length: count }, (_, i) => (
-      <Skeleton key={i} className={`loading-skeleton ${skeletonHeight}`} />
+      <Skeleton key={i} className={`loadingSkeleton ${skeletonHeight}`} />
     ));
   };
 
   // Layout wrappers
   if (type === 'table') {
     return (
-      <div className={`loading-state table ${className}`} role="status" aria-live="polite">
-        <div className="table-skeletons">
+      <div className={`loadingState table ${className}`} role="status" aria-live="polite">
+        <div className="tableSkeletons">
           {renderSkeletons()}
         </div>
       </div>
@@ -66,8 +66,8 @@ const LoadingState = ({
 
   if (type === 'grid' || type === 'card') {
     return (
-      <div className={`loading-state grid ${className}`} role="status" aria-live="polite">
-        <div className="grid-skeletons">
+      <div className={`loadingState grid ${className}`} role="status" aria-live="polite">
+        <div className="gridSkeletons">
           {renderSkeletons()}
         </div>
       </div>
@@ -76,8 +76,8 @@ const LoadingState = ({
 
   if (type === 'full') {
     return (
-      <Card className={`loading-state full ${className}`} role="status" aria-live="polite">
-        <div className="full-skeleton-container">
+      <Card className={`loadingState full ${className}`} role="status" aria-live="polite">
+        <div className="fullSkeletonContainer">
           {renderSkeletons()}
         </div>
       </Card>
@@ -86,7 +86,7 @@ const LoadingState = ({
 
   // Fallback: simple vertical stack
   return (
-    <div className={`loading-state ${className}`} role="status" aria-live="polite">
+    <div className={`loadingState ${className}`} role="status" aria-live="polite">
       {renderSkeletons()}
     </div>
   );
