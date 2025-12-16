@@ -94,7 +94,7 @@ const BedManagementPage = () => {
   };
 
   if (isLoadingBeds) {
-    return <LoadingState type="grid" count={12} />;
+    return <LoadingState count={12} type="grid" />;
   }
 
   return (
@@ -103,16 +103,16 @@ const BedManagementPage = () => {
         <h1 className="pageTitle">Bed Management</h1>
         <div className="headerActions">
           <Input
+            className="searchInput"
+            leftIcon={Search}
             placeholder="Search bed number or patient..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            leftIcon={Search}
-            className="searchInput"
           />
           <select
+            className="departmentFilter"
             value={selectedDepartment}
             onChange={(e) => setSelectedDepartment(e.target.value)}
-            className="departmentFilter"
           >
             <option value="all">All Departments</option>
             {departments.map(dept => (
@@ -126,8 +126,8 @@ const BedManagementPage = () => {
 
       {departments.length === 0 ? (
         <EmptyState
-          title="No departments configured"
           description="Please contact administrator"
+          title="No departments configured"
         />
       ) : (
         <div className="departmentsGrid">
@@ -135,7 +135,7 @@ const BedManagementPage = () => {
             const deptBeds = bedsByDepartment[department.id]?.beds || [];
             
             return (
-              <Card key={department.id} className="departmentCard">
+              <Card className="departmentCard" key={department.id}>
                 <div className="departmentHeader">
                   <h2 className="departmentName">{department.name}</h2>
                   <div className="departmentStats">
@@ -148,21 +148,21 @@ const BedManagementPage = () => {
                 {deptBeds.length === 0 ? (
                   <div className="emptyDepartment">
                     <EmptyState
-                      title="No beds"
                       description="No beds in this department"
                       size="small"
+                      title="No beds"
                     />
                   </div>
                 ) : (
                   <div className="bedsGrid">
                     {deptBeds.map(bed => (
-                      <Card key={bed.id} className="bedCard" interactive>
+                      <Card interactive className="bedCard" key={bed.id}>
                         <div className="bedHeader">
                           <div className="bedInfo">
                             <h3 className="bedNumber">{bed.bed_number}</h3>
                             <BedStatusBadge status={bed.status} />
                           </div>
-                          <Button variant="ghost" size="icon">
+                          <Button size="icon" variant="ghost">
                             <MoreVertical size={18} />
                           </Button>
                         </div>
@@ -190,15 +190,15 @@ const BedManagementPage = () => {
                               </Button>
                             ) : bed.status === 'occupied' ? (
                               <Button 
-                                variant="destructive" 
-                                size="sm"
+                                size="sm" 
+                                variant="destructive"
                                 onClick={() => handleDischarge(bed)}
                               >
                                 <UserX size={16} />
                                 Discharge
                               </Button>
                             ) : (
-                              <Button variant="secondary" size="sm">
+                              <Button size="sm" variant="secondary">
                                 <Wrench size={16} />
                                 Update Status
                               </Button>
@@ -219,14 +219,14 @@ const BedManagementPage = () => {
       {selectedBed && (
         <>
           <AssignBedDialog
+            bed={selectedBed}
             open={assignDialogOpen}
             onOpenChange={setAssignDialogOpen}
-            bed={selectedBed}
           />
           <DischargeBedDialog
+            bed={selectedBed}
             open={dischargeDialogOpen}
             onOpenChange={setDischargeDialogOpen}
-            bed={selectedBed}
           />
         </>
       )}

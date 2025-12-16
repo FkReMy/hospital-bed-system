@@ -15,7 +15,6 @@
  * - Unified with other form/UI components
  */
 
-import React from 'react';
 import './progress.scss';
 
 /**
@@ -40,11 +39,11 @@ const Progress = ({
 
   return (
     <div 
+      aria-valuemax={100}
+      aria-valuemin={0}
+      aria-valuenow={clampedValue}
       className={`progress ${size} ${variant} ${striped ? 'striped' : ''} ${animated ? 'animated' : ''} ${className}`}
       role="progressbar"
-      aria-valuenow={clampedValue}
-      aria-valuemin={0}
-      aria-valuemax={100}
       {...props}
     >
       <div 

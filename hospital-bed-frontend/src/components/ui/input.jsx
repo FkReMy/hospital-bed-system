@@ -47,8 +47,7 @@ const Input = React.forwardRef(
       ...props
     },
     ref
-  ) => {
-    return (
+  ) => (
       <div className={`input-wrapper ${size} ${variant} ${className}`}>
         {LeftIcon && (
           <div className="input-icon left">
@@ -57,10 +56,10 @@ const Input = React.forwardRef(
         )}
 
         <input
+          className="input-field"
+          disabled={disabled}
           ref={ref}
           type={type}
-          disabled={disabled}
-          className="input-field"
           {...props}
         />
 
@@ -70,8 +69,7 @@ const Input = React.forwardRef(
           </div>
         )}
       </div>
-    );
-  }
+    )
 );
 
 Input.displayName = 'Input';

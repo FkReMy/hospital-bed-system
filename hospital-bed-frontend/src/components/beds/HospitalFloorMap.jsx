@@ -83,14 +83,14 @@ const HospitalFloorMap = ({
         <PageHeader title={title} />
         <div className="departments-grid">
           {[...Array(4)].map((_, i) => (
-            <Card key={i} className="department-card">
+            <Card className="department-card" key={i}>
               <div className="department-header">
                 <Skeleton className="h-8 w-48" />
                 <Skeleton className="h-6 w-24" />
               </div>
               <div className="beds-grid">
                 {[...Array(6)].map((_, j) => (
-                  <Skeleton key={j} className="h-32 w-full rounded-xl" />
+                  <Skeleton className="h-32 w-full rounded-xl" key={j} />
                 ))}
               </div>
             </Card>
@@ -105,9 +105,9 @@ const HospitalFloorMap = ({
       <div className="hospital-floor-map">
         <PageHeader title={title} />
         <EmptyState
-          title="Failed to Load Floor Map"
           description="There was an error loading the bed layout. Please try again."
           illustration="empty-beds"
+          title="Failed to Load Floor Map"
         />
       </div>
     );
@@ -118,9 +118,9 @@ const HospitalFloorMap = ({
       <div className="hospital-floor-map">
         <PageHeader title={title} />
         <EmptyState
-          title="No Beds Configured"
           description="There are no beds available in the system yet. Please configure rooms and beds in administration."
           illustration="empty-beds"
+          title="No Beds Configured"
         />
       </div>
     );
@@ -140,7 +140,7 @@ const HospitalFloorMap = ({
           const { total, occupied, percentage } = getOccupancy(allDeptBeds);
 
           return (
-            <Card key={dept.id} className="department-card">
+            <Card className="department-card" key={dept.id}>
               <div className="department-header">
                 <h3 className="department-name">{dept.name}</h3>
                 <div className="occupancy-summary">
@@ -155,15 +155,15 @@ const HospitalFloorMap = ({
 
               <div className="rooms-grid">
                 {Object.entries(dept.rooms).map(([roomNumber, roomBeds]) => (
-                  <div key={roomNumber} className="room-section">
+                  <div className="room-section" key={roomNumber}>
                     <div className="room-label">
                       Room {roomNumber}
                     </div>
                     <div className="beds-grid">
                       {roomBeds.map((bed) => (
                         <BedCard
-                          key={bed.id}
                           bed={bed}
+                          key={bed.id}
                           onClick={() => onBedClick?.(bed)}
                         />
                       ))}

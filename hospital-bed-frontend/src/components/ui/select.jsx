@@ -48,8 +48,7 @@ const Select = React.forwardRef(
       ...props
     },
     ref
-  ) => {
-    return (
+  ) => (
       <div className={`select-wrapper ${size} ${variant} ${className}`}>
         {LeftIcon && (
           <div className="select-icon left">
@@ -58,9 +57,9 @@ const Select = React.forwardRef(
         )}
 
         <select
-          ref={ref}
-          disabled={disabled}
           className="select-field"
+          disabled={disabled}
+          ref={ref}
           {...props}
         >
           {children}
@@ -70,8 +69,7 @@ const Select = React.forwardRef(
           <RightIcon size={size === 'sm' ? 14 : size === 'lg' ? 20 : 16} />
         </div>
       </div>
-    );
-  }
+    )
 );
 
 Select.displayName = 'Select';

@@ -16,7 +16,6 @@
  * - Premium glassmorphic design
  */
 
-import React from 'react';
 import { format } from 'date-fns';
 import { 
   User, 
@@ -80,7 +79,7 @@ const PatientSummaryCard = ({ patient }) => {
                 <span className="bed-number">{currentBed.bed_number}</span>
                 <span className="room-number">Room {currentBed.room_number}</span>
               </div>
-              <BedStatusBadge status="occupied" size="md" />
+              <BedStatusBadge size="md" status="occupied" />
             </>
           ) : (
             <div className="no-bed-info">

@@ -34,7 +34,7 @@ import './table.scss';
  */
 export const Table = React.forwardRef(({ children, className = '', ...props }, ref) => (
   <div className="table-wrapper">
-    <table ref={ref} className={`table ${className}`} {...props}>
+    <table className={`table ${className}`} ref={ref} {...props}>
       {children}
     </table>
   </div>

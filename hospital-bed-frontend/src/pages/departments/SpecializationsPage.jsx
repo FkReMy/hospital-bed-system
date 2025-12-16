@@ -18,11 +18,9 @@
  * - Responsive for viewing/printing
  */
 
-import React from 'react';
 import './SpecializationsPage.scss';
 
-const SpecializationsPage = () => {
-  return (
+const SpecializationsPage = () => (
     <div className="specializations-page">
       {/* Header with Logos */}
       <header className="page-header">
@@ -92,6 +90,5 @@ const SpecializationsPage = () => {
       </main>
     </div>
   );
-};
 
 export default SpecializationsPage;

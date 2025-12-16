@@ -17,7 +17,6 @@
  * - Nurse-only access (protected by NurseRoute)
  */
 
-import React from 'react';
 import { 
   BedDouble, 
   Users, 
@@ -82,7 +81,7 @@ const NurseDashboard = () => {
   };
 
   if (isLoadingBeds || isLoadingNotifications) {
-    return <LoadingState type="grid" count={6} />;
+    return <LoadingState count={6} type="grid" />;
   }
 
   return (
@@ -151,7 +150,7 @@ const NurseDashboard = () => {
               const rate = Math.round((available / deptBeds.length) * 100);
 
               return (
-                <div key={dept.id} className="criticalItem">
+                <div className="criticalItem" key={dept.id}>
                   <div className="deptInfo">
                     <p className="deptName">{dept.name}</p>
                     <p className="deptStats">{available} available of {deptBeds.length}</p>
@@ -175,7 +174,7 @@ const NurseDashboard = () => {
             const rate = deptBeds.length > 0 ? Math.round((occupied / deptBeds.length) * 100) : 0;
 
             return (
-              <div key={dept.id} className="departmentItem">
+              <div className="departmentItem" key={dept.id}>
                 <div className="departmentHeader">
                   <h3 className="departmentName">{dept.name}</h3>
                   <div className="departmentStats">
@@ -224,14 +223,14 @@ const NurseDashboard = () => {
       {selectedBed && (
         <>
           <AssignBedDialog
+            bed={selectedBed}
             open={assignDialogOpen}
             onOpenChange={setAssignDialogOpen}
-            bed={selectedBed}
           />
           <DischargeBedDialog
+            bed={selectedBed}
             open={dischargeDialogOpen}
             onOpenChange={setDischargeDialogOpen}
-            bed={selectedBed}
           />
         </>
       )}

@@ -14,20 +14,17 @@
  * - Fully accessible (aria-hidden)
  */
 
-import React from 'react';
 import './skeleton.scss';
 
 /**
  * Props:
  * - className: string - additional classes (e.g., 'h-32 w-full rounded-xl')
  */
-const Skeleton = ({ className = '' }) => {
-  return (
+const Skeleton = ({ className = '' }) => (
     <div 
-      className={`skeleton ${className}`}
       aria-hidden="true"
+      className={`skeleton ${className}`}
     />
   );
-};
 
 export default Skeleton;

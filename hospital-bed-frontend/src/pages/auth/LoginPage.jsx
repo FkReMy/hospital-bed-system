@@ -66,60 +66,60 @@ const LoginPage = () => {
             <p className="loginSubtitle">Hospital Bed Management System</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="loginForm">
+          <form className="loginForm" onSubmit={handleSubmit}>
             <div className="formGroup">
               <Input
-                type="email"
+                aria-label="Email address"
+                disabled={loginMutation.isPending}
+                leftIcon={Mail}
                 placeholder="staff@hospital.com"
+                type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                leftIcon={Mail}
-                disabled={loginMutation.isPending}
-                aria-label="Email address"
               />
             </div>
 
             <div className="formGroup">
               <Input
-                type="password"
+                aria-label="Password"
+                disabled={loginMutation.isPending}
+                leftIcon={Lock}
                 placeholder="Password"
+                type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                leftIcon={Lock}
-                disabled={loginMutation.isPending}
-                aria-label="Password"
               />
             </div>
 
             <div className="formOptions">
               <label className="rememberMe">
                 <input
-                  type="checkbox"
                   checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
                   disabled={loginMutation.isPending}
+                  type="checkbox"
+                  onChange={(e) => setRememberMe(e.target.checked)}
                 />
                 <span>Remember me</span>
               </label>
 
-              <Link to="/forgot-password" className="forgotLink">
+              <Link className="forgotLink" to="/forgot-password">
                 Forgot password?
               </Link>
             </div>
 
             <Button
-              type="submit"
-              size="lg"
               className="loginButton"
-              isLoading={loginMutation.isPending}
               disabled={loginMutation.isPending}
+              isLoading={loginMutation.isPending}
+              size="lg"
+              type="submit"
             >
               Sign In
             </Button>
           </form>
 
           <div className="loginFooter">
-            <Button variant="ghost" size="sm" className="languageToggle">
+            <Button className="languageToggle" size="sm" variant="ghost">
               <Globe className="mr-2" size={16} />
               العربية
             </Button>

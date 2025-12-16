@@ -71,31 +71,31 @@ const Breadcrumbs = ({ crumbs, maxItems = 5 }) => {
     : finalCrumbs;
 
   return (
-    <nav className="breadcrumbs" aria-label="Breadcrumb">
+    <nav aria-label="Breadcrumb" className="breadcrumbs">
       <ol className="breadcrumb-list">
         {visibleCrumbs.map((crumb, index) => {
           const isLast = index === visibleCrumbs.length - 1;
           const Icon = crumb.icon;
 
           return (
-            <li key={index} className="breadcrumb-item">
+            <li className="breadcrumb-item" key={index}>
               {crumb.path ? (
                 <Link
-                  to={crumb.path}
-                  className={`breadcrumb-link ${isLast ? 'current' : ''}`}
                   aria-current={isLast ? 'page' : undefined}
+                  className={`breadcrumb-link ${isLast ? 'current' : ''}`}
+                  to={crumb.path}
                 >
                   {Icon && <Icon className="breadcrumb-icon" size={16} />}
                   <span className="breadcrumb-label">{crumb.label}</span>
                 </Link>
               ) : (
-                <span className="breadcrumb-ellipsis" aria-hidden="true">
+                <span aria-hidden="true" className="breadcrumb-ellipsis">
                   {crumb.label}
                 </span>
               )}
 
               {!isLast && (
-                <ChevronRight className="separator-icon" size={16} aria-hidden="true" />
+                <ChevronRight aria-hidden="true" className="separator-icon" size={16} />
               )}
             </li>
           );

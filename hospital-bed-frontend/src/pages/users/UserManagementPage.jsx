@@ -18,17 +18,12 @@
  * - Real-time updates via SignalR (userChannel when implemented)
  */
 
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Search, 
-  Filter, 
-  Plus, 
   MoreVertical, 
   UserPlus,
-  Shield,
-  CheckCircle,
-  XCircle
 } from 'lucide-react';
 import Card from '@components/ui/card.jsx';
 import Button from '@components/ui/button.jsx';
@@ -85,8 +80,8 @@ const UserManagementPage = () => {
     // Sorting
     if (sortConfig.key) {
       filtered = [...filtered].sort((a, b) => {
-        let aVal = a[sortConfig.key];
-        let bVal = b[sortConfig.key];
+        const aVal = a[sortConfig.key];
+        const bVal = b[sortConfig.key];
 
         if (aVal < bVal) return sortConfig.direction === 'asc' ? -1 : 1;
         if (aVal > bVal) return sortConfig.direction === 'asc' ? 1 : -1;
@@ -122,17 +117,17 @@ const UserManagementPage = () => {
         <div className="filters-grid">
           <div className="search-input">
             <Input
+              leftIcon={Search}
               placeholder="Search name, email, or phone..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              leftIcon={Search}
             />
           </div>
 
           <select
+            className="role-filter"
             value={selectedRole}
             onChange={(e) => setSelectedRole(e.target.value)}
-            className="role-filter"
           >
             <option value="all">All Roles</option>
             <option value="admin">Administrator</option>
@@ -142,9 +137,9 @@ const UserManagementPage = () => {
           </select>
 
           <select
+            className="status-filter"
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="status-filter"
           >
             <option value="all">All Status</option>
             <option value="active">Active</option>
@@ -156,34 +151,34 @@ const UserManagementPage = () => {
       {/* Users Table */}
       <Card className="table-card">
         {isLoadingUsers ? (
-          <LoadingState type="table" count={10} />
+          <LoadingState count={10} type="table" />
         ) : isErrorUsers ? (
           <EmptyState
-            title="Error loading staff"
             description="Please try again later or contact administrator"
+            title="Error loading staff"
           />
         ) : filteredAndSortedUsers.length === 0 ? (
           <EmptyState
-            title="No staff found"
             description="Try adjusting your filters or add new staff"
+            title="No staff found"
           />
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead onClick={() => handleSort('full_name')} className="sortable">
+                <TableHead className="sortable" onClick={() => handleSort('full_name')}>
                   Name
                 </TableHead>
-                <TableHead onClick={() => handleSort('email')} className="sortable">
+                <TableHead className="sortable" onClick={() => handleSort('email')}>
                   Email
                 </TableHead>
-                <TableHead onClick={() => handleSort('role')} className="sortable">
+                <TableHead className="sortable" onClick={() => handleSort('role')}>
                   Role
                 </TableHead>
-                <TableHead onClick={() => handleSort('active')} className="sortable">
+                <TableHead className="sortable" onClick={() => handleSort('active')}>
                   Status
                 </TableHead>
-                <TableHead onClick={() => handleSort('last_login')} className="sortable">
+                <TableHead className="sortable" onClick={() => handleSort('last_login')}>
                   Last Login
                 </TableHead>
                 <TableHead className="actions">Actions</TableHead>
@@ -191,9 +186,9 @@ const UserManagementPage = () => {
             </TableHeader>
             <TableBody>
               {filteredAndSortedUsers.map(user => (
-                <TableRow key={user.id} className="clickable">
+                <TableRow className="clickable" key={user.id}>
                   <TableCell>
-                    <Link to={`/admin/users/${user.id}`} className="user-name">
+                    <Link className="user-name" to={`/admin/users/${user.id}`}>
                       {user.full_name}
                     </Link>
                   </TableCell>
@@ -210,7 +205,7 @@ const UserManagementPage = () => {
                   </TableCell>
                   <TableCell>{formatDateTime(user.last_login) || 'Never'}</TableCell>
                   <TableCell>
-                    <Button variant="ghost" size="icon">
+                    <Button size="icon" variant="ghost">
                       <MoreVertical size={18} />
                     </Button>
                   </TableCell>

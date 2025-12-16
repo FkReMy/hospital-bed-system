@@ -16,7 +16,6 @@
  * Integrates with Auth context/store for role management
  */
 
-import React from 'react';
 import { ChevronDown, Shield, Stethoscope, UserPlus, User } from 'lucide-react';
 import Avatar from '@components/ui/avatar.jsx';
 import DropdownMenu from '@components/ui/dropdown-menu.jsx';
@@ -58,20 +57,16 @@ const RoleSwitcher = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button className="roleSwitcherTrigger">
-          <Avatar className="roleAvatar">
-            <div className="avatarIcon">
-              <CurrentIcon size={18} />
-            </div>
-            <AvatarFallback>
-              {user.full_name?.charAt(0).toUpperCase() || 'U'}
-            </AvatarFallback>
-          </Avatar>
+          <Avatar 
+            className="roleAvatar"
+            initials={user.full_name?.slice(0, 2).toUpperCase() || 'US'}
+          />
 
           <div className="roleInfo">
             <span className="currentRoleLabel">
               {currentConfig.label}
             </span>
-            <Badge variant={currentConfig.variant} size="sm">
+            <Badge size="sm" variant={currentConfig.variant}>
               {currentRole.toUpperCase()}
             </Badge>
           </div>
@@ -87,15 +82,15 @@ const RoleSwitcher = () => {
 
           return (
             <DropdownMenuItem
+              className="roleItem"
+              disabled={role === currentRole}
               key={role}
               onClick={() => handleRoleChange(role)}
-              disabled={role === currentRole}
-              className="roleItem"
             >
               <RoleIcon className="roleItemIcon" size={16} />
               <span className="roleItemLabel">{config.label}</span>
               {role === currentRole && (
-                <Badge variant="outline" size="sm" className="currentIndicator">
+                <Badge className="currentIndicator" size="sm" variant="outline">
                   Current
                 </Badge>
               )}

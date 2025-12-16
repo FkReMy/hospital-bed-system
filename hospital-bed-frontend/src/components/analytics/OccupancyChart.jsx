@@ -16,7 +16,6 @@
  * Integrates with TanStack Query for data fetching and caching
  */
 
-import React from 'react';
 import {
   LineChart,
   Line,
@@ -104,9 +103,9 @@ const OccupancyChart = ({
         </CardHeader>
         <CardContent>
           <EmptyState
-            title="No Occupancy Data"
             description="There is no occupancy data available for the selected period."
             illustration="empty-beds"
+            title="No Occupancy Data"
           />
         </CardContent>
       </Card>
@@ -125,23 +124,23 @@ const OccupancyChart = ({
         </p>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={320}>
+        <ResponsiveContainer height={320} width="100%">
           <ChartComponent
             data={data}
             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
           >
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+            <CartesianGrid stroke="var(--border)" strokeDasharray="3 3" />
             <XAxis
               dataKey="date"
-              tick={{ fontSize: 12 }}
               stroke="var(--muted-foreground)"
+              tick={{ fontSize: 12 }}
             />
             <YAxis
               domain={[0, 100]}
-              ticks={[0, 20, 40, 60, 80, 100]}
-              tick={{ fontSize: 12 }}
-              stroke="var(--muted-foreground)"
               label={{ value: 'Occupancy (%)', angle: -90, position: 'insideLeft' }}
+              stroke="var(--muted-foreground)"
+              tick={{ fontSize: 12 }}
+              ticks={[0, 20, 40, 60, 80, 100]}
             />
             <Tooltip
               contentStyle={{
@@ -149,37 +148,37 @@ const OccupancyChart = ({
                 border: '1px solid var(--border)',
                 borderRadius: '8px',
               }}
-              labelStyle={{ fontWeight: 'bold' }}
               formatter={(value) => `${value}%`}
+              labelStyle={{ fontWeight: 'bold' }}
             />
-            {chartType === 'area' && <Legend verticalAlign="top" height={36} />}
+            {chartType === 'area' && <Legend height={36} verticalAlign="top" />}
 
             {departments.map((dept) => {
               const color = departmentColors[dept] || '#94a3b8';
 
               return chartType === 'area' ? (
                 <Area
-                  key={dept}
-                  type="monotone"
+                  activeDot={{ r: 6 }}
                   dataKey={dept}
-                  stroke={color}
+                  dot={{ fill: color, r: 4 }}
                   fill={color}
                   fillOpacity={0.3}
-                  strokeWidth={2}
-                  dot={{ fill: color, r: 4 }}
-                  activeDot={{ r: 6 }}
+                  key={dept}
                   name={`${dept} (%)`}
+                  stroke={color}
+                  strokeWidth={2}
+                  type="monotone"
                 />
               ) : (
                 <Line
-                  key={dept}
-                  type="monotone"
+                  activeDot={{ r: 6 }}
                   dataKey={dept}
+                  dot={{ fill: color, r: 4 }}
+                  key={dept}
+                  name={`${dept} (%)`}
                   stroke={color}
                   strokeWidth={3}
-                  dot={{ fill: color, r: 4 }}
-                  activeDot={{ r: 6 }}
-                  name={`${dept} (%)`}
+                  type="monotone"
                 />
               );
             })}

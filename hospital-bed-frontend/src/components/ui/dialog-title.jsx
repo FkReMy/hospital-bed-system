@@ -5,15 +5,12 @@
  * Title for dialog
  */
 
-import React from 'react';
 
-const DialogTitle = ({ children, className = '', ...props }) => {
-  return (
+const DialogTitle = ({ children, className = '', ...props }) => (
     <h2 className={`dialog-title ${className}`} {...props}>
       {children}
     </h2>
   );
-};
 
 DialogTitle.displayName = 'DialogTitle';
 

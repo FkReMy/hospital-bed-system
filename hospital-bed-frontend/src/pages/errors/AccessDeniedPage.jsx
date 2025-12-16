@@ -15,7 +15,6 @@
  * - Secure: No sensitive data exposure
  */
 
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Shield, Home, LogOut } from 'lucide-react';
 import Card from '@components/ui/card.jsx';
@@ -35,7 +34,7 @@ const AccessDeniedPage = () => {
       <div className="errorContainer">
         <Card className="errorCard">
           <div className="errorIcon">
-            <Shield size={80} className="shieldIcon" />
+            <Shield className="shieldIcon" size={80} />
           </div>
 
           <div className="errorContent">
@@ -61,7 +60,7 @@ const AccessDeniedPage = () => {
               </Link>
             </Button>
 
-            <Button variant="outline" size="lg" onClick={handleLogout}>
+            <Button size="lg" variant="outline" onClick={handleLogout}>
               <LogOut className="mr-2" size={20} />
               Logout
             </Button>

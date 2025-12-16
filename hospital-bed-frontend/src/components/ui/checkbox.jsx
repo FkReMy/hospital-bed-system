@@ -52,15 +52,15 @@ const Checkbox = React.forwardRef(
       <div className={`checkbox-wrapper ${size} ${className}`}>
         <div className="checkbox-container">
           <input
-            ref={ref}
-            type="checkbox"
+            aria-checked={isIndeterminate ? 'mixed' : checked}
+            checked={isChecked}
+            className="checkbox-input"
+            disabled={disabled}
             id={id}
             name={name}
-            checked={isChecked}
-            disabled={disabled}
+            ref={ref}
+            type="checkbox"
             onChange={(e) => onCheckedChange?.(e.target.checked)}
-            className="checkbox-input"
-            aria-checked={isIndeterminate ? 'mixed' : checked}
             {...props}
           />
 
@@ -75,7 +75,7 @@ const Checkbox = React.forwardRef(
         </div>
 
         {children && (
-          <label htmlFor={id} className="checkbox-label">
+          <label className="checkbox-label" htmlFor={id}>
             {children}
           </label>
         )}

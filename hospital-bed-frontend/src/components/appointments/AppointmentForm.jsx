@@ -18,7 +18,6 @@
  * Integrates with TanStack Query mutations for API calls
  */
 
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -94,7 +93,7 @@ const AppointmentForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
       <DialogHeader>
         <DialogTitle>
           {initialData ? 'Edit Appointment' : 'Schedule New Appointment'}
@@ -109,7 +108,7 @@ const AppointmentForm = ({
       <div className="grid gap-6">
         {/* Patient Select */}
         <div className="space-y-2">
-          <Label htmlFor="patientId" required>
+          <Label required htmlFor="patientId">
             <User className="inline w-4 h-4 mr-2" />
             Patient
           </Label>
@@ -133,7 +132,7 @@ const AppointmentForm = ({
 
         {/* Doctor Select */}
         <div className="space-y-2">
-          <Label htmlFor="doctorId" required>
+          <Label required htmlFor="doctorId">
             <Stethoscope className="inline w-4 h-4 mr-2" />
             Doctor
           </Label>
@@ -157,7 +156,7 @@ const AppointmentForm = ({
 
         {/* Date & Time */}
         <div className="space-y-2">
-          <Label htmlFor="appointmentDate" required>
+          <Label required htmlFor="appointmentDate">
             <CalendarIcon className="inline w-4 h-4 mr-2" />
             Date & Time
           </Label>
@@ -174,14 +173,14 @@ const AppointmentForm = ({
 
         {/* Reason */}
         <div className="space-y-2">
-          <Label htmlFor="reason" required>
+          <Label required htmlFor="reason">
             Reason for Visit
           </Label>
           <Textarea
             id="reason"
             {...register('reason')}
-            rows={3}
             placeholder="Describe the reason for the appointment..."
+            rows={3}
           />
           {errors.reason && (
             <p className="text-sm text-destructive">{errors.reason.message}</p>
@@ -194,18 +193,18 @@ const AppointmentForm = ({
           <Textarea
             id="notes"
             {...register('notes')}
-            rows={3}
             placeholder="Any special instructions or notes..."
+            rows={3}
           />
         </div>
       </div>
 
       {/* Action Buttons */}
       <div className="flex justify-end gap-3 pt-4">
-        <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>
+        <Button disabled={isSubmitting} type="button" variant="outline" onClick={onCancel}>
           Cancel
         </Button>
-        <Button type="submit" isLoading={isSubmitting}>
+        <Button isLoading={isSubmitting} type="submit">
           {initialData ? 'Update Appointment' : 'Schedule Appointment'}
         </Button>
       </div>

@@ -17,7 +17,6 @@
  * - Admin-only access (protected by AdminRoute)
  */
 
-import React from 'react';
 import { useParams } from 'react-router-dom';
 import { 
   User, 
@@ -53,8 +52,8 @@ const UserDetailPage = () => {
     return (
       <Card className="error-card">
         <EmptyState
-          title="User not found"
           description="Please check the user ID or contact administrator"
+          title="User not found"
         />
       </Card>
     );
@@ -70,7 +69,7 @@ const UserDetailPage = () => {
           </div>
           <div className="user-info">
             <h1 className="user-name">{user.full_name || 'Staff Member'}</h1>
-            <Badge variant="primary" className="role-badge">
+            <Badge className="role-badge" variant="primary">
               {user.role || 'Staff'}
             </Badge>
             <p className="user-status">
@@ -138,9 +137,9 @@ const UserDetailPage = () => {
         <h2 className="section-title">Recent Activity</h2>
         {user.activity?.length === 0 ? (
           <EmptyState
-            title="No recent activity"
             description="User activity will appear here"
             size="small"
+            title="No recent activity"
           />
         ) : (
           <Table>

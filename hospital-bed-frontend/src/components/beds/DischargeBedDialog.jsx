@@ -115,7 +115,7 @@ const DischargeBedDialog = ({
           )}
         </div>
 
-        <form onSubmit={handleDischarge} className="space-y-6">
+        <form className="space-y-6" onSubmit={handleDischarge}>
           {/* Discharge Notes */}
           <div className="space-y-2">
             <Label htmlFor="dischargeNotes">
@@ -123,13 +123,13 @@ const DischargeBedDialog = ({
               Discharge Notes (Optional)
             </Label>
             <Textarea
+              disabled={isSubmitting}
               id="dischargeNotes"
-              value={dischargeNotes}
-              onChange={(e) => setDischargeNotes(e.target.value)}
+              maxLength={500}
               placeholder="Add any relevant notes about the discharge..."
               rows={4}
-              disabled={isSubmitting}
-              maxLength={500}
+              value={dischargeNotes}
+              onChange={(e) => setDischargeNotes(e.target.value)}
             />
             <p className="text-xs text-muted-foreground">
               {dischargeNotes.length}/500 characters
@@ -138,17 +138,17 @@ const DischargeBedDialog = ({
 
           <DialogFooter>
             <Button
+              disabled={isSubmitting}
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
-              disabled={isSubmitting}
             >
               Cancel
             </Button>
             <Button
+              disabled={isSubmitting || bed.status !== 'occupied'}
               type="submit"
               variant="destructive"
-              disabled={isSubmitting || bed.status !== 'occupied'}
             >
               <UserX className="w-4 h-4 mr-2" />
               {isSubmitting ? 'Discharging...' : 'Discharge Patient'}

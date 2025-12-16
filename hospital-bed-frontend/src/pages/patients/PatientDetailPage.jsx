@@ -67,8 +67,8 @@ const PatientDetailPage = () => {
     return (
       <Card className="errorCard">
         <EmptyState
-          title="Patient not found"
           description="Please check the patient ID or contact administrator"
+          title="Patient not found"
         />
       </Card>
     );
@@ -108,15 +108,15 @@ const PatientDetailPage = () => {
                   <div className="bedStatus">
                     <BedStatusBadge status={currentBed.status} />
                   </div>
-                  <Button variant="destructive" size="sm">
+                  <Button size="sm" variant="destructive">
                     Discharge Patient
                   </Button>
                 </div>
               ) : (
                 <EmptyState
-                  title="No bed assigned"
                   description="Patient is not currently admitted"
                   size="small"
+                  title="No bed assigned"
                 />
               )}
             </Card>
@@ -152,8 +152,8 @@ const PatientDetailPage = () => {
             <h3 className="sectionTitle">Appointment History</h3>
             {patient.appointments?.length === 0 ? (
               <EmptyState
-                title="No appointments"
                 description="This patient has no recorded appointments"
+                title="No appointments"
               />
             ) : (
               <Table>
@@ -188,8 +188,8 @@ const PatientDetailPage = () => {
             <h3 className="sectionTitle">Prescription History</h3>
             {patient.prescriptions?.length === 0 ? (
               <EmptyState
-                title="No prescriptions"
                 description="This patient has no recorded prescriptions"
+                title="No prescriptions"
               />
             ) : (
               <Table>
@@ -226,13 +226,13 @@ const PatientDetailPage = () => {
             <h3 className="sectionTitle">Patient Timeline</h3>
             {timelineEvents?.length === 0 ? (
               <EmptyState
-                title="No timeline events"
                 description="Patient activity will appear here"
+                title="No timeline events"
               />
             ) : (
               <div className="timelineList">
                 {timelineEvents.map(event => (
-                  <div key={event.id} className="timelineItem">
+                  <div className="timelineItem" key={event.id}>
                     <div className="timelineTime">
                       {formatDateTime(event.timestamp)}
                     </div>

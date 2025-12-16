@@ -16,7 +16,6 @@
  * - No student names, sections, or educational references
  */
 
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   BedDouble, 
@@ -88,7 +87,7 @@ const LandingPage = () => {
                   Staff Login <ArrowRight className="ml-2" />
                 </Link>
               </Button>
-              <Button variant="outline" size="lg" className="languageToggle">
+              <Button className="languageToggle" size="lg" variant="outline">
                 <Globe className="mr-2" />
                 العربية
               </Button>
@@ -129,7 +128,7 @@ const LandingPage = () => {
 
           <div className="departmentsGrid">
             {departments.map(dept => (
-              <Card key={dept.name} className={`deptCard ${dept.color}`}>
+              <Card className={`deptCard ${dept.color}`} key={dept.name}>
                 <div className="deptHeader">
                   <h3 className="deptName">{dept.name}</h3>
                   <Badge variant="outline">

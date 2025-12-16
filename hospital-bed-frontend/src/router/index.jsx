@@ -15,14 +15,10 @@
  * - Clean, maintainable route structure
  */
 
-import React, { Suspense, lazy } from 'react';
+import { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import LoadingState from '@components/common/LoadingState';
 import ProtectedRoute from './ProtectedRoute';
-import AdminRoute from './AdminRoute';
-import DoctorRoute from './DoctorRoute';
-import NurseRoute from './NurseRoute';
-import ReceptionRoute from './ReceptionRoute';
 
 // Lazy load pages for performance
 const LoginPage = lazy(() => import('@pages/auth/LoginPage'));
@@ -44,29 +40,29 @@ const AppRouter = () => (
   <Suspense fallback={<LoadingState type="full" />}>
     <Routes>
       {/* Public routes */}
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/access-denied" element={<AccessDeniedPage />} />
+      <Route element={<LandingPage />} path="/" />
+      <Route element={<LoginPage />} path="/login" />
+      <Route element={<RegisterPage />} path="/register" />
+      <Route element={<AccessDeniedPage />} path="/access-denied" />
 
       {/* Protected routes - all authenticated users */}
       <Route element={<ProtectedRoute />}>
-        <Route path="/dashboard" element={<AdminDashboard />} />
-        <Route path="/dashboard/admin" element={<AdminDashboard />} />
-        <Route path="/dashboard/doctor" element={<DoctorDashboard />} />
-        <Route path="/dashboard/nurse" element={<NurseDashboard />} />
-        <Route path="/dashboard/reception" element={<ReceptionDashboard />} />
+        <Route element={<AdminDashboard />} path="/dashboard" />
+        <Route element={<AdminDashboard />} path="/dashboard/admin" />
+        <Route element={<DoctorDashboard />} path="/dashboard/doctor" />
+        <Route element={<NurseDashboard />} path="/dashboard/nurse" />
+        <Route element={<ReceptionDashboard />} path="/dashboard/reception" />
         
-        <Route path="/beds" element={<BedManagementPage />} />
+        <Route element={<BedManagementPage />} path="/beds" />
         
-        <Route path="/patients" element={<PatientListPage />} />
-        <Route path="/patients/:id" element={<PatientDetailPage />} />
+        <Route element={<PatientListPage />} path="/patients" />
+        <Route element={<PatientDetailPage />} path="/patients/:id" />
         
-        <Route path="/appointments" element={<AppointmentManagementPage />} />
+        <Route element={<AppointmentManagementPage />} path="/appointments" />
       </Route>
 
       {/* 404 fallback */}
-      <Route path="*" element={<NotFoundPage />} />
+      <Route element={<NotFoundPage />} path="*" />
     </Routes>
   </Suspense>
 );

@@ -19,7 +19,6 @@
  * - Dashboard widgets, reports
  */
 
-import React from 'react';
 import Button from '@components/ui/button.jsx';
 import Card from '@components/ui/card.jsx';
 import emptyBeds from '@assets/images/illustrations/empty-beds.svg';
@@ -54,10 +53,10 @@ const EmptyState = ({
         {/* Illustration */}
         <div className="illustrationContainer">
           <img 
-            src={illustrationSrc} 
             alt="" 
+            aria-hidden="true" 
             className="illustration"
-            aria-hidden="true"
+            src={illustrationSrc}
           />
         </div>
 
@@ -70,7 +69,7 @@ const EmptyState = ({
         {/* Optional action */}
         {action && (
           <div className="actionContainer">
-            <Button onClick={action.onClick} size="lg">
+            <Button size="lg" onClick={action.onClick}>
               {action.label}
             </Button>
           </div>

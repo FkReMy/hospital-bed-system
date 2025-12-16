@@ -20,7 +20,6 @@
  * - Accessible (ARIA labels, keyboard navigation)
  */
 
-import React from 'react';
 import { format } from 'date-fns';
 import {
   Calendar,
@@ -116,14 +115,14 @@ const AppointmentList = ({
     return (
       <div className="appointment-list">
         <EmptyState
-          title="Failed to Load Appointments"
-          description="There was an error loading the appointment list. Please try again."
-          illustration="no-patients"
           action={
             <Button onClick={() => window.location.reload()}>
               Retry
             </Button>
           }
+          description="There was an error loading the appointment list. Please try again."
+          illustration="no-patients"
+          title="Failed to Load Appointments"
         />
       </div>
     );
@@ -133,9 +132,9 @@ const AppointmentList = ({
     return (
       <div className="appointment-list">
         <EmptyState
-          title="No Appointments Found"
           description="There are no appointments matching the current filters or for the selected period."
           illustration="no-patients"
+          title="No Appointments Found"
         />
       </div>
     );
@@ -160,7 +159,7 @@ const AppointmentList = ({
             const StatusIcon = statusConfig.icon;
 
             return (
-              <TableRow key={appt.id} className="hover:bg-muted/50">
+              <TableRow className="hover:bg-muted/50" key={appt.id}>
                 <TableCell className="font-medium">
                   <div className="flex items-center gap-2">
                     <User className="w-4 h-4 text-muted-foreground" />
@@ -196,7 +195,7 @@ const AppointmentList = ({
                   <TableCell className="text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
+                        <Button size="icon" variant="ghost">
                           <MoreVertical className="w-4 h-4" />
                           <span className="sr-only">Open actions</span>
                         </Button>
@@ -209,15 +208,15 @@ const AppointmentList = ({
                         {appt.status === 'scheduled' && (
                           <>
                             <DropdownMenuItem
-                              onClick={() => onComplete?.(appt.id)}
                               className="text-success"
+                              onClick={() => onComplete?.(appt.id)}
                             >
                               <CheckCircle className="w-4 h-4 mr-2" />
                               Mark Complete
                             </DropdownMenuItem>
                             <DropdownMenuItem
-                              onClick={() => onCancel?.(appt.id)}
                               className="text-destructive"
+                              onClick={() => onCancel?.(appt.id)}
                             >
                               <XCircle className="w-4 h-4 mr-2" />
                               Cancel

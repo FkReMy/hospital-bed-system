@@ -17,7 +17,6 @@
  * - Doctor-only access (protected by DoctorRoute)
  */
 
-import React from 'react';
 import { 
   Calendar, 
   Users, 
@@ -55,11 +54,11 @@ const DoctorDashboard = () => {
   // Current inpatients assigned to this doctor (via bed assignment)
   const currentPatients = beds
     .filter(b => b.status === 'occupied' && b.current_patient)
-    .filter(b => {
+    .filter(b => 
       // In real system: check if doctor is responsible for patient
       // For now: show all occupied beds (can be refined with assignment logic)
-      return true;
-    });
+       true
+    );
 
   // Upcoming appointments (next 3)
   const upcomingAppointments = appointments
@@ -71,7 +70,7 @@ const DoctorDashboard = () => {
     .slice(0, 5);
 
   if (isLoadingAppointments || isLoadingBeds || isLoadingNotifications) {
-    return <LoadingState type="grid" count={6} />;
+    return <LoadingState count={6} type="grid" />;
   }
 
   return (
@@ -123,14 +122,14 @@ const DoctorDashboard = () => {
         <h2 className="sectionTitle">Today's Schedule</h2>
         {todayAppointments.length === 0 ? (
           <EmptyState
-            title="No appointments today"
             description="Enjoy your day off or check upcoming appointments"
             size="medium"
+            title="No appointments today"
           />
         ) : (
           <div className="appointmentsList">
             {todayAppointments.map(appointment => (
-              <div key={appointment.id} className="appointmentItem">
+              <div className="appointmentItem" key={appointment.id}>
                 <div className="appointmentTime">
                   {formatDateTime(appointment.appointment_date).split(' at ')[1]}
                 </div>
@@ -150,14 +149,14 @@ const DoctorDashboard = () => {
         <h2 className="sectionTitle">Current Inpatients</h2>
         {currentPatients.length === 0 ? (
           <EmptyState
-            title="No current inpatients"
             description="Patients assigned to beds will appear here"
             size="medium"
+            title="No current inpatients"
           />
         ) : (
           <div className="patientsList">
             {currentPatients.map(bed => (
-              <div key={bed.id} className="patientItem">
+              <div className="patientItem" key={bed.id}>
                 <BedDouble className="bedIcon" />
                 <div className="patientInfo">
                   <p className="patientName">{bed.current_patient.full_name}</p>

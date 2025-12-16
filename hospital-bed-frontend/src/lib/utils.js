@@ -39,9 +39,7 @@ export const deepClone = (obj) => {
  * @param {object} obj
  * @returns {boolean}
  */
-export const isEmptyObject = (obj) => {
-  return obj && Object.keys(obj).length === 0 && obj.constructor === Object;
-};
+export const isEmptyObject = (obj) => obj && Object.keys(obj).length === 0 && obj.constructor === Object;
 
 /**
  * Get unique items from array (by value or key)
@@ -165,18 +163,14 @@ export const isValidPhone = (phone) => {
  * @param {number} ms
  * @returns {Promise}
  */
-export const delay = (ms = 1000) => {
-  return new Promise(resolve => setTimeout(resolve, ms));
-};
+export const delay = (ms = 1000) => new Promise(resolve => setTimeout(resolve, ms));
 
 /**
  * Generate random ID
  * @param {number} length
  * @returns {string}
  */
-export const generateId = (length = 8) => {
-  return Math.random().toString(36).substring(2, 2 + length);
-};
+export const generateId = (length = 8) => Math.random().toString(36).substring(2, 2 + length);
 
 /**
  * Safe JSON parse

@@ -21,7 +21,6 @@
  * - Extends unified global Badge component
  */
 
-import React from 'react';
 import { 
   BedDouble,      // available
   User,           // occupied
@@ -85,9 +84,9 @@ const BedStatusBadge = ({
 
   return (
     <Badge 
-      variant={config.variant} 
+      className={`bedStatusBadge ${shouldPulse ? 'pulse' : ''}`} 
       size={size}
-      className={`bedStatusBadge ${shouldPulse ? 'pulse' : ''}`}
+      variant={config.variant}
     >
       {showIcon && (
         <Icon 

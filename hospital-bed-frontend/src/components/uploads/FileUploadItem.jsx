@@ -16,7 +16,6 @@
  * - Premium glassmorphic design
  */
 
-import React from 'react';
 import { format } from 'date-fns';
 import { 
   FileText, 
@@ -95,20 +94,20 @@ const FileUploadItem = ({
         <div className="item-status">
           {isUploading && (
             <div className="progress-section">
-              <Progress value={progress} className="upload-progress" />
+              <Progress className="upload-progress" value={progress} />
               <span className="progress-text">{progress}%</span>
             </div>
           )}
 
           {!isUploading && isError && (
-            <Badge variant="destructive" className="status-badge">
+            <Badge className="status-badge" variant="destructive">
               <AlertCircle size={14} />
               Upload Failed
             </Badge>
           )}
 
           {!isUploading && !isError && (
-            <Badge variant="success" className="status-badge">
+            <Badge className="status-badge" variant="success">
               <CheckCircle size={14} />
               Uploaded
             </Badge>
@@ -119,21 +118,21 @@ const FileUploadItem = ({
         <div className="item-actions">
           {url && onDownload && (
             <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => onDownload(file)}
               aria-label="Download file"
+              size="icon"
+              variant="ghost"
+              onClick={() => onDownload(file)}
             >
               <Download size={16} />
             </Button>
           )}
 
           <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => onRemove?.(file)}
             aria-label="Remove file"
             className="remove-button"
+            size="icon"
+            variant="ghost"
+            onClick={() => onRemove?.(file)}
           >
             <X size={16} />
           </Button>

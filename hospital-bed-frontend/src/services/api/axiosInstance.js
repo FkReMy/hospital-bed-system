@@ -17,7 +17,6 @@
 
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
 
 // Create axios instance
 const axiosInstance = axios.create({

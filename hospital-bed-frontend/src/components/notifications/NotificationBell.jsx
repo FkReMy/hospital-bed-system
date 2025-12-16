@@ -48,21 +48,21 @@ const NotificationBell = ({
   return (
     <div className="notification-bell-container">
       <Button
-        variant={variant}
-        size="icon"
-        onClick={() => setOpen(!open)}
-        aria-label={`Notifications${hasUnread ? `, ${unreadCount} unread` : ''}`}
-        aria-haspopup="true"
         aria-expanded={open}
+        aria-haspopup="true"
+        aria-label={`Notifications${hasUnread ? `, ${unreadCount} unread` : ''}`}
         className={`notification-bell ${hasUnread ? 'has-unread' : ''}`}
+        size="icon"
+        variant={variant}
+        onClick={() => setOpen(!open)}
       >
         <Bell className="bell-icon" size={size === 'sm' ? 16 : size === 'lg' ? 24 : 20} />
         
         {hasUnread && (
           <Badge 
-            variant="destructive" 
+            aria-hidden="true" 
             className="unread-badge"
-            aria-hidden="true"
+            variant="destructive"
           >
             {displayCount}
           </Badge>
@@ -70,17 +70,17 @@ const NotificationBell = ({
 
         {/* Pulse ring for new notifications */}
         {hasUnread && (
-          <div className="pulse-ring" aria-hidden="true" />
+          <div aria-hidden="true" className="pulse-ring" />
         )}
       </Button>
 
       {/* Notification Center Dropdown */}
       <NotificationCenter
-        open={open}
-        onOpenChange={setOpen}
         notifications={notifications}
-        onMarkAsRead={markAsRead}
+        open={open}
         onMarkAllAsRead={markAllAsRead}
+        onMarkAsRead={markAsRead}
+        onOpenChange={setOpen}
       />
     </div>
   );

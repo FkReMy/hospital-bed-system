@@ -82,7 +82,7 @@ const DepartmentLoadReportPage = () => {
   const criticalDepartments = departmentStats.filter(d => d.critical);
 
   if (isLoadingBeds) {
-    return <LoadingState type="grid" count={6} />;
+    return <LoadingState count={6} type="grid" />;
   }
 
   return (
@@ -96,9 +96,9 @@ const DepartmentLoadReportPage = () => {
       <Card className="selector-card">
         <h2 className="section-title">Select Department</h2>
         <select
+          className="department-selector"
           value={selectedDepartment}
           onChange={(e) => setSelectedDepartment(e.target.value)}
-          className="department-selector"
         >
           <option value="all">All Departments</option>
           {departments.map(dept => (
@@ -154,7 +154,7 @@ const DepartmentLoadReportPage = () => {
           </h2>
           <div className="critical-list">
             {criticalDepartments.map(dept => (
-              <div key={dept.id} className="critical-item">
+              <div className="critical-item" key={dept.id}>
                 <span className="dept-name">{dept.name}</span>
                 <Badge variant="destructive">
                   {dept.occupancyRate}% Occupied

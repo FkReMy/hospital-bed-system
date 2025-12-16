@@ -17,7 +17,6 @@
  * - Admin-only access (protected by AdminRoute)
  */
 
-import React from 'react';
 import { 
   BedDouble, 
   Users, 
@@ -59,7 +58,7 @@ const AdminDashboard = () => {
   ).length;
 
   if (isLoadingBeds || isLoadingAppointments || isLoadingNotifications) {
-    return <LoadingState type="grid" count={8} />;
+    return <LoadingState count={8} type="grid" />;
   }
 
   return (
@@ -98,7 +97,7 @@ const AdminDashboard = () => {
           <div className="metricContent">
             <p className="metricLabel">Occupancy Rate</p>
             <p className="metricValue">{occupancyRate}%</p>
-            <Progress value={occupancyRate} className="metricProgress" />
+            <Progress className="metricProgress" value={occupancyRate} />
           </div>
         </Card>
 
@@ -143,7 +142,7 @@ const AdminDashboard = () => {
             const deptRate = deptBeds.length > 0 ? Math.round((deptOccupied / deptBeds.length) * 100) : 0;
 
             return (
-              <div key={dept.id} className="departmentItem">
+              <div className="departmentItem" key={dept.id}>
                 <div className="departmentInfo">
                   <h3 className="departmentName">{dept.name}</h3>
                   <p className="departmentStats">
@@ -202,7 +201,7 @@ const AdminDashboard = () => {
         ) : (
           <div className="notificationsList">
             {notifications.slice(0, 5).map(notification => (
-              <div key={notification.id} className="notificationItem">
+              <div className="notificationItem" key={notification.id}>
                 <div className="notificationContent">
                   <p className="notificationMessage">{notification.message}</p>
                   <p className="notificationTime">

@@ -108,13 +108,13 @@ const FileUploadZone = ({
       onDrop={handleDrop}
     >
       <input
-        ref={inputRef}
-        type="file"
         multiple
         accept={acceptedTypes}
-        onChange={handleChange}
-        className="file-input"
         aria-hidden="true"
+        className="file-input"
+        ref={inputRef}
+        type="file"
+        onChange={handleChange}
       />
 
       <div className="upload-prompt">
@@ -122,9 +122,9 @@ const FileUploadZone = ({
         <p className="prompt-text">
           Drag & drop files here or{' '}
           <Button 
-            variant="link" 
+            className="browse-button" 
+            variant="link"
             onClick={() => inputRef.current.click()}
-            className="browse-button"
           >
             browse
           </Button>
@@ -138,8 +138,8 @@ const FileUploadZone = ({
         <div className="file-list">
           {files.map((file, index) => (
             <FileUploadItem
-              key={index}
               file={file}
+              key={index}
               onRemove={() => handleRemove(index)}
             />
           ))}

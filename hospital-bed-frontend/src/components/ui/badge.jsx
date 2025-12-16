@@ -15,7 +15,6 @@
  * - Unified across all domain-specific badges (BedStatusBadge, AppointmentStatusBadge)
  */
 
-import React from 'react';
 import './badge.scss';
 
 /**
@@ -31,8 +30,7 @@ const Badge = ({
   children,
   className = '',
   ...props
-}) => {
-  return (
+}) => (
     <span 
       className={`badge ${variant} ${size} ${className}`}
       role="status"
@@ -41,6 +39,5 @@ const Badge = ({
       {children}
     </span>
   );
-};
 
 export default Badge;
