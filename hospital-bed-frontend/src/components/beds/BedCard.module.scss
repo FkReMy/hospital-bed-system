@@ -36,7 +36,7 @@
     &:hover {
       transform: translateY(-8px);
       box-shadow: $shadow-2xl;
-      border-color: rgb(var(--primary));
+      border-color: rgba(22, 163, 74, 0.5); // Primary green with 0.5 opacity
     }
 
     &:focus-visible {
