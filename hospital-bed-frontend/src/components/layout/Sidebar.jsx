@@ -32,7 +32,7 @@ import {
 } from 'lucide-react';
 import logoLight from '@assets/images/logo-light.svg';
 import logoDark from '@assets/images/logo-dark.svg';
-import { useAuth } from '@hooks/useAuth.jsx';
+import { useAuth } from '@hooks/useAuth';
 import './Sidebar.module.scss';
 
 /**

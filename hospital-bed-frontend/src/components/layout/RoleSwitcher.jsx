@@ -24,7 +24,7 @@ import DropdownMenuTrigger from '@components/ui/dropdown-menu-trigger.jsx';
 import DropdownMenuContent from '@components/ui/dropdown-menu-content.jsx';
 import DropdownMenuItem from '@components/ui/dropdown-menu-item.jsx';
 import Badge from '@components/ui/badge.jsx';
-import { useAuth } from '@hooks/useAuth.jsx';
+import { useAuth } from '@hooks/useAuth';
 import './RoleSwitcher.module.scss';
 
 /**

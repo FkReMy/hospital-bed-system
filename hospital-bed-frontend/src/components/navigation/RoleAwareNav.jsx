@@ -18,7 +18,7 @@
 
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { useAuth } from '@hooks/useAuth.jsx';
+import { useAuth } from '@hooks/useAuth';
 import './RoleAwareNav.module.scss';
 
 /**
