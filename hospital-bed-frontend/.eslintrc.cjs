@@ -25,7 +25,6 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'plugin:react/jsx-runtime', // Enables React 18+ new JSX transform (no need for import React)
-    'plugin:react-refresh/recommended',
     'prettier', // Must be last to override conflicting rules
   ],
   plugins: ['react', 'react-hooks', 'react-refresh'],
