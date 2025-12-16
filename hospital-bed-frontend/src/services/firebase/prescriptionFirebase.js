@@ -159,7 +159,9 @@ export const update = async (id, data) => {
 };
 
 /**
- * Delete prescription
+ * Delete prescription (mark as cancelled, not dispensed)
+ * Note: In the new schema, we don't have a separate delete status
+ * Setting isDispensed to false effectively cancels the prescription
  * @param {string} id
  * @returns {Promise<void>}
  */
@@ -174,7 +176,7 @@ export const remove = async (id) => {
       throw new Error('Prescription not found');
     }
 
-    // Soft delete - update status
+    // Mark as not dispensed (effectively cancels the prescription)
     await updateDoc(prescriptionRef, {
       isDispensed: false,
     });

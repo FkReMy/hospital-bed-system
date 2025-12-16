@@ -215,15 +215,18 @@ export const discharge = async (bedId) => {
 };
 
 /**
- * Update bed status (maintenance, cleaning, etc.)
+ * Update bed status (DEPRECATED - kept for backward compatibility)
  * Note: In the new schema, we only have isOccupied boolean
- * This function is kept for compatibility but doesn't change status
+ * Status is managed through bed assignment operations
+ * @deprecated Use assign() and discharge() instead
  * @param {string} bedId
- * @param {string} status - legacy parameter, ignored in new schema
+ * @param {string} status - Ignored in new schema
  * @returns {Promise<Object>}
  */
 export const updateStatus = async (bedId, status) => {
   if (!bedId) throw new Error('Bed ID is required');
+  
+  console.warn('updateStatus is deprecated. Use assign() or discharge() instead.');
   
   try {
     const bedRef = doc(db, BEDS_COLLECTION, bedId);
