@@ -28,8 +28,8 @@ import './LoginPage.scss';
 
 const ChangePasswordPage = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const [currentPassword, setCurrentPassword] = useState('');
+  const { user: _user } = useAuth();
+  const [currentPassword, _setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState({});

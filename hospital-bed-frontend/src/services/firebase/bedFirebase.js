@@ -318,7 +318,7 @@ export const discharge = async (bedId) => {
  * @param {string} status - Ignored in new schema
  * @returns {Promise<Object>}
  */
-export const updateStatus = async (bedId, status) => {
+export const updateStatus = async (bedId, _status) => {
   if (!bedId) throw new Error('Bed ID is required');
   
   console.warn('updateStatus is deprecated. Use assign() or discharge() instead.');
