@@ -21,13 +21,108 @@ import {
   updateDoc, 
   query, 
   where,
+  onSnapshot,
   Timestamp 
 } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 
 const BEDS_COLLECTION = 'beds';
 const DEPARTMENTS_COLLECTION = 'departments';
+const ROOMS_COLLECTION = 'rooms';
+const PATIENTS_COLLECTION = 'patients';
 const BED_ASSIGNMENTS_COLLECTION = 'bedAssignments';
+
+/**
+ * Transform Firestore bed data to match expected UI format
+ * @param {Object} bedData - raw Firestore bed data
+ * @param {string} bedId - bed document ID
+ * @returns {Object} transformed bed data
+ */
+const transformBedData = async (bedData, bedId) => {
+  try {
+    // Fetch related data
+    let department = null;
+    let room = null;
+    let currentPatient = null;
+
+    // Get department if departmentId exists
+    if (bedData.departmentId) {
+      const deptDoc = await getDoc(doc(db, DEPARTMENTS_COLLECTION, bedData.departmentId));
+      if (deptDoc.exists()) {
+        department = { id: deptDoc.id, ...deptDoc.data() };
+      }
+    }
+
+    // Get room if roomId exists
+    if (bedData.roomId) {
+      const roomDoc = await getDoc(doc(db, ROOMS_COLLECTION, bedData.roomId));
+      if (roomDoc.exists()) {
+        const roomData = roomDoc.data();
+        room = { 
+          id: roomDoc.id, 
+          roomNumber: roomData.roomNumber || roomData.room_number,
+          ...roomData 
+        };
+        // If room has department and we don't have it yet, use room's department
+        if (roomData.departmentId && !department) {
+          const deptDoc = await getDoc(doc(db, DEPARTMENTS_COLLECTION, roomData.departmentId));
+          if (deptDoc.exists()) {
+            department = { id: deptDoc.id, ...deptDoc.data() };
+          }
+        }
+      }
+    }
+
+    // Get current patient if bed is occupied
+    if (bedData.isOccupied) {
+      // Find active assignment
+      const assignmentsQuery = query(
+        collection(db, BED_ASSIGNMENTS_COLLECTION),
+        where('bedId', '==', bedId),
+        where('dischargedAt', '==', null)
+      );
+      const assignmentsSnapshot = await getDocs(assignmentsQuery);
+      
+      if (!assignmentsSnapshot.empty) {
+        const assignment = assignmentsSnapshot.docs[0].data();
+        if (assignment.patientId) {
+          const patientDoc = await getDoc(doc(db, PATIENTS_COLLECTION, assignment.patientId));
+          if (patientDoc.exists()) {
+            const patientData = patientDoc.data();
+            currentPatient = { 
+              id: patientDoc.id,
+              full_name: patientData.fullName || patientData.full_name,
+              ...patientData
+            };
+          }
+        }
+      }
+    }
+
+    return {
+      id: bedId,
+      bed_number: bedData.bedNumber || bedData.bed_number,
+      status: bedData.isOccupied ? 'occupied' : 'available',
+      isOccupied: bedData.isOccupied,
+      department_id: bedData.departmentId,
+      room_id: bedData.roomId,
+      department: department,
+      room: room,
+      current_patient: currentPatient,
+    };
+  } catch (error) {
+    console.error('Transform bed data error:', error);
+    // Return basic bed data if transformation fails
+    return {
+      id: bedId,
+      bed_number: bedData.bedNumber || bedData.bed_number,
+      status: bedData.isOccupied ? 'occupied' : 'available',
+      isOccupied: bedData.isOccupied,
+      department_id: bedData.departmentId,
+      room_id: bedData.roomId,
+    };
+  }
+};
 
 /**
  * Get all beds with optional filters
@@ -58,8 +153,8 @@ export const getAll = async (params = {}) => {
     const beds = [];
 
     for (const docSnap of snapshot.docs) {
-      const bed = { id: docSnap.id, ...docSnap.data() };
-      beds.push(bed);
+      const transformedBed = await transformBedData(docSnap.data(), docSnap.id);
+      beds.push(transformedBed);
     }
 
     return beds;
@@ -268,6 +363,47 @@ export const create = async (bedData) => {
   }
 };
 
+/**
+ * Subscribe to real-time bed updates
+ * @param {Function} callback - called when beds change
+ * @param {Object} params - optional filters
+ * @returns {Function} unsubscribe function
+ */
+export const subscribeToBeds = (callback, params = {}) => {
+  try {
+    let bedsQuery = collection(db, BEDS_COLLECTION);
+    
+    const constraints = [];
+    if (params.departmentId) {
+      constraints.push(where('departmentId', '==', params.departmentId));
+    }
+    if (params.roomId) {
+      constraints.push(where('roomId', '==', params.roomId));
+    }
+    if (params.isOccupied !== undefined) {
+      constraints.push(where('isOccupied', '==', params.isOccupied));
+    }
+    
+    if (constraints.length > 0) {
+      bedsQuery = query(bedsQuery, ...constraints);
+    }
+
+    return onSnapshot(bedsQuery, async (snapshot) => {
+      const beds = [];
+      for (const docSnap of snapshot.docs) {
+        const transformedBed = await transformBedData(docSnap.data(), docSnap.id);
+        beds.push(transformedBed);
+      }
+      callback(beds);
+    }, (error) => {
+      console.error('Bed subscription error:', error);
+    });
+  } catch (error) {
+    console.error('Subscribe to beds error:', error);
+    throw new Error(error.message || 'Failed to subscribe to beds');
+  }
+};
+
 // Export as named object and default
 export const bedFirebase = {
   getAll,
@@ -277,6 +413,7 @@ export const bedFirebase = {
   discharge,
   updateStatus,
   create,
+  subscribeToBeds,
 };
 
 export default bedFirebase;

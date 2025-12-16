@@ -38,14 +38,19 @@ const LoginPage = () => {
   const loginMutation = useMutation({
     mutationFn: authApi.login,
     onSuccess: (userData) => {
-      // Check if user must change password
-      if (userData.mustChangePassword) {
-        toast('You must change your password before continuing');
-        loginSuccess('/change-password');
-      } else {
-        toast.success('Login successful');
-        loginSuccess('/dashboard');
-      }
+      toast.success('Login successful');
+      
+      // Direct redirect to role-specific dashboard
+      const roleRouteMap = {
+        'admin': '/dashboard/admin',
+        'doctor': '/dashboard/doctor',
+        'nurse': '/dashboard/nurse',
+        'staff': '/dashboard/reception',
+        'reception': '/dashboard/reception',
+      };
+      
+      const targetRoute = roleRouteMap[userData.role?.toLowerCase()] || '/dashboard';
+      loginSuccess(targetRoute);
     },
     onError: (error) => {
       toast.error(error.message || 'Invalid credentials');

@@ -30,6 +30,35 @@ import { db } from './firebaseConfig';
 const NOTIFICATIONS_COLLECTION = 'notifications';
 
 /**
+ * Transform Firestore notification data to match expected UI format
+ * @param {Object} notificationData - raw Firestore notification data
+ * @param {string} notificationId - notification document ID
+ * @returns {Object} transformed notification data
+ */
+const transformNotificationData = (notificationData, notificationId) => {
+  // Convert Timestamp to ISO string if needed
+  let createdAt = notificationData.created_at || notificationData.createdAt;
+  if (createdAt && createdAt.toDate) {
+    createdAt = createdAt.toDate().toISOString();
+  }
+
+  let readAt = notificationData.read_at || notificationData.readAt;
+  if (readAt && readAt.toDate) {
+    readAt = readAt.toDate().toISOString();
+  }
+
+  return {
+    id: notificationId,
+    user_id: notificationData.user_id || notificationData.userId,
+    message: notificationData.message,
+    type: notificationData.type || 'info',
+    read: notificationData.read || false,
+    created_at: createdAt,
+    read_at: readAt,
+  };
+};
+
+/**
  * Get all notifications for a user
  * @param {Object} params - optional filters (userId, read, limit)
  * @returns {Promise<Array>} notifications
@@ -58,7 +87,7 @@ export const getAll = async (params = {}) => {
     }
 
     const snapshot = await getDocs(notificationsQuery);
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    return snapshot.docs.map(doc => transformNotificationData(doc.data(), doc.id));
   } catch (error) {
     console.error('Get notifications error:', error);
     throw new Error(error.message || 'Failed to fetch notifications');
@@ -188,10 +217,9 @@ export const subscribeToNotifications = (userId, callback) => {
     );
 
     return onSnapshot(notificationsQuery, (snapshot) => {
-      const notifications = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
+      const notifications = snapshot.docs.map(doc => 
+        transformNotificationData(doc.data(), doc.id)
+      );
       callback(notifications);
     }, (error) => {
       console.error('Notification subscription error:', error);
