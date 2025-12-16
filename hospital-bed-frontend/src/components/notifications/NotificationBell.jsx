@@ -22,7 +22,7 @@ import Button from '@components/ui/button.jsx';
 import Badge from '@components/ui/badge.jsx';
 import NotificationCenter from '@components/notifications/NotificationCenter.jsx';
 import { useNotifications } from '@hooks/useNotifications';
-import './NotificationBell.module.scss';
+import './NotificationBell.scss';
 
 /**
  * Props:
@@ -46,7 +46,7 @@ const NotificationBell = ({
   const displayCount = unreadCount > 99 ? '99+' : unreadCount;
 
   return (
-    <div className="notification-bell-container">
+    <div className="notificationBellContainer">
       <Button
         variant={variant}
         size="icon"
@@ -56,12 +56,12 @@ const NotificationBell = ({
         aria-expanded={open}
         className={`notification-bell ${hasUnread ? 'has-unread' : ''}`}
       >
-        <Bell className="bell-icon" size={size === 'sm' ? 16 : size === 'lg' ? 24 : 20} />
+        <Bell className="bellIcon" size={size === 'sm' ? 16 : size === 'lg' ? 24 : 20} />
         
         {hasUnread && (
           <Badge 
             variant="destructive" 
-            className="unread-badge"
+            className="unreadBadge"
             aria-hidden="true"
           >
             {displayCount}
@@ -70,7 +70,7 @@ const NotificationBell = ({
 
         {/* Pulse ring for new notifications */}
         {hasUnread && (
-          <div className="pulse-ring" aria-hidden="true" />
+          <div className="pulseRing" aria-hidden="true" />
         )}
       </Button>
 

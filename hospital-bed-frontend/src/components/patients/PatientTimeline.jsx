@@ -34,7 +34,7 @@ import Badge from '@components/ui/badge.jsx';
 import Button from '@components/ui/button.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
 import LoadingState from '@components/common/LoadingState.jsx';
-import './PatientTimeline.module.scss';
+import './PatientTimeline.scss';
 
 /**
  * Props:
@@ -107,20 +107,20 @@ const PatientTimeline = ({
   );
 
   return (
-    <Card className="patient-timeline">
-      <div className="timeline-container">
+    <Card className="patientTimeline">
+      <div className="timelineContainer">
         {sortedEvents.map((event, index) => {
           const config = typeConfig[event.type] || typeConfig.system_alert;
           const Icon = config.icon;
           const isLast = index === sortedEvents.length - 1;
 
           return (
-            <div key={event.id} className="timeline-item">
+            <div key={event.id} className="timelineItem">
               {/* Connecting line */}
-              {!isLast && <div className="timeline-line" />}
+              {!isLast && <div className="timelineLine" />}
 
               {/* Event dot and icon */}
-              <div className="timeline-marker">
+              <div className="timelineMarker">
                 <div className={`marker-dot ${config.variant}`} />
                 <div className={`marker-icon ${config.variant}`}>
                   <Icon size={18} />
@@ -128,23 +128,23 @@ const PatientTimeline = ({
               </div>
 
               {/* Event content */}
-              <div className="timeline-content">
-                <div className="content-header">
-                  <h4 className="event-title">{event.title || config.label}</h4>
-                  <time className="event-time">
+              <div className="timelineContent">
+                <div className="contentHeader">
+                  <h4 className="eventTitle">{event.title || config.label}</h4>
+                  <time className="eventTime">
                     {formatDistanceToNow(new Date(event.timestamp), { addSuffix: true })}
                   </time>
                 </div>
 
                 {event.description && (
-                  <p className="event-description">{event.description}</p>
+                  <p className="eventDescription">{event.description}</p>
                 )}
 
                 {/* Metadata badges */}
                 {event.metadata && Object.keys(event.metadata).length > 0 && (
-                  <div className="event-metadata">
+                  <div className="eventMetadata">
                     {Object.entries(event.metadata).map(([key, value]) => (
-                      <Badge key={key} variant="outline" className="meta-badge">
+                      <Badge key={key} variant="outline" className="metaBadge">
                         {key}: {value}
                       </Badge>
                     ))}
@@ -152,7 +152,7 @@ const PatientTimeline = ({
                 )}
 
                 {/* Full timestamp */}
-                <time className="event-full-time">
+                <time className="eventFullTime">
                   {format(new Date(event.timestamp), 'PPP p')}
                 </time>
               </div>

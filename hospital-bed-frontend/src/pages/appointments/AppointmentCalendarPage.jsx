@@ -26,7 +26,7 @@ import EmptyState from '@components/common/EmptyState.jsx';
 import LoadingState from '@components/common/LoadingState.jsx';
 import AppointmentStatusBadge from '@components/appointments/AppointmentStatusBadge.jsx';
 import { useAppointmentManagement } from '@hooks/useAppointmentManagement';
-import './AppointmentCalendarPage.module.scss';
+import './AppointmentCalendarPage.scss';
 
 const localizer = momentLocalizer(moment);
 
@@ -59,9 +59,9 @@ const AppointmentCalendarPage = () => {
     const appointment = event.resource;
     
     return (
-      <div className="calendar-event">
+      <div className="calendarEvent">
         <strong>{appointment.patient_name}</strong>
-        <div className="event-details">
+        <div className="eventDetails">
           <span>Dr. {appointment.doctor_name}</span>
           <AppointmentStatusBadge status={appointment.status} size="sm" />
         </div>
@@ -74,17 +74,17 @@ const AppointmentCalendarPage = () => {
   }
 
   return (
-    <div className="appointment-calendar-page">
-      <Card className="calendar-container">
-        <div className="calendar-header">
-          <h1 className="page-title">Appointment Calendar</h1>
+    <div className="appointmentCalendarPage">
+      <Card className="calendarContainer">
+        <div className="calendarHeader">
+          <h1 className="pageTitle">Appointment Calendar</h1>
           
-          <div className="calendar-controls">
+          <div className="calendarControls">
             {/* Doctor filter */}
             <select 
               value={selectedDoctor}
               onChange={(e) => setSelectedDoctor(e.target.value)}
-              className="doctor-filter"
+              className="doctorFilter"
             >
               <option value="all">All Doctors</option>
               {doctors.map(doctor => (
@@ -95,7 +95,7 @@ const AppointmentCalendarPage = () => {
             </select>
 
             {/* View buttons */}
-            <div className="view-buttons">
+            <div className="viewButtons">
               {[Views.MONTH, Views.WEEK, Views.DAY].map(view => (
                 <button
                   key={view}

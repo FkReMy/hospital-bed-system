@@ -39,7 +39,7 @@ import RoleSwitcher from '@components/layout/RoleSwitcher.jsx';
 import { useAuth } from '@hooks/useAuth';
 import { useTheme } from '@hooks/useTheme';
 import NotificationBell from '@components/notifications/NotificationBell.jsx';
-import './Topbar.module.scss';
+import './Topbar.scss';
 
 /**
  * Props:
@@ -75,34 +75,34 @@ const Topbar = ({ sidebarOpen, onSidebarToggle }) => {
 
   return (
     <header className="topbar" role="banner">
-      <div className="topbar-content">
+      <div className="topbarContent">
         {/* Left: Sidebar toggle (mobile + desktop) */}
-        <div className="left-section">
+        <div className="leftSection">
           <Button
             variant="ghost"
             size="icon"
             onClick={onSidebarToggle}
             aria-label={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
-            className="sidebar-toggle"
+            className="sidebarToggle"
           >
             <Menu size={20} />
           </Button>
         </div>
 
         {/* Center: Spacer (for future breadcrumbs/search) */}
-        <div className="center-section">
+        <div className="centerSection">
           {/* Future: Breadcrumbs or page title can go here */}
         </div>
 
         {/* Right: User actions */}
-        <div className="right-section">
+        <div className="rightSection">
           {/* Theme Toggle */}
           <Button
             variant="ghost"
             size="icon"
             onClick={cycleTheme}
             aria-label={`Switch to ${theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light'} theme`}
-            className="theme-toggle"
+            className="themeToggle"
           >
             <ThemeIcon size={18} />
           </Button>
@@ -116,26 +116,26 @@ const Topbar = ({ sidebarOpen, onSidebarToggle }) => {
           {/* User Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="user-menu-trigger">
-                <Avatar className="user-avatar">
-                  <div className="avatar-initial">
+              <Button variant="ghost" className="userMenuTrigger">
+                <Avatar className="userAvatar">
+                  <div className="avatarInitial">
                     {user.full_name?.charAt(0).toUpperCase() || 'U'}
                   </div>
                   <AvatarFallback>
                     {user.full_name?.slice(0, 2).toUpperCase() || 'USER'}
                   </AvatarFallback>
                 </Avatar>
-                <span className="user-name">{user.full_name}</span>
+                <span className="userName">{user.full_name}</span>
               </Button>
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent align="end" className="user-menu">
+            <DropdownMenuContent align="end" className="userMenu">
               <DropdownMenuItem>
-                <User size={16} className="mr-2" />
+                <User size={16} className="mr2" />
                 Profile
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleLogout} className="logout-item">
-                <LogOut size={16} className="mr-2" />
+              <DropdownMenuItem onClick={handleLogout} className="logoutItem">
+                <LogOut size={16} className="mr2" />
                 Logout
               </DropdownMenuItem>
             </DropdownMenuContent>

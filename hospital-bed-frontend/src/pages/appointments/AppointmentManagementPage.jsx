@@ -45,7 +45,7 @@ import LoadingState from '@components/common/LoadingState.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
 import { useAppointmentManagement } from '@hooks/useAppointmentManagement';
 import { formatDateTime } from '@lib/dateUtils';
-import './AppointmentManagementPage.module.scss';
+import './AppointmentManagementPage.scss';
 
 const AppointmentManagementPage = () => {
   const {
@@ -119,16 +119,16 @@ const AppointmentManagementPage = () => {
 
   if (isErrorAppointments) {
     return (
-      <Card className="error-card">
-        <p className="error-message">Failed to load appointments. Please try again later.</p>
+      <Card className="errorCard">
+        <p className="errorMessage">Failed to load appointments. Please try again later.</p>
       </Card>
     );
   }
 
   return (
-    <div className="appointment-management-page">
-      <div className="page-header">
-        <h1 className="page-title">Appointment Management</h1>
+    <div className="appointmentManagementPage">
+      <div className="pageHeader">
+        <h1 className="pageTitle">Appointment Management</h1>
         <Button size="lg">
           <Plus size={20} />
           New Appointment
@@ -136,9 +136,9 @@ const AppointmentManagementPage = () => {
       </div>
 
       {/* Filters */}
-      <Card className="filters-card">
-        <div className="filters-grid">
-          <div className="search-input">
+      <Card className="filtersCard">
+        <div className="filtersGrid">
+          <div className="searchInput">
             <Input
               placeholder="Search patient name, phone, or ID..."
               value={searchTerm}
@@ -150,7 +150,7 @@ const AppointmentManagementPage = () => {
           <select
             value={selectedDoctor}
             onChange={(e) => setSelectedDoctor(e.target.value)}
-            className="doctor-filter"
+            className="doctorFilter"
           >
             <option value="all">All Doctors</option>
             {doctors.map(doctor => (
@@ -163,7 +163,7 @@ const AppointmentManagementPage = () => {
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="status-filter"
+            className="statusFilter"
           >
             <option value="all">All Status</option>
             <option value="scheduled">Scheduled</option>
@@ -175,7 +175,7 @@ const AppointmentManagementPage = () => {
       </Card>
 
       {/* Appointments Table */}
-      <Card className="table-card">
+      <Card className="tableCard">
         {filteredAndSortedAppointments.length === 0 ? (
           <EmptyState
             title="No appointments found"
@@ -206,9 +206,9 @@ const AppointmentManagementPage = () => {
               {filteredAndSortedAppointments.map(appointment => (
                 <TableRow key={appointment.id} className="clickable">
                   <TableCell>
-                    <div className="patient-info">
+                    <div className="patientInfo">
                       <strong>{appointment.patient_name}</strong>
-                      <span className="patient-id">ID: {appointment.patient_id}</span>
+                      <span className="patientId">ID: {appointment.patient_id}</span>
                     </div>
                   </TableCell>
                   <TableCell>

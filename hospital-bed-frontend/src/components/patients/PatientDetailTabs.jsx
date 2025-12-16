@@ -33,7 +33,7 @@ import PatientSummaryCard from '@components/patients/PatientSummaryCard.jsx';
 import PatientTimeline from '@components/patients/PatientTimeline.jsx';
 import AppointmentList from '@components/appointments/AppointmentList.jsx';
 import PrescriptionList from '@components/prescriptions/PrescriptionList.jsx';
-import './PatientDetailTabs.module.scss';
+import './PatientDetailTabs.scss';
 
 /**
  * Props:
@@ -63,8 +63,8 @@ const PatientDetailTabs = ({
   }
 
   return (
-    <Tabs value={activeTab} onValueChange={onTabChange} className="patient-detail-tabs">
-      <TabsList className="tabs-list">
+    <Tabs value={activeTab} onValueChange={onTabChange} className="patientDetailTabs">
+      <TabsList className="tabsList">
         <TabsTrigger value="overview">Overview</TabsTrigger>
         <TabsTrigger value="bed-history">Bed History</TabsTrigger>
         <TabsTrigger value="appointments">Appointments</TabsTrigger>
@@ -72,18 +72,18 @@ const PatientDetailTabs = ({
         <TabsTrigger value="timeline">Timeline</TabsTrigger>
       </TabsList>
 
-      <TabsContent value="overview" className="tab-content">
-        <Card className="overview-card">
+      <TabsContent value="overview" className="tabContent">
+        <Card className="overviewCard">
           <PatientSummaryCard patient={patient} />
         </Card>
       </TabsContent>
 
-      <TabsContent value="bed-history" className="tab-content">
-        <Card className="history-card">
+      <TabsContent value="bed-history" className="tabContent">
+        <Card className="historyCard">
           {patient.bed_assignments?.length > 0 ? (
-            <div className="bed-history-list">
+            <div className="bedHistoryList">
               {/* Future: Dedicated BedHistoryTable or Timeline */}
-              <p className="placeholder-text">
+              <p className="placeholderText">
                 Bed assignment history will be displayed here.
               </p>
             </div>
@@ -97,8 +97,8 @@ const PatientDetailTabs = ({
         </Card>
       </TabsContent>
 
-      <TabsContent value="appointments" className="tab-content">
-        <Card className="appointments-card">
+      <TabsContent value="appointments" className="tabContent">
+        <Card className="appointmentsCard">
           {patient.appointments?.length > 0 ? (
             <AppointmentList
               appointments={patient.appointments}
@@ -114,8 +114,8 @@ const PatientDetailTabs = ({
         </Card>
       </TabsContent>
 
-      <TabsContent value="prescriptions" className="tab-content">
-        <Card className="prescriptions-card">
+      <TabsContent value="prescriptions" className="tabContent">
+        <Card className="prescriptionsCard">
           {patient.prescriptions?.length > 0 ? (
             <PrescriptionList prescriptions={patient.prescriptions} />
           ) : (
@@ -128,8 +128,8 @@ const PatientDetailTabs = ({
         </Card>
       </TabsContent>
 
-      <TabsContent value="timeline" className="tab-content">
-        <Card className="timeline-card">
+      <TabsContent value="timeline" className="tabContent">
+        <Card className="timelineCard">
           <PatientTimeline patientId={patient.id} />
         </Card>
       </TabsContent>

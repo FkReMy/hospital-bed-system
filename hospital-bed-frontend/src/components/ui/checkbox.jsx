@@ -17,7 +17,7 @@
 
 import React from 'react';
 import { Check } from 'lucide-react';
-import './checkbox.module.scss';
+import './checkbox.scss';
 
 /**
  * Props:
@@ -50,7 +50,7 @@ const Checkbox = React.forwardRef(
 
     return (
       <div className={`checkbox-wrapper ${size} ${className}`}>
-        <div className="checkbox-container">
+        <div className="checkboxContainer">
           <input
             ref={ref}
             type="checkbox"
@@ -59,23 +59,23 @@ const Checkbox = React.forwardRef(
             checked={isChecked}
             disabled={disabled}
             onChange={(e) => onCheckedChange?.(e.target.checked)}
-            className="checkbox-input"
+            className="checkboxInput"
             aria-checked={isIndeterminate ? 'mixed' : checked}
             {...props}
           />
 
-          <div className="checkbox-custom">
+          <div className="checkboxCustom">
             {(isChecked && !isIndeterminate) && (
               <Check className="checkmark" size={size === 'sm' ? 12 : size === 'lg' ? 20 : 16} />
             )}
             {isIndeterminate && (
-              <div className="indeterminate-dash" />
+              <div className="indeterminateDash" />
             )}
           </div>
         </div>
 
         {children && (
-          <label htmlFor={id} className="checkbox-label">
+          <label htmlFor={id} className="checkboxLabel">
             {children}
           </label>
         )}

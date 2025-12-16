@@ -28,7 +28,7 @@ import {
   UserX,         // no_show
 } from 'lucide-react';
 import Badge from '@components/ui/badge.jsx';
-import './AppointmentStatusBadge.module.scss';
+import './AppointmentStatusBadge.scss';
 
 /**
  * Props:
@@ -78,16 +78,16 @@ const AppointmentStatusBadge = ({
     <Badge 
       variant={config.variant} 
       size={size}
-      className="appointment-status-badge"
+      className="appointmentStatusBadge"
     >
       {showIcon && (
         <Icon 
-          className="badge-icon" 
+          className="badgeIcon" 
           size={size === 'sm' ? 12 : size === 'lg' ? 18 : 14} 
         />
       )}
-      <span className="badge-label">{config.label}</span>
-      <span className="sr-only">Appointment status: {config.label}</span>
+      <span className="badgeLabel">{config.label}</span>
+      <span className="srOnly">Appointment status: {config.label}</span>
     </Badge>
   );
 };

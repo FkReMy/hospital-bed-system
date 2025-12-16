@@ -34,7 +34,7 @@ import Textarea from '@components/ui/textarea.jsx';
 import Button from '@components/ui/button.jsx';
 import Badge from '@components/ui/badge.jsx';
 import BedStatusBadge from '@components/beds/BedStatusBadge.jsx';
-import './AssignBedDialog.module.scss';
+import './AssignBedDialog.scss';
 
 /**
  * Validation schema - ensures valid patient selection and notes
@@ -128,9 +128,9 @@ const AssignBedDialog = ({
           )}
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="spaceY6">
           {/* Patient Selection */}
-          <div className="space-y-2">
+          <div className="spaceY2">
             <Label htmlFor="patientId" required>
               <User className="inline w-4 h-4 mr-2" />
               Patient
@@ -154,7 +154,7 @@ const AssignBedDialog = ({
           </div>
 
           {/* Assignment Notes */}
-          <div className="space-y-2">
+          <div className="spaceY2">
             <Label htmlFor="notes">
               <NotepadText className="inline w-4 h-4 mr-2" />
               Assignment Notes (Optional)

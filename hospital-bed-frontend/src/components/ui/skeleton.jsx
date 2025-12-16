@@ -15,7 +15,7 @@
  */
 
 import React from 'react';
-import './skeleton.module.scss';
+import './skeleton.scss';
 
 /**
  * Props:

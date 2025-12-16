@@ -26,7 +26,7 @@
  */
 
 import React from 'react';
-import './dropdown-menu.module.scss';
+import './dropdown-menu.scss';
 
 const DropdownMenuContext = React.createContext({
   isOpen: false,
@@ -75,7 +75,7 @@ const DropdownMenu = ({ children, onOpenChange }) => {
 
   return (
     <DropdownMenuContext.Provider value={{ isOpen, setIsOpen: handleOpenChange }}>
-      <div className="dropdown-menu" ref={menuRef}>
+      <div className="dropdownMenu" ref={menuRef}>
         {children}
       </div>
     </DropdownMenuContext.Provider>

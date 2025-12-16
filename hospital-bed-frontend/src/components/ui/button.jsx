@@ -22,7 +22,7 @@
 
 import React from 'react';
 import { Loader2 } from 'lucide-react';
-import './button.module.scss';
+import './button.scss';
 
 /**
  * Props:
@@ -61,10 +61,10 @@ const Button = React.forwardRef(
         {...props}
       >
         {isLoading && (
-          <Loader2 className="loading-spinner" size={size === 'icon' ? 16 : size === 'sm' ? 14 : 18} />
+          <Loader2 className="loadingSpinner" size={size === 'icon' ? 16 : size === 'sm' ? 14 : 18} />
         )}
 
-        <span className="button-content">
+        <span className="buttonContent">
           {children}
         </span>
       </button>

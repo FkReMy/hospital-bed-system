@@ -29,7 +29,7 @@ import {
   Clock,          // cleaning (temporary/reserved)
 } from 'lucide-react';
 import Badge from '@components/ui/badge.jsx';
-import './BedStatusBadge.module.scss';
+import './BedStatusBadge.scss';
 
 /**
  * Props:
@@ -91,12 +91,12 @@ const BedStatusBadge = ({
     >
       {showIcon && (
         <Icon 
-          className="badge-icon" 
+          className="badgeIcon" 
           size={size === 'sm' ? 12 : size === 'lg' ? 18 : 14} 
         />
       )}
-      <span className="badge-label">{config.label}</span>
-      <span className="sr-only">Bed status: {config.label}</span>
+      <span className="badgeLabel">{config.label}</span>
+      <span className="srOnly">Bed status: {config.label}</span>
     </Badge>
   );
 };

@@ -38,7 +38,7 @@ import EmptyState from '@components/common/EmptyState.jsx';
 import { useUserDetail } from '@hooks/useUserDetail'; // Custom hook (to be implemented)
 import { useRoleAccess } from '@hooks/useRoleAccess';
 import { formatDate } from '@lib/dateUtils';
-import './UserDetailPage.module.scss';
+import './UserDetailPage.scss';
 
 const UserDetailPage = () => {
   const { userId } = useParams();
@@ -51,7 +51,7 @@ const UserDetailPage = () => {
 
   if (isErrorUser || !user) {
     return (
-      <Card className="error-card">
+      <Card className="errorCard">
         <EmptyState
           title="User not found"
           description="Please check the user ID or contact administrator"
@@ -61,72 +61,72 @@ const UserDetailPage = () => {
   }
 
   return (
-    <div className="user-detail-page">
+    <div className="userDetailPage">
       {/* User Summary */}
-      <Card className="user-summary-card">
-        <div className="user-header">
-          <div className="user-photo">
+      <Card className="userSummaryCard">
+        <div className="userHeader">
+          <div className="userPhoto">
             <User size={80} />
           </div>
-          <div className="user-info">
-            <h1 className="user-name">{user.full_name || 'Staff Member'}</h1>
-            <Badge variant="primary" className="role-badge">
+          <div className="userInfo">
+            <h1 className="userName">{user.full_name || 'Staff Member'}</h1>
+            <Badge variant="primary" className="roleBadge">
               {user.role || 'Staff'}
             </Badge>
-            <p className="user-status">
+            <p className="userStatus">
               {user.active ? 'Active' : 'Inactive'}
             </p>
           </div>
         </div>
 
-        <div className="user-details">
-          <div className="detail-item">
-            <Mail className="detail-icon" />
-            <div className="detail-text">
-              <span className="detail-label">Email</span>
-              <span className="detail-value">{user.email}</span>
+        <div className="userDetails">
+          <div className="detailItem">
+            <Mail className="detailIcon" />
+            <div className="detailText">
+              <span className="detailLabel">Email</span>
+              <span className="detailValue">{user.email}</span>
             </div>
           </div>
 
-          <div className="detail-item">
-            <Phone className="detail-icon" />
-            <div className="detail-text">
-              <span className="detail-label">Phone</span>
-              <span className="detail-value">{user.phone || 'N/A'}</span>
+          <div className="detailItem">
+            <Phone className="detailIcon" />
+            <div className="detailText">
+              <span className="detailLabel">Phone</span>
+              <span className="detailValue">{user.phone || 'N/A'}</span>
             </div>
           </div>
 
-          <div className="detail-item">
-            <Calendar className="detail-icon" />
-            <div className="detail-text">
-              <span className="detail-label">Joined</span>
-              <span className="detail-value">{formatDate(user.created_at)}</span>
+          <div className="detailItem">
+            <Calendar className="detailIcon" />
+            <div className="detailText">
+              <span className="detailLabel">Joined</span>
+              <span className="detailValue">{formatDate(user.created_at)}</span>
             </div>
           </div>
 
-          <div className="detail-item">
-            <Shield className="detail-icon" />
-            <div className="detail-text">
-              <span className="detail-label">Last Login</span>
-              <span className="detail-value">{formatDate(user.last_login) || 'N/A'}</span>
+          <div className="detailItem">
+            <Shield className="detailIcon" />
+            <div className="detailText">
+              <span className="detailLabel">Last Login</span>
+              <span className="detailValue">{formatDate(user.last_login) || 'N/A'}</span>
             </div>
           </div>
         </div>
 
         {canEditUser && (
-          <div className="user-actions">
+          <div className="userActions">
             <Button asChild variant="primary">
               <Link to={`/admin/users/${user.id}/edit`}>
-                <Edit className="mr-2" size={18} />
+                <Edit className="mr2" size={18} />
                 Edit User
               </Link>
             </Button>
             <Button variant="outline">
-              <Key className="mr-2" size={18} />
+              <Key className="mr2" size={18} />
               Reset Password
             </Button>
             <Button variant="destructive">
-              <UserX className="mr-2" size={18} />
+              <UserX className="mr2" size={18} />
               Deactivate
             </Button>
           </div>
@@ -134,8 +134,8 @@ const UserDetailPage = () => {
       </Card>
 
       {/* Activity Log */}
-      <Card className="activity-card">
-        <h2 className="section-title">Recent Activity</h2>
+      <Card className="activityCard">
+        <h2 className="sectionTitle">Recent Activity</h2>
         {user.activity?.length === 0 ? (
           <EmptyState
             title="No recent activity"

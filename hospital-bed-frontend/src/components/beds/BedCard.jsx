@@ -26,7 +26,7 @@ import Card from '@components/ui/card.jsx';
 import Badge from '@components/ui/badge.jsx';
 import Avatar from '@components/ui/avatar.jsx';
 import BedStatusBadge from '@components/beds/BedStatusBadge.jsx';
-import './BedCard.module.scss';
+import './BedCard.scss';
 
 /**
  * Props:
@@ -55,11 +55,11 @@ const BedCard = ({
       aria-label={`Bed ${bed_number}, status: ${status}${patient ? `, occupied by ${patient.full_name}` : ''}`}
     >
       {/* Header: Bed number + status indicator */}
-      <div className="bed-header">
-        <div className="bed-number-container">
-          <span className="bed-number">{bed_number}</span>
+      <div className="bedHeader">
+        <div className="bedNumberContainer">
+          <span className="bedNumber">{bed_number}</span>
           {showDepartment && bed.department && (
-            <Badge variant="outline" className="department-badge">
+            <Badge variant="outline" className="departmentBadge">
               {bed.department.name}
             </Badge>
           )}
@@ -67,7 +67,7 @@ const BedCard = ({
 
         {/* Status indicator ring + dot */}
         <div className={`status-indicator ${status}`}>
-          <div className="status-dot" />
+          <div className="statusDot" />
         </div>
 
         {/* Global status badge */}
@@ -75,45 +75,45 @@ const BedCard = ({
       </div>
 
       {/* Body: Patient or empty state */}
-      <div className="bed-body">
+      <div className="bedBody">
         {status === 'occupied' && patient ? (
-          <div className="patient-info">
-            <Avatar className="patient-avatar">
-              <div className="avatar-initial">
+          <div className="patientInfo">
+            <Avatar className="patientAvatar">
+              <div className="avatarInitial">
                 {patient.full_name.charAt(0).toUpperCase()}
               </div>
               <AvatarFallback>{patient.full_name.slice(0, 2).toUpperCase()}</AvatarFallback>
             </Avatar>
 
-            <div className="patient-details">
-              <p className="patient-name">{patient.full_name}</p>
-              <div className="patient-meta">
-                <Badge variant="secondary" className="meta-badge">
+            <div className="patientDetails">
+              <p className="patientName">{patient.full_name}</p>
+              <div className="patientMeta">
+                <Badge variant="secondary" className="metaBadge">
                   {patient.blood_group || 'N/A'}
                 </Badge>
-                <Badge variant="secondary" className="meta-badge">
+                <Badge variant="secondary" className="metaBadge">
                   {patient.gender || 'N/A'}
                 </Badge>
               </div>
               {patient.condition && (
-                <p className="patient-condition">{patient.condition}</p>
+                <p className="patientCondition">{patient.condition}</p>
               )}
             </div>
           </div>
         ) : (
-          <div className="empty-state">
-            <BedDouble className="empty-bed-icon" size={40} strokeWidth={1.5} />
+          <div className="emptyState">
+            <BedDouble className="emptyBedIcon" size={40} strokeWidth={1.5} />
             <p className="empty-status capitalize">{status.replace('_', ' ')}</p>
             {status === 'maintenance' && (
-              <AlertCircle className="warning-icon" size={16} />
+              <AlertCircle className="warningIcon" size={16} />
             )}
           </div>
         )}
       </div>
 
       {/* Hover/Action Overlay */}
-      <div className="action-overlay">
-        <span className="action-text">
+      <div className="actionOverlay">
+        <span className="actionText">
           {status === 'available' ? 'Assign Patient' : 
            status === 'occupied' ? 'Manage Bed' : 
            'View Details'}

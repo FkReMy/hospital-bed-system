@@ -1,0 +1,219 @@
+// src/pages/dashboards/ReceptionDashboard.module.scss
+/**
+ * ReceptionDashboard Module Styles
+ * 
+ * Scoped styles for the ReceptionDashboard component.
+ * Provides premium, reception-focused layout with quick search, stats, actions,
+ * and appointment overview.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing, typography, colors, borders, shadows
+ * - Glassmorphic elevation
+ * - Responsive grid behavior
+ * - Dark/light theme compatibility
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.receptionDashboard {
+  // Full page container
+  width: 100%;
+  padding: $spacing-xl;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-lg;
+  }
+
+  // Dashboard header
+  .dashboardHeader {
+    margin-bottom: $spacing-2xl;
+
+    .dashboardTitle {
+      font-size: $text-4xl;
+      font-weight: $font-bold;
+      color: var(--foreground);
+      margin: 0 0 $spacing-sm;
+    }
+
+    .dashboardSubtitle {
+      font-size: $text-xl;
+      color: var(--muted-foreground);
+      margin: 0;
+    }
+  }
+
+  // Stats grid
+  .statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: $spacing-xl;
+    margin-bottom: $spacing-3xl;
+
+    .statCard {
+      @include glass-card-elevated;
+      padding: $spacing-xl;
+      display: flex;
+      align-items: center;
+      gap: $spacing-xl;
+
+      .statIcon {
+        width: 56px;
+        height: 56px;
+        border-radius: $radius-xl;
+        background: rgba(var(--primary), 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+      }
+
+      .statContent {
+        flex: 1;
+
+        .statLabel {
+          font-size: $text-base;
+          color: var(--muted-foreground);
+          margin-bottom: $spacing-xs;
+        }
+
+        .statValue {
+          font-size: $text-4xl;
+          font-weight: $font-bold;
+          color: var(--foreground);
+        }
+
+        // Quick search input
+        .quickSearchInput {
+          margin-top: $spacing-md;
+        }
+      }
+    }
+  }
+
+  // Quick actions
+  .actionsCard {
+    @include glass-card-elevated;
+    padding: $spacing-2xl;
+    margin-bottom: $spacing-3xl;
+
+    .sectionTitle {
+      font-size: $text-3xl;
+      font-weight: $font-bold;
+      color: var(--foreground);
+      margin-bottom: $spacing-xl;
+    }
+
+    .actionsGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: $spacing-xl;
+    }
+  }
+
+  // Today's appointments
+  .appointmentsCard {
+    @include glass-card-elevated;
+    padding: $spacing-2xl;
+    margin-bottom: $spacing-3xl;
+
+    .sectionTitle {
+      font-size: $text-3xl;
+      font-weight: $font-bold;
+      color: var(--foreground);
+      margin-bottom: $spacing-xl;
+    }
+
+    .appointmentsList {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-lg;
+
+      .appointmentItem {
+        display: flex;
+        align-items: center;
+        gap: $spacing-xl;
+        padding: $spacing-lg;
+        background: rgba(var(--muted), 0.2);
+        border-radius: $radius-xl;
+
+        .appointmentTime {
+          display: flex;
+          align-items: center;
+          gap: $spacing-sm;
+          font-size: $text-lg;
+          font-weight: $font-semibold;
+          color: var(--primary);
+          min-width: 140px;
+        }
+
+        .appointmentDetails {
+          flex: 1;
+
+          .patientName {
+            font-size: $text-lg;
+            font-weight: $font-semibold;
+            color: var(--foreground);
+            margin-bottom: $spacing-xs;
+          }
+
+          .doctorName {
+            font-size: $text-base;
+            color: var(--muted-foreground);
+          }
+        }
+
+        .appointmentActions {
+          display: flex;
+          align-items: center;
+          gap: $spacing-md;
+
+          .phoneIcon {
+            color: var(--muted-foreground);
+            cursor: pointer;
+
+            &:hover {
+              color: var(--foreground);
+            }
+          }
+        }
+      }
+
+      .viewAll {
+        margin-top: $spacing-md;
+        text-align: center;
+      }
+    }
+  }
+
+  // Available beds summary
+  .bedsSummary {
+    @include glass-card-elevated;
+    padding: $spacing-2xl;
+    text-align: center;
+
+    .sectionTitle {
+      font-size: $text-3xl;
+      font-weight: $font-bold;
+      color: var(--foreground);
+      margin-bottom: $spacing-xl;
+    }
+
+    .availableCount {
+      font-size: $text-5xl;
+      font-weight: $font-bold;
+      color: $success;
+      margin-bottom: $spacing-md;
+    }
+
+    .bedsLabel {
+      font-size: $text-lg;
+      color: var(--muted-foreground);
+      margin-bottom: $spacing-2xl;
+    }
+
+    .viewBedsButton {
+      min-width: 280px;
+    }
+  }
+}

@@ -24,7 +24,7 @@ import PageHeader from '@components/common/PageHeader.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
 import Skeleton from '@components/ui/skeleton.jsx';
 import Card from '@components/ui/card.jsx';
-import './HospitalFloorMap.module.scss';
+import './HospitalFloorMap.scss';
 
 /**
  * Props:
@@ -79,16 +79,16 @@ const HospitalFloorMap = ({
 
   if (isLoading) {
     return (
-      <div className="hospital-floor-map">
+      <div className="hospitalFloorMap">
         <PageHeader title={title} />
-        <div className="departments-grid">
+        <div className="departmentsGrid">
           {[...Array(4)].map((_, i) => (
-            <Card key={i} className="department-card">
-              <div className="department-header">
+            <Card key={i} className="departmentCard">
+              <div className="departmentHeader">
                 <Skeleton className="h-8 w-48" />
                 <Skeleton className="h-6 w-24" />
               </div>
-              <div className="beds-grid">
+              <div className="bedsGrid">
                 {[...Array(6)].map((_, j) => (
                   <Skeleton key={j} className="h-32 w-full rounded-xl" />
                 ))}
@@ -102,7 +102,7 @@ const HospitalFloorMap = ({
 
   if (error) {
     return (
-      <div className="hospital-floor-map">
+      <div className="hospitalFloorMap">
         <PageHeader title={title} />
         <EmptyState
           title="Failed to Load Floor Map"
@@ -115,7 +115,7 @@ const HospitalFloorMap = ({
 
   if (groupedBeds.length === 0) {
     return (
-      <div className="hospital-floor-map">
+      <div className="hospitalFloorMap">
         <PageHeader title={title} />
         <EmptyState
           title="No Beds Configured"
@@ -127,39 +127,39 @@ const HospitalFloorMap = ({
   }
 
   return (
-    <div className="hospital-floor-map">
+    <div className="hospitalFloorMap">
       <PageHeader title={title}>
         <p className="subtitle">
           Visual overview of all beds across departments and rooms
         </p>
       </PageHeader>
 
-      <div className="departments-grid">
+      <div className="departmentsGrid">
         {groupedBeds.map((dept) => {
           const allDeptBeds = Object.values(dept.rooms).flat();
           const { total, occupied, percentage } = getOccupancy(allDeptBeds);
 
           return (
-            <Card key={dept.id} className="department-card">
-              <div className="department-header">
-                <h3 className="department-name">{dept.name}</h3>
-                <div className="occupancy-summary">
-                  <span className="occupancy-text">
+            <Card key={dept.id} className="departmentCard">
+              <div className="departmentHeader">
+                <h3 className="departmentName">{dept.name}</h3>
+                <div className="occupancySummary">
+                  <span className="occupancyText">
                     {occupied} / {total} Occupied
                   </span>
-                  <span className="occupancy-percentage">
+                  <span className="occupancyPercentage">
                     {percentage}%
                   </span>
                 </div>
               </div>
 
-              <div className="rooms-grid">
+              <div className="roomsGrid">
                 {Object.entries(dept.rooms).map(([roomNumber, roomBeds]) => (
-                  <div key={roomNumber} className="room-section">
-                    <div className="room-label">
+                  <div key={roomNumber} className="roomSection">
+                    <div className="roomLabel">
                       Room {roomNumber}
                     </div>
-                    <div className="beds-grid">
+                    <div className="bedsGrid">
                       {roomBeds.map((bed) => (
                         <BedCard
                           key={bed.id}

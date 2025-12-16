@@ -41,7 +41,7 @@ import { useNotificationFeed } from '@hooks/useNotificationFeed';
 import { useAuth } from '@hooks/useAuth';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import './NurseDashboard.module.scss';
+import './NurseDashboard.scss';
 
 const NurseDashboard = () => {
   const { user } = useAuth();
@@ -85,75 +85,75 @@ const NurseDashboard = () => {
   }
 
   return (
-    <div className="nurse-dashboard">
-      <div className="dashboard-header">
+    <div className="nurseDashboard">
+      <div className="dashboardHeader">
         <div>
-          <h1 className="dashboard-title">Welcome back, {user?.full_name || 'Nurse'}</h1>
-          <p className="dashboard-subtitle">Your bed management overview</p>
+          <h1 className="dashboardTitle">Welcome back, {user?.full_name || 'Nurse'}</h1>
+          <p className="dashboardSubtitle">Your bed management overview</p>
         </div>
       </div>
 
       {/* Quick Stats */}
-      <div className="stats-grid">
+      <div className="statsGrid">
         <Card className="stat-card total-beds">
-          <BedDouble className="stat-icon" />
-          <div className="stat-content">
-            <p className="stat-label">Total Beds</p>
-            <p className="stat-value">{totalBeds}</p>
+          <BedDouble className="statIcon" />
+          <div className="statContent">
+            <p className="statLabel">Total Beds</p>
+            <p className="statValue">{totalBeds}</p>
           </div>
         </Card>
 
         <Card className="stat-card available-beds">
-          <UserCheck className="stat-icon success" />
-          <div className="stat-content">
-            <p className="stat-label">Available</p>
-            <p className="stat-value">{availableBeds}</p>
+          <UserCheck className="statIcon success" />
+          <div className="statContent">
+            <p className="statLabel">Available</p>
+            <p className="statValue">{availableBeds}</p>
           </div>
         </Card>
 
         <Card className="stat-card occupied-beds">
-          <Users className="stat-icon" />
-          <div className="stat-content">
-            <p className="stat-label">Occupied</p>
-            <p className="stat-value">{occupiedBeds}</p>
+          <Users className="statIcon" />
+          <div className="statContent">
+            <p className="statLabel">Occupied</p>
+            <p className="statValue">{occupiedBeds}</p>
           </div>
         </Card>
 
         <Card className="stat-card maintenance-beds">
-          <Wrench className="stat-icon warning" />
-          <div className="stat-content">
-            <p className="stat-label">Maintenance/Cleaning</p>
-            <p className="stat-value">{maintenanceBeds}</p>
+          <Wrench className="statIcon warning" />
+          <div className="statContent">
+            <p className="statLabel">Maintenance/Cleaning</p>
+            <p className="statValue">{maintenanceBeds}</p>
           </div>
         </Card>
 
         <Card className="stat-card critical-alerts">
-          <AlertCircle className="stat-icon destructive" />
-          <div className="stat-content">
-            <p className="stat-label">Critical Alerts</p>
-            <p className="stat-value">{criticalAlerts.length}</p>
+          <AlertCircle className="statIcon destructive" />
+          <div className="statContent">
+            <p className="statLabel">Critical Alerts</p>
+            <p className="statValue">{criticalAlerts.length}</p>
           </div>
         </Card>
       </div>
 
       {/* Critical Departments */}
       {criticalDepartments.length > 0 && (
-        <Card className="critical-departments">
-          <h2 className="section-title">
-            <AlertCircle className="mr-2" />
+        <Card className="criticalDepartments">
+          <h2 className="sectionTitle">
+            <AlertCircle className="mr2" />
             Critical Bed Availability
           </h2>
-          <div className="critical-list">
+          <div className="criticalList">
             {criticalDepartments.map(dept => {
               const deptBeds = beds.filter(b => b.department_id === dept.id);
               const available = deptBeds.filter(b => b.status === 'available').length;
               const rate = Math.round((available / deptBeds.length) * 100);
 
               return (
-                <div key={dept.id} className="critical-item">
-                  <div className="dept-info">
-                    <p className="dept-name">{dept.name}</p>
-                    <p className="dept-stats">{available} available of {deptBeds.length}</p>
+                <div key={dept.id} className="criticalItem">
+                  <div className="deptInfo">
+                    <p className="deptName">{dept.name}</p>
+                    <p className="deptStats">{available} available of {deptBeds.length}</p>
                   </div>
                   <Progress value={rate} variant="destructive" />
                 </div>
@@ -164,9 +164,9 @@ const NurseDashboard = () => {
       )}
 
       {/* Bed Overview by Department */}
-      <Card className="department-overview">
-        <h2 className="section-title">Bed Status by Department</h2>
-        <div className="departments-list">
+      <Card className="departmentOverview">
+        <h2 className="sectionTitle">Bed Status by Department</h2>
+        <div className="departmentsList">
           {departments.map(dept => {
             const deptBeds = beds.filter(b => b.department_id === dept.id);
             const available = deptBeds.filter(b => b.status === 'available').length;
@@ -174,17 +174,17 @@ const NurseDashboard = () => {
             const rate = deptBeds.length > 0 ? Math.round((occupied / deptBeds.length) * 100) : 0;
 
             return (
-              <div key={dept.id} className="department-item">
-                <div className="department-header">
-                  <h3 className="department-name">{dept.name}</h3>
-                  <div className="department-stats">
+              <div key={dept.id} className="departmentItem">
+                <div className="departmentHeader">
+                  <h3 className="departmentName">{dept.name}</h3>
+                  <div className="departmentStats">
                     <Badge variant={available === 0 ? 'destructive' : 'default'}>
                       {available} available
                     </Badge>
                   </div>
                 </div>
                 <Progress value={rate} />
-                <div className="department-summary">
+                <div className="departmentSummary">
                   <span>{occupied} occupied</span>
                   <span>{deptBeds.length} total</span>
                 </div>
@@ -195,24 +195,24 @@ const NurseDashboard = () => {
       </Card>
 
       {/* Quick Actions */}
-      <Card className="actions-card">
-        <h2 className="section-title">Quick Actions</h2>
-        <div className="actions-grid">
+      <Card className="actionsCard">
+        <h2 className="sectionTitle">Quick Actions</h2>
+        <div className="actionsGrid">
           <Button asChild size="lg">
             <Link to="/beds">
-              <BedDouble className="mr-2" />
+              <BedDouble className="mr2" />
               Full Bed Management
             </Link>
           </Button>
           <Button asChild size="lg">
             <Link to="/patients">
-              <Users className="mr-2" />
+              <Users className="mr2" />
               Patient Search
             </Link>
           </Button>
           <Button asChild size="lg">
             <Link to="/appointments">
-              <Calendar className="mr-2" />
+              <Calendar className="mr2" />
               Appointments
             </Link>
           </Button>

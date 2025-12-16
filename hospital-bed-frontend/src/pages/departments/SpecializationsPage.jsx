@@ -19,75 +19,75 @@
  */
 
 import React from 'react';
-import './SpecializationsPage.module.scss';
+import './SpecializationsPage.scss';
 
 const SpecializationsPage = () => {
   return (
-    <div className="specializations-page">
+    <div className="specializationsPage">
       {/* Header with Logos */}
-      <header className="page-header">
+      <header className="pageHeader">
         <div className="logos">
-          <div className="logo-modern-academy" />
-          <div className="logo-ministry" />
+          <div className="logoModernAcademy" />
+          <div className="logoMinistry" />
         </div>
 
-        <div className="academy-info">
-          <h1 className="academy-name">Modern Academy</h1>
-          <h2 className="academy-subtitle">For Engineering & Technology</h2>
+        <div className="academyInfo">
+          <h1 className="academyName">Modern Academy</h1>
+          <h2 className="academySubtitle">For Engineering & Technology</h2>
           <p className="department">Computer Engineering & Information Technology</p>
-          <p className="academic-year">Academic Year 2025/2026</p>
+          <p className="academicYear">Academic Year 2025/2026</p>
         </div>
       </header>
 
       {/* Project Title */}
-      <main className="project-info">
-        <h1 className="project-title">
+      <main className="projectInfo">
+        <h1 className="projectTitle">
           Hospital Bed Management System (HBMS)
         </h1>
 
-        <p className="course-codes">
+        <p className="courseCodes">
           Information Systems (CMPN325 & CMP425)
         </p>
 
         {/* Submitted By */}
-        <section className="submitted-by">
+        <section className="submittedBy">
           <h3>Submitted By:</h3>
-          <ul className="students-list">
+          <ul className="studentsList">
             <li>
-              <span className="student-name">Ahmed Abd Elaziem Ahmed</span>
+              <span className="studentName">Ahmed Abd Elaziem Ahmed</span>
               <span className="section">Section 5</span>
             </li>
             <li>
-              <span className="student-name">Ahmed Gamal Abd Elnasser</span>
+              <span className="studentName">Ahmed Gamal Abd Elnasser</span>
               <span className="section">Section 5</span>
             </li>
             <li>
-              <span className="student-name">Sherif Emad Omer</span>
+              <span className="studentName">Sherif Emad Omer</span>
               <span className="section">Section 5</span>
             </li>
             <li>
-              <span className="student-name">Yassmin Ahmed Said</span>
+              <span className="studentName">Yassmin Ahmed Said</span>
               <span className="section">Section 6</span>
             </li>
             <li>
-              <span className="student-name">Mariaa Anglo Wajih</span>
+              <span className="studentName">Mariaa Anglo Wajih</span>
               <span className="section">Section 5</span>
             </li>
             <li>
-              <span className="student-name">Nada Mohamed Youssef</span>
+              <span className="studentName">Nada Mohamed Youssef</span>
               <span className="section">Section 4</span>
             </li>
             <li>
-              <span className="student-name">Logyn Ibrahim Mostafa</span>
+              <span className="studentName">Logyn Ibrahim Mostafa</span>
               <span className="section">Section 2</span>
             </li>
           </ul>
         </section>
 
         {/* Submitted To */}
-        <section className="submitted-to">
+        <section className="submittedTo">
           <h3>Submitted to:</h3>
-          <p className="supervisor-name">Dr. Sherin Omran</p>
+          <p className="supervisorName">Dr. Sherin Omran</p>
         </section>
       </main>
     </div>

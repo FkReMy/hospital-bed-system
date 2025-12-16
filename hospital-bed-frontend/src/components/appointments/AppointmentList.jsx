@@ -46,7 +46,7 @@ import DropdownMenuContent from '@components/ui/dropdown-menu-content.jsx';
 import DropdownMenuItem from '@components/ui/dropdown-menu-item.jsx';
 import Skeleton from '@components/ui/skeleton.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
-import './AppointmentList.module.scss';
+import './AppointmentList.scss';
 
 /**
  * Props:
@@ -85,7 +85,7 @@ const AppointmentList = ({
 
   if (isLoading) {
     return (
-      <div className="appointment-list">
+      <div className="appointmentList">
         <Table>
           <TableHeader>
             <TableRow>
@@ -93,7 +93,7 @@ const AppointmentList = ({
               <TableHead>Doctor</TableHead>
               <TableHead>Date & Time</TableHead>
               <TableHead>Status</TableHead>
-              {showActions && <TableHead className="text-right">Actions</TableHead>}
+              {showActions && <TableHead className="textRight">Actions</TableHead>}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -114,7 +114,7 @@ const AppointmentList = ({
 
   if (error) {
     return (
-      <div className="appointment-list">
+      <div className="appointmentList">
         <EmptyState
           title="Failed to Load Appointments"
           description="There was an error loading the appointment list. Please try again."
@@ -131,7 +131,7 @@ const AppointmentList = ({
 
   if (appointments.length === 0) {
     return (
-      <div className="appointment-list">
+      <div className="appointmentList">
         <EmptyState
           title="No Appointments Found"
           description="There are no appointments matching the current filters or for the selected period."
@@ -142,7 +142,7 @@ const AppointmentList = ({
   }
 
   return (
-    <div className="appointment-list">
+    <div className="appointmentList">
       <Table>
         <TableHeader>
           <TableRow>
@@ -151,7 +151,7 @@ const AppointmentList = ({
             <TableHead>Date & Time</TableHead>
             <TableHead>Reason</TableHead>
             <TableHead>Status</TableHead>
-            {showActions && <TableHead className="text-right">Actions</TableHead>}
+            {showActions && <TableHead className="textRight">Actions</TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -161,7 +161,7 @@ const AppointmentList = ({
 
             return (
               <TableRow key={appt.id} className="hover:bg-muted/50">
-                <TableCell className="font-medium">
+                <TableCell className="fontMedium">
                   <div className="flex items-center gap-2">
                     <User className="w-4 h-4 text-muted-foreground" />
                     {appt.patient?.full_name || 'Unknown Patient'}
@@ -193,12 +193,12 @@ const AppointmentList = ({
                   </Badge>
                 </TableCell>
                 {showActions && (
-                  <TableCell className="text-right">
+                  <TableCell className="textRight">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="icon">
                           <MoreVertical className="w-4 h-4" />
-                          <span className="sr-only">Open actions</span>
+                          <span className="srOnly">Open actions</span>
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
@@ -210,14 +210,14 @@ const AppointmentList = ({
                           <>
                             <DropdownMenuItem
                               onClick={() => onComplete?.(appt.id)}
-                              className="text-success"
+                              className="textSuccess"
                             >
                               <CheckCircle className="w-4 h-4 mr-2" />
                               Mark Complete
                             </DropdownMenuItem>
                             <DropdownMenuItem
                               onClick={() => onCancel?.(appt.id)}
-                              className="text-destructive"
+                              className="textDestructive"
                             >
                               <XCircle className="w-4 h-4 mr-2" />
                               Cancel

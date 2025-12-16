@@ -22,7 +22,7 @@
 
 import React from 'react';
 import { ChevronDown } from 'lucide-react';
-import './select.module.scss';
+import './select.scss';
 
 /**
  * Props:
@@ -60,7 +60,7 @@ const Select = React.forwardRef(
         <select
           ref={ref}
           disabled={disabled}
-          className="select-field"
+          className="selectField"
           {...props}
         >
           {children}

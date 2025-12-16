@@ -38,7 +38,7 @@ import { useNotificationFeed } from '@hooks/useNotificationFeed';
 import { useAuth } from '@hooks/useAuth';
 import { formatDateTime } from '@lib/dateUtils';
 import { Link } from 'react-router-dom';
-import './DoctorDashboard.module.scss';
+import './DoctorDashboard.scss';
 
 const DoctorDashboard = () => {
   const { user } = useAuth();
@@ -75,52 +75,52 @@ const DoctorDashboard = () => {
   }
 
   return (
-    <div className="doctor-dashboard">
-      <div className="dashboard-header">
+    <div className="doctorDashboard">
+      <div className="dashboardHeader">
         <div>
-          <h1 className="dashboard-title">Welcome back, Dr. {user?.full_name || 'Doctor'}</h1>
-          <p className="dashboard-subtitle">Your patient overview for today</p>
+          <h1 className="dashboardTitle">Welcome back, Dr. {user?.full_name || 'Doctor'}</h1>
+          <p className="dashboardSubtitle">Your patient overview for today</p>
         </div>
       </div>
 
       {/* Quick Stats */}
-      <div className="stats-grid">
+      <div className="statsGrid">
         <Card className="stat-card today-appointments">
-          <Calendar className="stat-icon" />
-          <div className="stat-content">
-            <p className="stat-label">Today's Appointments</p>
-            <p className="stat-value">{todayAppointments.length}</p>
+          <Calendar className="statIcon" />
+          <div className="statContent">
+            <p className="statLabel">Today's Appointments</p>
+            <p className="statValue">{todayAppointments.length}</p>
           </div>
         </Card>
 
         <Card className="stat-card current-patients">
-          <Users className="stat-icon" />
-          <div className="stat-content">
-            <p className="stat-label">Current Inpatients</p>
-            <p className="stat-value">{currentPatients.length}</p>
+          <Users className="statIcon" />
+          <div className="statContent">
+            <p className="statLabel">Current Inpatients</p>
+            <p className="statValue">{currentPatients.length}</p>
           </div>
         </Card>
 
         <Card className="stat-card upcoming">
-          <Clock className="stat-icon" />
-          <div className="stat-content">
-            <p className="stat-label">Upcoming This Week</p>
-            <p className="stat-value">{upcomingAppointments.length}</p>
+          <Clock className="statIcon" />
+          <div className="statContent">
+            <p className="statLabel">Upcoming This Week</p>
+            <p className="statValue">{upcomingAppointments.length}</p>
           </div>
         </Card>
 
         <Card className="stat-card alerts">
-          <AlertCircle className="stat-icon" />
-          <div className="stat-content">
-            <p className="stat-label">Unread Notifications</p>
-            <p className="stat-value">{unreadCount}</p>
+          <AlertCircle className="statIcon" />
+          <div className="statContent">
+            <p className="statLabel">Unread Notifications</p>
+            <p className="statValue">{unreadCount}</p>
           </div>
         </Card>
       </div>
 
       {/* Today's Schedule */}
-      <Card className="schedule-card">
-        <h2 className="section-title">Today's Schedule</h2>
+      <Card className="scheduleCard">
+        <h2 className="sectionTitle">Today's Schedule</h2>
         {todayAppointments.length === 0 ? (
           <EmptyState
             title="No appointments today"
@@ -128,15 +128,15 @@ const DoctorDashboard = () => {
             size="medium"
           />
         ) : (
-          <div className="appointments-list">
+          <div className="appointmentsList">
             {todayAppointments.map(appointment => (
-              <div key={appointment.id} className="appointment-item">
-                <div className="appointment-time">
+              <div key={appointment.id} className="appointmentItem">
+                <div className="appointmentTime">
                   {formatDateTime(appointment.appointment_date).split(' at ')[1]}
                 </div>
-                <div className="appointment-details">
-                  <p className="patient-name">{appointment.patient_name}</p>
-                  <p className="appointment-reason">{appointment.reason || 'General check-up'}</p>
+                <div className="appointmentDetails">
+                  <p className="patientName">{appointment.patient_name}</p>
+                  <p className="appointmentReason">{appointment.reason || 'General check-up'}</p>
                 </div>
                 <AppointmentStatusBadge status={appointment.status} />
               </div>
@@ -146,8 +146,8 @@ const DoctorDashboard = () => {
       </Card>
 
       {/* Current Inpatients */}
-      <Card className="patients-card">
-        <h2 className="section-title">Current Inpatients</h2>
+      <Card className="patientsCard">
+        <h2 className="sectionTitle">Current Inpatients</h2>
         {currentPatients.length === 0 ? (
           <EmptyState
             title="No current inpatients"
@@ -155,13 +155,13 @@ const DoctorDashboard = () => {
             size="medium"
           />
         ) : (
-          <div className="patients-list">
+          <div className="patientsList">
             {currentPatients.map(bed => (
-              <div key={bed.id} className="patient-item">
-                <BedDouble className="bed-icon" />
-                <div className="patient-info">
-                  <p className="patient-name">{bed.current_patient.full_name}</p>
-                  <p className="bed-info">Bed {bed.bed_number} • {bed.department?.name || 'General'}</p>
+              <div key={bed.id} className="patientItem">
+                <BedDouble className="bedIcon" />
+                <div className="patientInfo">
+                  <p className="patientName">{bed.current_patient.full_name}</p>
+                  <p className="bedInfo">Bed {bed.bed_number} • {bed.department?.name || 'General'}</p>
                 </div>
                 <Badge variant="outline">{bed.status}</Badge>
               </div>
@@ -171,24 +171,24 @@ const DoctorDashboard = () => {
       </Card>
 
       {/* Quick Actions */}
-      <Card className="actions-card">
-        <h2 className="section-title">Quick Actions</h2>
-        <div className="actions-grid">
+      <Card className="actionsCard">
+        <h2 className="sectionTitle">Quick Actions</h2>
+        <div className="actionsGrid">
           <Button asChild>
             <Link to="/appointments">
-              <Calendar className="mr-2" />
+              <Calendar className="mr2" />
               View All Appointments
             </Link>
           </Button>
           <Button asChild>
             <Link to="/patients">
-              <Users className="mr-2" />
+              <Users className="mr2" />
               Search Patients
             </Link>
           </Button>
           <Button asChild>
             <Link to="/beds">
-              <BedDouble className="mr-2" />
+              <BedDouble className="mr2" />
               Bed Availability
             </Link>
           </Button>

@@ -22,7 +22,7 @@
  */
 
 import React from 'react';
-import './tabs.module.scss';
+import './tabs.scss';
 
 /**
  * Tabs - root component with controlled value

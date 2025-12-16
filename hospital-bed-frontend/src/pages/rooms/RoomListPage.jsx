@@ -25,7 +25,7 @@ import Progress from '@components/ui/progress.jsx';
 import LoadingState from '@components/common/LoadingState.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
 import { useBedManagement } from '@hooks/useBedManagement';
-import './RoomListPage.module.scss';
+import './RoomListPage.scss';
 
 const RoomListPage = () => {
   const { beds, rooms, departments, isLoadingBeds } = useBedManagement();
@@ -61,58 +61,58 @@ const RoomListPage = () => {
   }
 
   return (
-    <div className="room-list-page">
-      <div className="page-header">
-        <h1 className="page-title">Hospital Rooms</h1>
-        <p className="page-subtitle">Overview of all rooms and bed availability</p>
+    <div className="roomListPage">
+      <div className="pageHeader">
+        <h1 className="pageTitle">Hospital Rooms</h1>
+        <p className="pageSubtitle">Overview of all rooms and bed availability</p>
       </div>
 
-      <div className="rooms-grid">
+      <div className="roomsGrid">
         {roomStats.map(room => (
           <Link
             key={room.id}
             to={`/rooms/${room.id}`}
-            className="room-link"
+            className="roomLink"
           >
-            <Card className="room-card" interactive>
-              <div className="room-header">
-                <DoorClosed className="room-icon" />
-                <div className="room-info">
-                  <h2 className="room-name">
+            <Card className="roomCard" interactive>
+              <div className="roomHeader">
+                <DoorClosed className="roomIcon" />
+                <div className="roomInfo">
+                  <h2 className="roomName">
                     {room.name || `Room ${room.room_number}`}
                   </h2>
-                  <p className="room-department">
+                  <p className="roomDepartment">
                     {room.department?.name || 'General'}
                   </p>
                 </div>
               </div>
 
-              <div className="room-stats">
-                <div className="stat-item">
-                  <span className="stat-label">Total Beds</span>
-                  <span className="stat-value">{room.totalBeds}</span>
+              <div className="roomStats">
+                <div className="statItem">
+                  <span className="statLabel">Total Beds</span>
+                  <span className="statValue">{room.totalBeds}</span>
                 </div>
-                <div className="stat-item">
-                  <span className="stat-label">Available</span>
-                  <span className="stat-value highlight">
+                <div className="statItem">
+                  <span className="statLabel">Available</span>
+                  <span className="statValue highlight">
                     {room.availableBeds}
                   </span>
                 </div>
-                <div className="stat-item">
-                  <span className="stat-label">Occupied</span>
-                  <span className="stat-value">{room.occupiedBeds}</span>
+                <div className="statItem">
+                  <span className="statLabel">Occupied</span>
+                  <span className="statValue">{room.occupiedBeds}</span>
                 </div>
               </div>
 
-              <div className="room-progress">
-                <div className="progress-info">
-                  <span className="progress-label">Occupancy Rate</span>
-                  <span className="progress-value">{room.occupancyRate}%</span>
+              <div className="roomProgress">
+                <div className="progressInfo">
+                  <span className="progressLabel">Occupancy Rate</span>
+                  <span className="progressValue">{room.occupancyRate}%</span>
                 </div>
                 <Progress value={room.occupancyRate} />
               </div>
 
-              <div className="room-status">
+              <div className="roomStatus">
                 <Badge 
                   variant={room.availableBeds === 0 ? 'destructive' : 'default'}
                 >
