@@ -1,0 +1,111 @@
+// src/components/patients/PatientDetailTabs.module.scss
+/**
+ * PatientDetailTabs Module Styles
+ * 
+ * Scoped styles for the PatientDetailTabs component.
+ * Provides professional tab navigation and content layout for patient details.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing, typography, colors, borders, shadows
+ * - Glassmorphic card elevation
+ * - Responsive tab behavior
+ * - Dark/light theme compatibility
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.patientDetailTabs {
+  // Full width container
+  width: 100%;
+
+  // Tabs list styling
+  .tabsList {
+    display: flex;
+    background: rgba(var(--muted), 0.3);
+    border-radius: $radius-xl;
+    padding: $spacing-xs;
+    margin-bottom: $spacing-2xl;
+    overflow-x: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    // Tab trigger base
+    :global(.tabsTrigger) {
+      flex: 1;
+      min-width: 120px;
+      padding: $spacing-md $spacing-lg;
+      border-radius: $radius-lg;
+      font-weight: $font-medium;
+      color: var(--muted-foreground);
+      transition: all 0.2s ease;
+      white-space: nowrap;
+
+      &:hover {
+        background: var(--muted/50);
+        color: var(--foreground);
+      }
+
+      &[data-state='active'] {
+        background: var(--background);
+        color: var(--foreground);
+        font-weight: $font-semibold;
+        box-shadow: $shadow-md;
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--ring);
+        outline-offset: 2px;
+      }
+    }
+  }
+
+  // Tab content
+  .tabContent {
+    // Glassmorphic card wrapper for each tab
+    .overviewCard,
+    .historyCard,
+    .appointmentsCard,
+    .prescriptionsCard,
+    .timelineCard {
+      @include glass-card;
+      border-radius: $radius-2xl;
+      overflow: hidden;
+      padding: $spacing-xl;
+
+      @media (max-width: $breakpoint-md) {
+        padding: $spacing-lg;
+      }
+    }
+
+    // Placeholder text for incomplete tabs
+    .placeholderText {
+      font-size: $text-lg;
+      color: var(--muted-foreground);
+      text-align: center;
+      padding: $spacing-3xl;
+      font-style: italic;
+    }
+  }
+
+  // Responsive adjustments
+  @media (max-width: $breakpoint-lg) {
+    .tabsList {
+      margin-bottom: $spacing-xl;
+    }
+  }
+
+  @media (max-width: $breakpoint-md) {
+    .tabsList {
+      padding: $spacing-xs $spacing-sm;
+
+      :global(.tabsTrigger) {
+        padding: $spacing-sm $spacing-md;
+        font-size: $text-sm;
+      }
+    }
+  }
+}

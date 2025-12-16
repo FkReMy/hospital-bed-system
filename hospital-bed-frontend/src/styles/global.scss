@@ -59,7 +59,7 @@ body,
 
 /* Selection highlight */
 ::selection {
-  background: var(--primary/30);
+  background: rgba(var(--primary), 0.3);
   color: var(--primary-foreground);
 }
 

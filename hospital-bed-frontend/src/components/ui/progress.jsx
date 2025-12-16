@@ -16,7 +16,7 @@
  */
 
 import React from 'react';
-import './progress.module.scss';
+import './progress.scss';
 
 /**
  * Props:
@@ -48,7 +48,7 @@ const Progress = ({
       {...props}
     >
       <div 
-        className="progress-fill"
+        className="progressFill"
         style={{ width: `${clampedValue}%` }}
       />
     </div>

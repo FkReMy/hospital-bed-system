@@ -21,7 +21,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ChevronRight, Home } from 'lucide-react';
-import './Breadcrumbs.module.scss';
+import './Breadcrumbs.scss';
 
 /**
  * Optional manual crumbs prop for custom pages
@@ -72,30 +72,30 @@ const Breadcrumbs = ({ crumbs, maxItems = 5 }) => {
 
   return (
     <nav className="breadcrumbs" aria-label="Breadcrumb">
-      <ol className="breadcrumb-list">
+      <ol className="breadcrumbList">
         {visibleCrumbs.map((crumb, index) => {
           const isLast = index === visibleCrumbs.length - 1;
           const Icon = crumb.icon;
 
           return (
-            <li key={index} className="breadcrumb-item">
+            <li key={index} className="breadcrumbItem">
               {crumb.path ? (
                 <Link
                   to={crumb.path}
                   className={`breadcrumb-link ${isLast ? 'current' : ''}`}
                   aria-current={isLast ? 'page' : undefined}
                 >
-                  {Icon && <Icon className="breadcrumb-icon" size={16} />}
-                  <span className="breadcrumb-label">{crumb.label}</span>
+                  {Icon && <Icon className="breadcrumbIcon" size={16} />}
+                  <span className="breadcrumbLabel">{crumb.label}</span>
                 </Link>
               ) : (
-                <span className="breadcrumb-ellipsis" aria-hidden="true">
+                <span className="breadcrumbEllipsis" aria-hidden="true">
                   {crumb.label}
                 </span>
               )}
 
               {!isLast && (
-                <ChevronRight className="separator-icon" size={16} aria-hidden="true" />
+                <ChevronRight className="separatorIcon" size={16} aria-hidden="true" />
               )}
             </li>
           );

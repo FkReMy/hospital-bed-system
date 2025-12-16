@@ -30,7 +30,7 @@ import Avatar from '@components/ui/avatar.jsx';
 import Badge from '@components/ui/badge.jsx';
 import Card from '@components/ui/card.jsx';
 import BedStatusBadge from '@components/beds/BedStatusBadge.jsx';
-import './PatientSummaryCard.module.scss';
+import './PatientSummaryCard.scss';
 
 /**
  * Props:
@@ -52,12 +52,12 @@ const PatientSummaryCard = ({ patient }) => {
   const currentBed = patient.current_bed; // From API: latest active bed_assignment
 
   return (
-    <Card className="patient-summary-card">
-      <div className="summary-header">
+    <Card className="patientSummaryCard">
+      <div className="summaryHeader">
         {/* Avatar and Name */}
-        <div className="patient-identity">
-          <Avatar className="patient-avatar-large">
-            <div className="avatar-initial-large">
+        <div className="patientIdentity">
+          <Avatar className="patientAvatarLarge">
+            <div className="avatarInitialLarge">
               {patient.full_name.charAt(0).toUpperCase()}
             </div>
             <AvatarFallback>
@@ -65,26 +65,26 @@ const PatientSummaryCard = ({ patient }) => {
             </AvatarFallback>
           </Avatar>
 
-          <div className="patient-name-section">
-            <h2 className="patient-full-name">{patient.full_name}</h2>
-            <p className="patient-id">ID: {patient.id.slice(0, 8)}</p>
+          <div className="patientNameSection">
+            <h2 className="patientFullName">{patient.full_name}</h2>
+            <p className="patientId">ID: {patient.id.slice(0, 8)}</p>
           </div>
         </div>
 
         {/* Current Bed Status */}
-        <div className="current-bed-section">
+        <div className="currentBedSection">
           {currentBed ? (
             <>
-              <div className="bed-info">
-                <BedDouble className="bed-icon" size={18} />
-                <span className="bed-number">{currentBed.bed_number}</span>
-                <span className="room-number">Room {currentBed.room_number}</span>
+              <div className="bedInfo">
+                <BedDouble className="bedIcon" size={18} />
+                <span className="bedNumber">{currentBed.bed_number}</span>
+                <span className="roomNumber">Room {currentBed.room_number}</span>
               </div>
               <BedStatusBadge status="occupied" size="md" />
             </>
           ) : (
-            <div className="no-bed-info">
-              <AlertCircle className="no-bed-icon" size={18} />
+            <div className="noBedInfo">
+              <AlertCircle className="noBedIcon" size={18} />
               <span>No bed assigned</span>
             </div>
           )}
@@ -92,17 +92,17 @@ const PatientSummaryCard = ({ patient }) => {
       </div>
 
       {/* Details Grid */}
-      <div className="summary-grid">
+      <div className="summaryGrid">
         {/* Demographics */}
-        <div className="demographics-section">
-          <h3 className="section-title">Demographics</h3>
-          <dl className="details-list">
-            <div className="detail-item">
-              <dt className="detail-label">
-                <Calendar className="detail-icon" size={16} />
+        <div className="demographicsSection">
+          <h3 className="sectionTitle">Demographics</h3>
+          <dl className="detailsList">
+            <div className="detailItem">
+              <dt className="detailLabel">
+                <Calendar className="detailIcon" size={16} />
                 Date of Birth
               </dt>
-              <dd className="detail-value">
+              <dd className="detailValue">
                 {patient.date_of_birth 
                   ? format(new Date(patient.date_of_birth), 'MMM dd, yyyy')
                   : 'N/A'}
@@ -110,20 +110,20 @@ const PatientSummaryCard = ({ patient }) => {
               </dd>
             </div>
 
-            <div className="detail-item">
-              <dt className="detail-label">
-                <User className="detail-icon" size={16} />
+            <div className="detailItem">
+              <dt className="detailLabel">
+                <User className="detailIcon" size={16} />
                 Gender
               </dt>
-              <dd className="detail-value capitalize">{patient.gender || 'N/A'}</dd>
+              <dd className="detailValue capitalize">{patient.gender || 'N/A'}</dd>
             </div>
 
-            <div className="detail-item">
-              <dt className="detail-label">
-                <Droplet className="detail-icon" size={16} />
+            <div className="detailItem">
+              <dt className="detailLabel">
+                <Droplet className="detailIcon" size={16} />
                 Blood Group
               </dt>
-              <dd className="detail-value">
+              <dd className="detailValue">
                 <Badge variant="secondary">
                   {patient.blood_group || 'N/A'}
                 </Badge>
@@ -133,25 +133,25 @@ const PatientSummaryCard = ({ patient }) => {
         </div>
 
         {/* Contact & Emergency */}
-        <div className="contact-section">
-          <h3 className="section-title">Contact Information</h3>
-          <dl className="details-list">
-            <div className="detail-item">
-              <dt className="detail-label">
-                <Phone className="detail-icon" size={16} />
+        <div className="contactSection">
+          <h3 className="sectionTitle">Contact Information</h3>
+          <dl className="detailsList">
+            <div className="detailItem">
+              <dt className="detailLabel">
+                <Phone className="detailIcon" size={16} />
                 Phone
               </dt>
-              <dd className="detail-value">{patient.phone || 'N/A'}</dd>
+              <dd className="detailValue">{patient.phone || 'N/A'}</dd>
             </div>
 
-            <div className="detail-item emergency">
-              <dt className="detail-label">
+            <div className="detailItem emergency">
+              <dt className="detailLabel">
                 Emergency Contact
               </dt>
-              <dd className="detail-value">
+              <dd className="detailValue">
                 {patient.emergency_contact_name || 'None recorded'}
                 {patient.emergency_contact_phone && (
-                  <span className="emergency-phone">
+                  <span className="emergencyPhone">
                     {' '}( {patient.emergency_contact_phone} )
                   </span>
                 )}
@@ -162,14 +162,14 @@ const PatientSummaryCard = ({ patient }) => {
       </div>
 
       {/* Quick Stats (future extension) */}
-      {/* <div className="quick-stats">
-        <div className="stat-item">
-          <span className="stat-label">Appointments</span>
-          <span className="stat-value">{patient.appointments?.length || 0}</span>
+      {/* <div className="quickStats">
+        <div className="statItem">
+          <span className="statLabel">Appointments</span>
+          <span className="statValue">{patient.appointments?.length || 0}</span>
         </div>
-        <div className="stat-item">
-          <span className="stat-label">Prescriptions</span>
-          <span className="stat-value">{patient.prescriptions?.length || 0}</span>
+        <div className="statItem">
+          <span className="statLabel">Prescriptions</span>
+          <span className="statValue">{patient.prescriptions?.length || 0}</span>
         </div>
       </div> */}
     </Card>

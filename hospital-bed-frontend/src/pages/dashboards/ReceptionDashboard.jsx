@@ -39,7 +39,7 @@ import { useAppointmentManagement } from '@hooks/useAppointmentManagement';
 import { useAuth } from '@hooks/useAuth';
 import { Link } from 'react-router-dom';
 import { formatDateTime } from '@lib/dateUtils';
-import './ReceptionDashboard.module.scss';
+import './ReceptionDashboard.scss';
 
 const ReceptionDashboard = () => {
   const { user } = useAuth();
@@ -64,71 +64,71 @@ const ReceptionDashboard = () => {
   }
 
   return (
-    <div className="reception-dashboard">
-      <div className="dashboard-header">
+    <div className="receptionDashboard">
+      <div className="dashboardHeader">
         <div>
-          <h1 className="dashboard-title">Welcome, {user?.full_name || 'Reception'}</h1>
-          <p className="dashboard-subtitle">Patient registration and appointment management</p>
+          <h1 className="dashboardTitle">Welcome, {user?.full_name || 'Reception'}</h1>
+          <p className="dashboardSubtitle">Patient registration and appointment management</p>
         </div>
       </div>
 
       {/* Quick Stats */}
-      <div className="stats-grid">
+      <div className="statsGrid">
         <Card className="stat-card available-beds">
-          <BedDouble className="stat-icon" />
-          <div className="stat-content">
-            <p className="stat-label">Available Beds</p>
-            <p className="stat-value">{availableBeds}</p>
+          <BedDouble className="statIcon" />
+          <div className="statContent">
+            <p className="statLabel">Available Beds</p>
+            <p className="statValue">{availableBeds}</p>
           </div>
         </Card>
 
         <Card className="stat-card today-appointments">
-          <Calendar className="stat-icon" />
-          <div className="stat-content">
-            <p className="stat-label">Today's Appointments</p>
-            <p className="stat-value">{todayAppointments.length}</p>
+          <Calendar className="statIcon" />
+          <div className="statContent">
+            <p className="statLabel">Today's Appointments</p>
+            <p className="statValue">{todayAppointments.length}</p>
           </div>
         </Card>
 
         <Card className="stat-card quick-search">
-          <Search className="stat-icon" />
-          <div className="stat-content">
-            <p className="stat-label">Quick Patient Search</p>
+          <Search className="statIcon" />
+          <div className="statContent">
+            <p className="statLabel">Quick Patient Search</p>
             <Input
               placeholder="Name, phone, or ID..."
               value={patientSearch}
               onChange={(e) => setPatientSearch(e.target.value)}
-              className="quick-search-input"
+              className="quickSearchInput"
             />
           </div>
         </Card>
       </div>
 
       {/* Quick Actions */}
-      <Card className="actions-card">
-        <h2 className="section-title">Quick Actions</h2>
-        <div className="actions-grid">
+      <Card className="actionsCard">
+        <h2 className="sectionTitle">Quick Actions</h2>
+        <div className="actionsGrid">
           <Button asChild size="lg">
             <Link to="/patients/new">
-              <UserPlus className="mr-2" />
+              <UserPlus className="mr2" />
               Register New Patient
             </Link>
           </Button>
           <Button asChild size="lg">
             <Link to="/appointments/new">
-              <Calendar className="mr-2" />
+              <Calendar className="mr2" />
               Schedule Appointment
             </Link>
           </Button>
           <Button asChild size="lg">
             <Link to="/beds">
-              <BedDouble className="mr-2" />
+              <BedDouble className="mr2" />
               View Bed Availability
             </Link>
           </Button>
           <Button asChild size="lg">
             <Link to="/patients">
-              <Users className="mr-2" />
+              <Users className="mr2" />
               Patient Directory
             </Link>
           </Button>
@@ -136,8 +136,8 @@ const ReceptionDashboard = () => {
       </Card>
 
       {/* Today's Appointments */}
-      <Card className="appointments-card">
-        <h2 className="section-title">Today's Appointments</h2>
+      <Card className="appointmentsCard">
+        <h2 className="sectionTitle">Today's Appointments</h2>
         {recentAppointments.length === 0 ? (
           <EmptyState
             title="No appointments today"
@@ -145,25 +145,25 @@ const ReceptionDashboard = () => {
             size="medium"
           />
         ) : (
-          <div className="appointments-list">
+          <div className="appointmentsList">
             {recentAppointments.map(appointment => (
-              <div key={appointment.id} className="appointment-item">
-                <div className="appointment-time">
+              <div key={appointment.id} className="appointmentItem">
+                <div className="appointmentTime">
                   <Clock size={16} />
                   {formatDateTime(appointment.appointment_date).split(' at ')[1]}
                 </div>
-                <div className="appointment-details">
-                  <p className="patient-name">{appointment.patient_name}</p>
-                  <p className="doctor-name">Dr. {appointment.doctor_name}</p>
+                <div className="appointmentDetails">
+                  <p className="patientName">{appointment.patient_name}</p>
+                  <p className="doctorName">Dr. {appointment.doctor_name}</p>
                 </div>
-                <div className="appointment-actions">
+                <div className="appointmentActions">
                   <Badge variant="outline">{appointment.status}</Badge>
-                  <Phone size={16} className="phone-icon" />
+                  <Phone size={16} className="phoneIcon" />
                 </div>
               </div>
             ))}
             {todayAppointments.length > 5 && (
-              <Button asChild variant="ghost" className="view-all">
+              <Button asChild variant="ghost" className="viewAll">
                 <Link to="/appointments">
                   View all {todayAppointments.length} appointments
                 </Link>
@@ -174,13 +174,13 @@ const ReceptionDashboard = () => {
       </Card>
 
       {/* Available Beds Summary */}
-      <Card className="beds-summary">
-        <h2 className="section-title">Available Beds Now</h2>
-        <div className="beds-count">
-          <p className="available-count">{availableBeds}</p>
-          <p className="beds-label">beds available across departments</p>
+      <Card className="bedsSummary">
+        <h2 className="sectionTitle">Available Beds Now</h2>
+        <div className="bedsCount">
+          <p className="availableCount">{availableBeds}</p>
+          <p className="bedsLabel">beds available across departments</p>
         </div>
-        <Button asChild className="view-beds-button">
+        <Button asChild className="viewBedsButton">
           <Link to="/beds">
             View Full Bed Map
           </Link>

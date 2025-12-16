@@ -24,7 +24,7 @@ import Button from '@components/ui/button.jsx';
 import Card from '@components/ui/card.jsx';
 import emptyBeds from '@assets/images/illustrations/empty-beds.svg';
 import noPatients from '@assets/images/illustrations/no-patients.svg';
-import './EmptyState.module.scss';
+import './EmptyState.scss';
 
 /**
  * Props:
@@ -50,9 +50,9 @@ const EmptyState = ({
 
   return (
     <Card className={`empty-state ${className}`}>
-      <div className="empty-content">
+      <div className="emptyContent">
         {/* Illustration */}
-        <div className="illustration-container">
+        <div className="illustrationContainer">
           <img 
             src={illustrationSrc} 
             alt="" 
@@ -62,14 +62,14 @@ const EmptyState = ({
         </div>
 
         {/* Text content */}
-        <div className="text-content">
-          <h3 className="empty-title">{title}</h3>
-          <p className="empty-description">{description}</p>
+        <div className="textContent">
+          <h3 className="emptyTitle">{title}</h3>
+          <p className="emptyDescription">{description}</p>
         </div>
 
         {/* Optional action */}
         {action && (
-          <div className="action-container">
+          <div className="actionContainer">
             <Button onClick={action.onClick} size="lg">
               {action.label}
             </Button>

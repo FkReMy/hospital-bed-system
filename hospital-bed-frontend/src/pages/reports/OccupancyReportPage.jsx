@@ -35,7 +35,7 @@ import EmptyState from '@components/common/EmptyState.jsx';
 import { useBedManagement } from '@hooks/useBedManagement';
 import { useAuth } from '@hooks/useAuth';
 import { formatDateTime } from '@lib/dateUtils';
-import './DepartmentLoadReportPage.module.scss';
+import './DepartmentLoadReportPage.scss';
 
 const DepartmentLoadReportPage = () => {
   const { beds, departments, isLoadingBeds } = useBedManagement();
@@ -86,19 +86,19 @@ const DepartmentLoadReportPage = () => {
   }
 
   return (
-    <div className="department-load-report-page">
-      <div className="page-header">
-        <h1 className="page-title">Department Load Report</h1>
-        <p className="page-subtitle">Real-time occupancy and patient load across departments</p>
+    <div className="departmentLoadReportPage">
+      <div className="pageHeader">
+        <h1 className="pageTitle">Department Load Report</h1>
+        <p className="pageSubtitle">Real-time occupancy and patient load across departments</p>
       </div>
 
       {/* Department Selector */}
-      <Card className="selector-card">
-        <h2 className="section-title">Select Department</h2>
+      <Card className="selectorCard">
+        <h2 className="sectionTitle">Select Department</h2>
         <select
           value={selectedDepartment}
           onChange={(e) => setSelectedDepartment(e.target.value)}
-          className="department-selector"
+          className="departmentSelector"
         >
           <option value="all">All Departments</option>
           {departments.map(dept => (
@@ -110,36 +110,36 @@ const DepartmentLoadReportPage = () => {
       </Card>
 
       {/* Overall Stats */}
-      <div className="stats-grid">
+      <div className="statsGrid">
         <Card className="stat-card total">
-          <Building2 className="stat-icon" />
-          <div className="stat-content">
-            <p className="stat-label">Total Beds</p>
-            <p className="stat-value">{selectedStats.totalBeds}</p>
+          <Building2 className="statIcon" />
+          <div className="statContent">
+            <p className="statLabel">Total Beds</p>
+            <p className="statValue">{selectedStats.totalBeds}</p>
           </div>
         </Card>
 
         <Card className="stat-card available">
-          <BedDouble className="stat-icon success" />
-          <div className="stat-content">
-            <p className="stat-label">Available</p>
-            <p className="stat-value">{selectedStats.availableBeds}</p>
+          <BedDouble className="statIcon success" />
+          <div className="statContent">
+            <p className="statLabel">Available</p>
+            <p className="statValue">{selectedStats.availableBeds}</p>
           </div>
         </Card>
 
         <Card className="stat-card occupied">
-          <Users className="stat-icon" />
-          <div className="stat-content">
-            <p className="stat-label">Occupied</p>
-            <p className="stat-value">{selectedStats.occupiedBeds}</p>
+          <Users className="statIcon" />
+          <div className="statContent">
+            <p className="statLabel">Occupied</p>
+            <p className="statValue">{selectedStats.occupiedBeds}</p>
           </div>
         </Card>
 
         <Card className="stat-card occupancy">
-          <TrendingUp className="stat-icon" />
-          <div className="stat-content">
-            <p className="stat-label">Occupancy Rate</p>
-            <p className="stat-value">{selectedStats.occupancyRate}%</p>
+          <TrendingUp className="statIcon" />
+          <div className="statContent">
+            <p className="statLabel">Occupancy Rate</p>
+            <p className="statValue">{selectedStats.occupancyRate}%</p>
             <Progress value={selectedStats.occupancyRate} />
           </div>
         </Card>
@@ -147,15 +147,15 @@ const DepartmentLoadReportPage = () => {
 
       {/* Critical Departments Alert */}
       {criticalDepartments.length > 0 && (
-        <Card className="critical-alert">
-          <h2 className="section-title">
-            <AlertTriangle className="mr-2" />
+        <Card className="criticalAlert">
+          <h2 className="sectionTitle">
+            <AlertTriangle className="mr2" />
             Critical Departments (90%+ Occupied)
           </h2>
-          <div className="critical-list">
+          <div className="criticalList">
             {criticalDepartments.map(dept => (
-              <div key={dept.id} className="critical-item">
-                <span className="dept-name">{dept.name}</span>
+              <div key={dept.id} className="criticalItem">
+                <span className="deptName">{dept.name}</span>
                 <Badge variant="destructive">
                   {dept.occupancyRate}% Occupied
                 </Badge>
@@ -167,22 +167,22 @@ const DepartmentLoadReportPage = () => {
 
       {/* Department Details */}
       {selectedDepartment !== 'all' && (
-        <Card className="detail-card">
-          <h2 className="section-title">Department Details</h2>
-          <div className="detail-stats">
-            <div className="detail-item">
+        <Card className="detailCard">
+          <h2 className="sectionTitle">Department Details</h2>
+          <div className="detailStats">
+            <div className="detailItem">
               <span className="label">Total Beds</span>
               <span className="value">{selectedStats.totalBeds}</span>
             </div>
-            <div className="detail-item">
+            <div className="detailItem">
               <span className="label">Available</span>
               <span className="value">{selectedStats.availableBeds}</span>
             </div>
-            <div className="detail-item">
+            <div className="detailItem">
               <span className="label">Occupied</span>
               <span className="value">{selectedStats.occupiedBeds}</span>
             </div>
-            <div className="detail-item">
+            <div className="detailItem">
               <span className="label">Maintenance</span>
               <span className="value">{selectedStats.maintenanceBeds}</span>
             </div>
@@ -191,9 +191,9 @@ const DepartmentLoadReportPage = () => {
       )}
 
       {/* Export Button */}
-      <div className="export-section">
+      <div className="exportSection">
         <Button size="lg">
-          <Download className="mr-2" />
+          <Download className="mr2" />
           Export Report (PDF/CSV)
         </Button>
       </div>

@@ -27,13 +27,13 @@
  */
 
 import React from 'react';
-import './table.module.scss';
+import './table.scss';
 
 /**
  * Table - root container
  */
 export const Table = React.forwardRef(({ children, className = '', ...props }, ref) => (
-  <div className="table-wrapper">
+  <div className="tableWrapper">
     <table ref={ref} className={`table ${className}`} {...props}>
       {children}
     </table>

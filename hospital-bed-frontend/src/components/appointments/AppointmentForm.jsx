@@ -32,7 +32,7 @@ import DialogHeader from '@components/ui/dialog-header.jsx';
 import DialogTitle from '@components/ui/dialog-title.jsx';
 import DialogDescription from '@components/ui/dialog-description.jsx';
 import { CalendarIcon, Clock, User, Stethoscope } from 'lucide-react';
-import './AppointmentForm.module.scss';
+import './AppointmentForm.scss';
 
 // Validation schema using Zod - strict and healthcare-appropriate
 const appointmentSchema = z.object({
@@ -94,7 +94,7 @@ const AppointmentForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="spaceY6">
       <DialogHeader>
         <DialogTitle>
           {initialData ? 'Edit Appointment' : 'Schedule New Appointment'}
@@ -108,7 +108,7 @@ const AppointmentForm = ({
 
       <div className="grid gap-6">
         {/* Patient Select */}
-        <div className="space-y-2">
+        <div className="spaceY2">
           <Label htmlFor="patientId" required>
             <User className="inline w-4 h-4 mr-2" />
             Patient
@@ -132,7 +132,7 @@ const AppointmentForm = ({
         </div>
 
         {/* Doctor Select */}
-        <div className="space-y-2">
+        <div className="spaceY2">
           <Label htmlFor="doctorId" required>
             <Stethoscope className="inline w-4 h-4 mr-2" />
             Doctor
@@ -156,7 +156,7 @@ const AppointmentForm = ({
         </div>
 
         {/* Date & Time */}
-        <div className="space-y-2">
+        <div className="spaceY2">
           <Label htmlFor="appointmentDate" required>
             <CalendarIcon className="inline w-4 h-4 mr-2" />
             Date & Time
@@ -173,7 +173,7 @@ const AppointmentForm = ({
         </div>
 
         {/* Reason */}
-        <div className="space-y-2">
+        <div className="spaceY2">
           <Label htmlFor="reason" required>
             Reason for Visit
           </Label>
@@ -189,7 +189,7 @@ const AppointmentForm = ({
         </div>
 
         {/* Notes (Optional) */}
-        <div className="space-y-2">
+        <div className="spaceY2">
           <Label htmlFor="notes">Additional Notes (Optional)</Label>
           <Textarea
             id="notes"

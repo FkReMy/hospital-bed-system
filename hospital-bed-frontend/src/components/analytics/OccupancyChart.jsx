@@ -35,7 +35,7 @@ import CardContent from '@components/ui/card-content.jsx';
 import CardTitle from '@components/ui/card-title.jsx';
 import Skeleton from '@components/ui/skeleton.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
-import './OccupancyChart.module.scss';
+import './OccupancyChart.scss';
 
 /**
  * Props:
@@ -70,7 +70,7 @@ const OccupancyChart = ({
 
   if (isLoading) {
     return (
-      <Card className="occupancy-chart-card">
+      <Card className="occupancyChartCard">
         <CardHeader>
           <CardTitle>{title}</CardTitle>
         </CardHeader>
@@ -83,7 +83,7 @@ const OccupancyChart = ({
 
   if (error) {
     return (
-      <Card className="occupancy-chart-card">
+      <Card className="occupancyChartCard">
         <CardHeader>
           <CardTitle>{title}</CardTitle>
         </CardHeader>
@@ -98,7 +98,7 @@ const OccupancyChart = ({
 
   if (data.length === 0 || departments.length === 0) {
     return (
-      <Card className="occupancy-chart-card">
+      <Card className="occupancyChartCard">
         <CardHeader>
           <CardTitle>{title}</CardTitle>
         </CardHeader>
@@ -117,7 +117,7 @@ const OccupancyChart = ({
   const ChartComponent = chartType === 'line' ? LineChart : AreaChart;
 
   return (
-    <Card className="occupancy-chart-card">
+    <Card className="occupancyChartCard">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <p className="text-sm text-muted-foreground">

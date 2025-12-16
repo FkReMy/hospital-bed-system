@@ -18,7 +18,7 @@
  */
 
 import React from 'react';
-import './tooltip.module.scss';
+import './tooltip.scss';
 
 /**
  * Props:
@@ -75,8 +75,8 @@ const Tooltip = ({
           role="tooltip"
           aria-hidden={!visible}
         >
-          <div className="tooltip-arrow" />
-          <div className="tooltip-content">
+          <div className="tooltipArrow" />
+          <div className="tooltipContent">
             {content}
           </div>
         </div>

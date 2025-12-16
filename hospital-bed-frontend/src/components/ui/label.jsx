@@ -18,7 +18,7 @@
  */
 
 import React from 'react';
-import './label.module.scss';
+import './label.scss';
 
 const Label = React.forwardRef(({ 
   children, 
@@ -35,7 +35,7 @@ const Label = React.forwardRef(({
       {...props}
     >
       {children}
-      {required && <span className="label-required" aria-label="required">*</span>}
+      {required && <span className="labelRequired" aria-label="required">*</span>}
     </label>
   );
 });

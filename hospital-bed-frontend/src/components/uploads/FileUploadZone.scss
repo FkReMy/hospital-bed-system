@@ -1,0 +1,114 @@
+// src/components/uploads/FileUploadZone.module.scss
+/**
+ * FileUploadZone Module Styles
+ * 
+ * Scoped styles for the FileUploadZone component.
+ * Provides premium drag-and-drop upload area with visual feedback,
+ * prompt, limits text, and uploaded file list.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing, typography, colors, borders, shadows
+ * - Glassmorphic elevation and blur
+ * - Hover/active states
+ * - Dark/light theme compatibility
+ * - Responsive behavior
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.fileUploadZone {
+  // Main container
+  width: 100%;
+  border: 2px dashed var(--border);
+  border-radius: $radius-2xl;
+  background: rgba(var(--muted), 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+
+  // Drag active state
+  &.dragActive {
+    border-color: var(--primary);
+    background: rgba(var(--primary), 0.1);
+    box-shadow: 0 0 0 4px rgba(var(--primary), 0.2);
+  }
+
+  // Hidden file input
+  .fileInput {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 10;
+  }
+
+  // Upload prompt (centered when empty)
+  .uploadPrompt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-3xl $spacing-2xl;
+    text-align: center;
+    pointer-events: none; // Allow clicks to pass through to input
+
+    .uploadIcon {
+      color: var(--primary);
+      margin-bottom: $spacing-xl;
+      opacity: 0.7;
+    }
+
+    .promptText {
+      font-size: $text-lg;
+      font-weight: $font-medium;
+      color: var(--foreground);
+      margin-bottom: $spacing-md;
+
+      .browseButton {
+        display: inline;
+        padding: 0;
+        font-size: inherit;
+        font-weight: $font-semibold;
+        color: var(--primary);
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .fileLimits {
+      font-size: $text-sm;
+      color: var(--muted-foreground);
+    }
+  }
+
+  // Uploaded file list
+  .fileList {
+    padding: $spacing-xl $spacing-xl 0;
+
+    // Space between items
+    > :not(:last-child) {
+      margin-bottom: $spacing-lg;
+    }
+  }
+
+  // Responsive adjustments
+  @media (max-width: $breakpoint-md) {
+    .uploadPrompt {
+      padding: $spacing-2xl $spacing-lg;
+    }
+
+    .fileList {
+      padding: $spacing-lg;
+    }
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    border-radius: $radius-xl;
+
+    .uploadPrompt {
+      padding: $spacing-xl $spacing-md;
+    }
+  }
+}

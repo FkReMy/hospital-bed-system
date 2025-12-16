@@ -1,0 +1,146 @@
+// src/components/layout/Topbar.module.scss
+/**
+ * Topbar Module Styles
+ * 
+ * Scoped styles for the Topbar component - premium top navigation bar.
+ * Handles sticky positioning, glassmorphic blur, responsive layout,
+ * and alignment of sidebar toggle, actions, and user menu.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing, typography, colors, borders, shadows
+ * - Glassmorphic blur effect
+ * - Smooth transitions
+ * - Dark/light theme compatibility
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.topbar {
+  // Sticky positioning
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  background: rgba(var(--background), 0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s ease;
+
+  // Inner content wrapper
+  .topbarContent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    padding: 0 $spacing-2xl;
+
+    @media (max-width: $breakpoint-lg) {
+      padding: 0 $spacing-xl;
+    }
+
+    @media (max-width: $breakpoint-md) {
+      padding: 0 $spacing-lg;
+    }
+  }
+
+  // Left section - sidebar toggle
+  .leftSection {
+    display: flex;
+    align-items: center;
+
+    .sidebarToggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: $radius-lg;
+
+      &:hover {
+        background: var(--muted/50);
+      }
+    }
+  }
+
+  // Center section - placeholder for future breadcrumbs/search
+  .centerSection {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    max-width: 720px;
+    margin: 0 $spacing-2xl;
+
+    @media (max-width: $breakpoint-lg) {
+      display: none; // Hide on smaller screens to prioritize actions
+    }
+  }
+
+  // Right section - user actions
+  .rightSection {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    flex-shrink: 0;
+
+    // Individual action buttons
+    .themeToggle,
+    .notificationBell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: $radius-lg;
+
+      &:hover {
+        background: var(--muted/50);
+      }
+    }
+
+    // User menu trigger
+    .userMenuTrigger {
+      display: flex;
+      align-items: center;
+      gap: $spacing-md;
+      padding: $spacing-sm $spacing-md;
+      border-radius: $radius-lg;
+      background: transparent;
+      transition: background 0.2s ease;
+
+      &:hover {
+        background: var(--muted/50);
+      }
+
+      .userAvatar {
+        width: 36px;
+        height: 36px;
+
+        .avatarInitial {
+          font-size: $text-base;
+          font-weight: $font-bold;
+        }
+      }
+
+      .userName {
+        font-size: $text-sm;
+        font-weight: $font-medium;
+        color: var(--foreground);
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        @media (max-width: $breakpoint-md) {
+          display: none;
+        }
+      }
+    }
+
+    // Responsive: stack on very small screens
+    @media (max-width: $breakpoint-sm) {
+      gap: $spacing-sm;
+    }
+  }
+}

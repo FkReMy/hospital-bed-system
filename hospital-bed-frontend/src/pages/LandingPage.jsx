@@ -32,7 +32,7 @@ import Button from '@components/ui/button.jsx';
 import Card from '@components/ui/card.jsx';
 import Badge from '@components/ui/badge.jsx';
 import { useBedManagement } from '@hooks/useBedManagement';
-import './LandingPage.module.scss';
+import './LandingPage.scss';
 
 const LandingPage = () => {
   const { beds = [], isLoadingBeds } = useBedManagement();
@@ -57,88 +57,88 @@ const LandingPage = () => {
   });
 
   return (
-    <div className="landing-page">
+    <div className="landingPage">
       {/* Hero Section */}
       <section className="hero">
-        <div className="hero-content">
-          <div className="hero-text">
-            <h1 className="hero-title">
+        <div className="heroContent">
+          <div className="heroText">
+            <h1 className="heroTitle">
               Hospital Bed Management System
             </h1>
-            <p className="hero-subtitle">
+            <p className="heroSubtitle">
               Real-time bed availability and patient admission management for faster, safer care.
             </p>
-            <div className="hero-features">
-              <div className="feature-item">
-                <CheckCircle className="feature-icon" />
+            <div className="heroFeatures">
+              <div className="featureItem">
+                <CheckCircle className="featureIcon" />
                 <span>Live bed status across all departments</span>
               </div>
-              <div className="feature-item">
-                <CheckCircle className="feature-icon" />
+              <div className="featureItem">
+                <CheckCircle className="featureIcon" />
                 <span>Instant patient assignment</span>
               </div>
-              <div className="feature-item">
-                <CheckCircle className="feature-icon" />
+              <div className="featureItem">
+                <CheckCircle className="featureIcon" />
                 <span>Reduce waiting time by over 80%</span>
               </div>
             </div>
-            <div className="hero-actions">
+            <div className="heroActions">
               <Button asChild size="lg">
                 <Link to="/login">
-                  Staff Login <ArrowRight className="ml-2" />
+                  Staff Login <ArrowRight className="ml2" />
                 </Link>
               </Button>
-              <Button variant="outline" size="lg" className="language-toggle">
-                <Globe className="mr-2" />
+              <Button variant="outline" size="lg" className="languageToggle">
+                <Globe className="mr2" />
                 العربية
               </Button>
             </div>
           </div>
-          <div className="hero-image">
-            <div className="hospital-illustration" />
+          <div className="heroImage">
+            <div className="hospitalIllustration" />
           </div>
         </div>
       </section>
 
       {/* Real-time Availability */}
-      <section className="availability-section">
-        <div className="section-container">
-          <h2 className="section-title">Current Bed Availability</h2>
-          <p className="section-subtitle">
+      <section className="availabilitySection">
+        <div className="sectionContainer">
+          <h2 className="sectionTitle">Current Bed Availability</h2>
+          <p className="sectionSubtitle">
             Updated in real-time • <Clock className="inline" size={16} /> {new Date().toLocaleTimeString()}
           </p>
 
-          <div className="stats-grid">
-            <Card className="stat-card total">
-              <div className="stat-value">{totalBeds}</div>
-              <div className="stat-label">Total Beds</div>
+          <div className="statsGrid">
+            <Card className="statCard total">
+              <div className="statValue">{totalBeds}</div>
+              <div className="statLabel">Total Beds</div>
             </Card>
-            <Card className="stat-card available">
-              <div className="stat-value">{availableBeds}</div>
-              <div className="stat-label">Available</div>
+            <Card className="statCard available">
+              <div className="statValue">{availableBeds}</div>
+              <div className="statLabel">Available</div>
             </Card>
-            <Card className="stat-card occupied">
-              <div className="stat-value">{occupiedBeds}</div>
-              <div className="stat-label">Occupied</div>
+            <Card className="statCard occupied">
+              <div className="statValue">{occupiedBeds}</div>
+              <div className="statLabel">Occupied</div>
             </Card>
-            <Card className="stat-card rate">
-              <div className="stat-value">{occupancyRate}%</div>
-              <div className="stat-label">Occupancy Rate</div>
+            <Card className="statCard rate">
+              <div className="statValue">{occupancyRate}%</div>
+              <div className="statLabel">Occupancy Rate</div>
             </Card>
           </div>
 
-          <div className="departments-grid">
+          <div className="departmentsGrid">
             {departments.map(dept => (
               <Card key={dept.name} className={`dept-card ${dept.color}`}>
-                <div className="dept-header">
-                  <h3 className="dept-name">{dept.name}</h3>
+                <div className="deptHeader">
+                  <h3 className="deptName">{dept.name}</h3>
                   <Badge variant="outline">
                     {dept.available} Available
                   </Badge>
                 </div>
-                <div className="dept-progress">
+                <div className="deptProgress">
                   <div 
-                    className="progress-fill" 
+                    className="progressFill" 
                     style={{ width: `${100 - (dept.available / 10 * 100)}%` }}
                   />
                 </div>
@@ -149,28 +149,28 @@ const LandingPage = () => {
       </section>
 
       {/* Features */}
-      <section className="features-section">
-        <div className="section-container">
-          <h2 className="section-title">Designed for Modern Healthcare</h2>
+      <section className="featuresSection">
+        <div className="sectionContainer">
+          <h2 className="sectionTitle">Designed for Modern Healthcare</h2>
           
-          <div className="features-grid">
-            <Card className="feature-card">
-              <Activity className="feature-icon" />
+          <div className="featuresGrid">
+            <Card className="featureCard">
+              <Activity className="featureIcon" />
               <h3>Real-Time Monitoring</h3>
               <p>Live updates on bed status across all departments</p>
             </Card>
-            <Card className="feature-card">
-              <BedDouble className="feature-icon" />
+            <Card className="featureCard">
+              <BedDouble className="featureIcon" />
               <h3>Fast Assignment</h3>
               <p>Assign patients to available beds in seconds</p>
             </Card>
-            <Card className="feature-card">
-              <Users className="feature-icon" />
+            <Card className="featureCard">
+              <Users className="featureIcon" />
               <h3>Patient Transparency</h3>
               <p>Families can check availability before arrival</p>
             </Card>
-            <Card className="feature-card">
-              <Shield className="feature-icon" />
+            <Card className="featureCard">
+              <Shield className="featureIcon" />
               <h3>Secure & Role-Based</h3>
               <p>Access control for doctors, nurses, and admin</p>
             </Card>
@@ -179,8 +179,8 @@ const LandingPage = () => {
       </section>
 
       {/* Footer */}
-      <footer className="landing-footer">
-        <div className="footer-content">
+      <footer className="landingFooter">
+        <div className="footerContent">
           <p>© 2025 Hospital Bed Management System</p>
           <p>All rights reserved • For hospital staff only</p>
         </div>

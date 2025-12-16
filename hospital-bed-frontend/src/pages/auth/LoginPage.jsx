@@ -27,7 +27,7 @@ import { useMutation } from '@tanstack/react-query';
 import { authApi } from '@services/api/authApi';
 import { useAuth } from '@hooks/useAuth';
 import toast from 'react-hot-toast';
-import './LoginPage.module.scss';
+import './LoginPage.scss';
 
 const LoginPage = () => {
   const { loginSuccess } = useAuth();
@@ -58,16 +58,16 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="login-page">
-      <div className="login-container">
-        <Card className="login-card">
-          <div className="login-header">
-            <h1 className="login-title">HBMS Login</h1>
-            <p className="login-subtitle">Hospital Bed Management System</p>
+    <div className="loginPage">
+      <div className="loginContainer">
+        <Card className="loginCard">
+          <div className="loginHeader">
+            <h1 className="loginTitle">HBMS Login</h1>
+            <p className="loginSubtitle">Hospital Bed Management System</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="login-form">
-            <div className="form-group">
+          <form onSubmit={handleSubmit} className="loginForm">
+            <div className="formGroup">
               <Input
                 type="email"
                 placeholder="staff@hospital.com"
@@ -79,7 +79,7 @@ const LoginPage = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="formGroup">
               <Input
                 type="password"
                 placeholder="Password"
@@ -91,8 +91,8 @@ const LoginPage = () => {
               />
             </div>
 
-            <div className="form-options">
-              <label className="remember-me">
+            <div className="formOptions">
+              <label className="rememberMe">
                 <input
                   type="checkbox"
                   checked={rememberMe}
@@ -102,7 +102,7 @@ const LoginPage = () => {
                 <span>Remember me</span>
               </label>
 
-              <Link to="/forgot-password" className="forgot-link">
+              <Link to="/forgot-password" className="forgotLink">
                 Forgot password?
               </Link>
             </div>
@@ -110,7 +110,7 @@ const LoginPage = () => {
             <Button
               type="submit"
               size="lg"
-              className="login-button"
+              className="loginButton"
               isLoading={loginMutation.isPending}
               disabled={loginMutation.isPending}
             >
@@ -118,15 +118,15 @@ const LoginPage = () => {
             </Button>
           </form>
 
-          <div className="login-footer">
-            <Button variant="ghost" size="sm" className="language-toggle">
-              <Globe className="mr-2" size={16} />
+          <div className="loginFooter">
+            <Button variant="ghost" size="sm" className="languageToggle">
+              <Globe className="mr2" size={16} />
               العربية
             </Button>
           </div>
         </Card>
 
-        <div className="page-footer">
+        <div className="pageFooter">
           <p>© 2025 Hospital Bed Management System</p>
           <p>For authorized staff only</p>
         </div>

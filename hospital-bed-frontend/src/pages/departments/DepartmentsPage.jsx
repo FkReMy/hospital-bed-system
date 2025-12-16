@@ -25,7 +25,7 @@ import Progress from '@components/ui/progress.jsx';
 import LoadingState from '@components/common/LoadingState.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
 import { useBedManagement } from '@hooks/useBedManagement';
-import './DepartmentsPage.module.scss';
+import './DepartmentsPage.scss';
 
 const DepartmentsPage = () => {
   const { beds, departments, isLoadingBeds } = useBedManagement();
@@ -61,56 +61,56 @@ const DepartmentsPage = () => {
   }
 
   return (
-    <div className="departments-page">
-      <div className="page-header">
-        <h1 className="page-title">Hospital Departments</h1>
-        <p className="page-subtitle">Overview of all departments and bed availability</p>
+    <div className="departmentsPage">
+      <div className="pageHeader">
+        <h1 className="pageTitle">Hospital Departments</h1>
+        <p className="pageSubtitle">Overview of all departments and bed availability</p>
       </div>
 
-      <div className="departments-grid">
+      <div className="departmentsGrid">
         {departmentStats.map(department => (
           <Link
             key={department.id}
             to={`/departments/${department.id}`}
-            className="department-link"
+            className="departmentLink"
           >
-            <Card className="department-card" interactive>
-              <div className="department-header">
-                <Building2 className="department-icon" />
-                <div className="department-info">
-                  <h2 className="department-name">{department.name}</h2>
-                  <p className="department-description">
+            <Card className="departmentCard" interactive>
+              <div className="departmentHeader">
+                <Building2 className="departmentIcon" />
+                <div className="departmentInfo">
+                  <h2 className="departmentName">{department.name}</h2>
+                  <p className="departmentDescription">
                     {department.description || 'Hospital department'}
                   </p>
                 </div>
               </div>
 
-              <div className="department-stats">
-                <div className="stat-item">
-                  <span className="stat-label">Total Beds</span>
-                  <span className="stat-value">{department.totalBeds}</span>
+              <div className="departmentStats">
+                <div className="statItem">
+                  <span className="statLabel">Total Beds</span>
+                  <span className="statValue">{department.totalBeds}</span>
                 </div>
-                <div className="stat-item">
-                  <span className="stat-label">Available</span>
-                  <span className="stat-value highlight">
+                <div className="statItem">
+                  <span className="statLabel">Available</span>
+                  <span className="statValue highlight">
                     {department.availableBeds}
                   </span>
                 </div>
-                <div className="stat-item">
-                  <span className="stat-label">Occupied</span>
-                  <span className="stat-value">{department.occupiedBeds}</span>
+                <div className="statItem">
+                  <span className="statLabel">Occupied</span>
+                  <span className="statValue">{department.occupiedBeds}</span>
                 </div>
               </div>
 
-              <div className="department-progress">
-                <div className="progress-info">
-                  <span className="progress-label">Occupancy Rate</span>
-                  <span className="progress-value">{department.occupancyRate}%</span>
+              <div className="departmentProgress">
+                <div className="progressInfo">
+                  <span className="progressLabel">Occupancy Rate</span>
+                  <span className="progressValue">{department.occupancyRate}%</span>
                 </div>
                 <Progress value={department.occupancyRate} />
               </div>
 
-              <div className="department-status">
+              <div className="departmentStatus">
                 <Badge 
                   variant={department.availableBeds === 0 ? 'destructive' : 'default'}
                 >

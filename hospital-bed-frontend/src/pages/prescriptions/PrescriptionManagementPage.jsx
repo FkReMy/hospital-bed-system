@@ -48,7 +48,7 @@ import EmptyState from '@components/common/EmptyState.jsx';
 import { usePrescriptionManagement } from '@hooks/usePrescriptionManagement';
 import { useAuth } from '@hooks/useAuth';
 import { formatDateTime } from '@lib/dateUtils';
-import './PrescriptionManagementPage.module.scss';
+import './PrescriptionManagementPage.scss';
 
 const PrescriptionManagementPage = () => {
   const { user } = useAuth();
@@ -118,16 +118,16 @@ const PrescriptionManagementPage = () => {
 
   if (isErrorPrescriptions) {
     return (
-      <Card className="error-card">
-        <p className="error-message">Failed to load prescriptions. Please try again later.</p>
+      <Card className="errorCard">
+        <p className="errorMessage">Failed to load prescriptions. Please try again later.</p>
       </Card>
     );
   }
 
   return (
-    <div className="prescription-management-page">
-      <div className="page-header">
-        <h1 className="page-title">Prescription Management</h1>
+    <div className="prescriptionManagementPage">
+      <div className="pageHeader">
+        <h1 className="pageTitle">Prescription Management</h1>
         <Button size="lg">
           <Plus size={20} />
           New Prescription
@@ -135,9 +135,9 @@ const PrescriptionManagementPage = () => {
       </div>
 
       {/* Filters */}
-      <Card className="filters-card">
-        <div className="filters-grid">
-          <div className="search-input">
+      <Card className="filtersCard">
+        <div className="filtersGrid">
+          <div className="searchInput">
             <Input
               placeholder="Search patient or medication..."
               value={searchTerm}
@@ -149,7 +149,7 @@ const PrescriptionManagementPage = () => {
           <select
             value={selectedDoctor}
             onChange={(e) => setSelectedDoctor(e.target.value)}
-            className="doctor-filter"
+            className="doctorFilter"
           >
             <option value="all">All Doctors</option>
             {doctors.map(doctor => (
@@ -162,7 +162,7 @@ const PrescriptionManagementPage = () => {
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="status-filter"
+            className="statusFilter"
           >
             <option value="all">All Status</option>
             <option value="pending">Pending</option>
@@ -173,7 +173,7 @@ const PrescriptionManagementPage = () => {
       </Card>
 
       {/* Prescriptions Table */}
-      <Card className="table-card">
+      <Card className="tableCard">
         {filteredAndSortedPrescriptions.length === 0 ? (
           <EmptyState
             title="No prescriptions found"
@@ -206,9 +206,9 @@ const PrescriptionManagementPage = () => {
               {filteredAndSortedPrescriptions.map(prescription => (
                 <TableRow key={prescription.id} className="clickable">
                   <TableCell>
-                    <div className="patient-info">
+                    <div className="patientInfo">
                       <strong>{prescription.patient_name}</strong>
-                      <span className="patient-id">ID: {prescription.patient_id}</span>
+                      <span className="patientId">ID: {prescription.patient_id}</span>
                     </div>
                   </TableCell>
                   <TableCell>{prescription.medication}</TableCell>

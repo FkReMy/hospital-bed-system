@@ -1,0 +1,157 @@
+// src/components/ui/table.module.scss
+/**
+ * Table Module Styles
+ * 
+ * Scoped styles for the Table component suite - premium, responsive data tables
+ * with striped rows, hover effects, sticky headers, and horizontal scroll on small screens.
+ * 
+ * Components styled:
+ * - .table-wrapper (scroll container)
+ * - .table (main table element)
+ * - .table-header (thead)
+ * - .table-body (tbody)
+ * - .table-footer (tfoot)
+ * - .table-row (tr)
+ * - .table-head (th)
+ * - .table-cell (td)
+ * - .table-caption (caption)
+ * 
+ * Uses global variables and mixins for unified design system consistency.
+ * Dark/light theme compatible via variables.
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.tableWrapper {
+  // Wrapper for horizontal scroll on small screens
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--muted-foreground) transparent;
+
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--muted-foreground);
+    border-radius: $radius-lg;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--foreground);
+  }
+}
+
+.table {
+  // Main table element
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 640px; // Prevent collapse on small screens
+  border-radius: $radius-xl;
+  overflow: hidden; // Clip rounded corners
+  box-shadow: $shadow-lg;
+  background: var(--background);
+  table-layout: fixed;
+
+  // Header section
+  .tableHeader {
+    background: rgba(var(--muted), 0.3);
+    backdrop-filter: blur(4px);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--border);
+  }
+
+  // Body section
+  .tableBody {
+    .tableRow {
+      transition: background 0.2s ease;
+
+      &:nth-child(even) {
+        background: rgba(var(--muted), 0.1);
+      }
+
+      &:hover {
+        background: rgba(var(--muted), 0.3);
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+
+  // Footer section
+  .tableFooter {
+    background: rgba(var(--muted), 0.3);
+    border-top: 1px solid var(--border);
+  }
+
+  // Row base
+  .tableRow {
+    border-bottom: 1px solid var(--border);
+  }
+
+  // Header cell
+  .tableHead {
+    padding: $spacing-md $spacing-lg;
+    text-align: left;
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    color: var(--muted-foreground);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &.text-right {
+      text-align: right;
+    }
+
+    &.text-center {
+      text-align: center;
+    }
+  }
+
+  // Data cell
+  .tableCell {
+    padding: $spacing-md $spacing-lg;
+    font-size: $text-base;
+    color: var(--foreground);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &.text-right {
+      text-align: right;
+    }
+
+    &.text-center {
+      text-align: center;
+    }
+  }
+
+  // Caption styling
+  .tableCaption {
+    padding: $spacing-md $spacing-lg;
+    font-size: $text-sm;
+    color: var(--muted-foreground);
+    text-align: center;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: $breakpoint-md) {
+  .table {
+    min-width: 800px; // Ensure scroll on small screens
+  }
+}

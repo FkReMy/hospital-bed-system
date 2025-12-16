@@ -29,7 +29,7 @@ import Button from '@components/ui/button.jsx';
 import Card from '@components/ui/card.jsx';
 import Badge from '@components/ui/badge.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
-import './NotificationCenter.module.scss';
+import './NotificationCenter.scss';
 
 /**
  * Props:
@@ -65,15 +65,15 @@ const NotificationCenter = ({
   if (!open) return null;
 
   return (
-    <div className="notification-center-popover" role="dialog" aria-label="Notifications">
-      <Card className="notification-center">
+    <div className="notificationCenterPopover" role="dialog" aria-label="Notifications">
+      <Card className="notificationCenter">
         {/* Header */}
-        <div className="center-header">
-          <div className="header-title">
-            <Bell className="header-icon" size={18} />
-            <h3 className="header-text">Notifications</h3>
+        <div className="centerHeader">
+          <div className="headerTitle">
+            <Bell className="headerIcon" size={18} />
+            <h3 className="headerText">Notifications</h3>
             {unreadCount > 0 && (
-              <Badge variant="destructive" className="unread-count">
+              <Badge variant="destructive" className="unreadCount">
                 {unreadCount}
               </Badge>
             )}
@@ -84,7 +84,7 @@ const NotificationCenter = ({
               variant="ghost"
               size="sm"
               onClick={onMarkAllAsRead}
-              className="mark-all-read"
+              className="markAllRead"
             >
               <Check size={14} />
               Mark all as read
@@ -93,16 +93,16 @@ const NotificationCenter = ({
         </div>
 
         {/* Body */}
-        <div className="center-body">
+        <div className="centerBody">
           {notifications.length === 0 ? (
             <EmptyState
               title="No notifications"
               description="You're all caught up!"
               illustration="empty-beds" // Reuse calm illustration
-              className="center-empty"
+              className="centerEmpty"
             />
           ) : (
-            <ul className="notification-list" aria-live="polite">
+            <ul className="notificationList" aria-live="polite">
               {notifications.map((notification) => {
                 const { icon: TypeIcon, variant } = getTypeConfig(notification.type);
                 const isUnread = !notification.read;
@@ -112,15 +112,15 @@ const NotificationCenter = ({
                     key={notification.id} 
                     className={`notification-item ${isUnread ? 'unread' : ''}`}
                   >
-                    <div className="item-icon">
+                    <div className="itemIcon">
                       <div className={`icon-wrapper ${variant}`}>
                         <TypeIcon size={16} />
                       </div>
                     </div>
 
-                    <div className="item-content">
-                      <p className="item-message">{notification.message}</p>
-                      <time className="item-time">
+                    <div className="itemContent">
+                      <p className="itemMessage">{notification.message}</p>
+                      <time className="itemTime">
                         {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
                       </time>
                     </div>
@@ -131,7 +131,7 @@ const NotificationCenter = ({
                         size="icon"
                         onClick={() => onMarkAsRead(notification.id)}
                         aria-label="Mark as read"
-                        className="mark-read-button"
+                        className="markReadButton"
                       >
                         <Check size={14} />
                       </Button>

@@ -21,7 +21,7 @@
  */
 
 import React from 'react';
-import './input.module.scss';
+import './input.scss';
 
 /**
  * Props:
@@ -60,7 +60,7 @@ const Input = React.forwardRef(
           ref={ref}
           type={type}
           disabled={disabled}
-          className="input-field"
+          className="inputField"
           {...props}
         />
 

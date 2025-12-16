@@ -15,7 +15,7 @@
  */
 
 import React from 'react';
-import './avatar.module.scss';
+import './avatar.scss';
 
 /**
  * Props:
@@ -48,7 +48,7 @@ const Avatar = ({
         <img 
           src={src} 
           alt={alt} 
-          className="avatar-image"
+          className="avatarImage"
           onError={(e) => {
             e.target.style.display = 'none';
             e.target.nextSibling.style.display = 'flex';
@@ -56,12 +56,12 @@ const Avatar = ({
         />
       ) : null}
 
-      <div className="avatar-fallback">
-        <span className="avatar-initials">{initials || '?'}</span>
+      <div className="avatarFallback">
+        <span className="avatarInitials">{initials || '?'}</span>
       </div>
 
       {status && (
-        <span className="status-indicator" aria-hidden="true" />
+        <span className="statusIndicator" aria-hidden="true" />
       )}
     </div>
   );
@@ -69,7 +69,7 @@ const Avatar = ({
 
 // Optional: AvatarFallback for explicit fallback control
 export const AvatarFallback = ({ children }) => (
-  <div className="avatar-fallback">
+  <div className="avatarFallback">
     {children}
   </div>
 );

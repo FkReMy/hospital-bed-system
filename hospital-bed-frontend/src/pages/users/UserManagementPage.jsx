@@ -47,7 +47,7 @@ import EmptyState from '@components/common/EmptyState.jsx';
 import { useUsers } from '@hooks/useUsers'; // Custom hook for user list
 import { useRoleAccess } from '@hooks/useRoleAccess';
 import { formatDateTime } from '@lib/dateUtils';
-import './UserManagementPage.module.scss';
+import './UserManagementPage.scss';
 
 const UserManagementPage = () => {
   const { users, isLoadingUsers, isErrorUsers } = useUsers();
@@ -106,21 +106,21 @@ const UserManagementPage = () => {
   };
 
   return (
-    <div className="user-management-page">
-      <div className="page-header">
-        <h1 className="page-title">Staff Management</h1>
+    <div className="userManagementPage">
+      <div className="pageHeader">
+        <h1 className="pageTitle">Staff Management</h1>
         {canCreateUser && (
           <Button size="lg">
-            <UserPlus className="mr-2" />
+            <UserPlus className="mr2" />
             Add New Staff
           </Button>
         )}
       </div>
 
       {/* Filters */}
-      <Card className="filters-card">
-        <div className="filters-grid">
-          <div className="search-input">
+      <Card className="filtersCard">
+        <div className="filtersGrid">
+          <div className="searchInput">
             <Input
               placeholder="Search name, email, or phone..."
               value={searchTerm}
@@ -132,7 +132,7 @@ const UserManagementPage = () => {
           <select
             value={selectedRole}
             onChange={(e) => setSelectedRole(e.target.value)}
-            className="role-filter"
+            className="roleFilter"
           >
             <option value="all">All Roles</option>
             <option value="admin">Administrator</option>
@@ -144,7 +144,7 @@ const UserManagementPage = () => {
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="status-filter"
+            className="statusFilter"
           >
             <option value="all">All Status</option>
             <option value="active">Active</option>
@@ -154,7 +154,7 @@ const UserManagementPage = () => {
       </Card>
 
       {/* Users Table */}
-      <Card className="table-card">
+      <Card className="tableCard">
         {isLoadingUsers ? (
           <LoadingState type="table" count={10} />
         ) : isErrorUsers ? (
@@ -193,7 +193,7 @@ const UserManagementPage = () => {
               {filteredAndSortedUsers.map(user => (
                 <TableRow key={user.id} className="clickable">
                   <TableCell>
-                    <Link to={`/admin/users/${user.id}`} className="user-name">
+                    <Link to={`/admin/users/${user.id}`} className="userName">
                       {user.full_name}
                     </Link>
                   </TableCell>

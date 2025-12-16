@@ -21,7 +21,7 @@
 import React from 'react';
 import Skeleton from '@components/ui/skeleton.jsx';
 import Card from '@components/ui/card.jsx';
-import './LoadingState.module.scss';
+import './LoadingState.scss';
 
 /**
  * Props:
@@ -57,7 +57,7 @@ const LoadingState = ({
   if (type === 'table') {
     return (
       <div className={`loading-state table ${className}`} role="status" aria-live="polite">
-        <div className="table-skeletons">
+        <div className="tableSkeletons">
           {renderSkeletons()}
         </div>
       </div>
@@ -67,7 +67,7 @@ const LoadingState = ({
   if (type === 'grid' || type === 'card') {
     return (
       <div className={`loading-state grid ${className}`} role="status" aria-live="polite">
-        <div className="grid-skeletons">
+        <div className="gridSkeletons">
           {renderSkeletons()}
         </div>
       </div>
@@ -77,7 +77,7 @@ const LoadingState = ({
   if (type === 'full') {
     return (
       <Card className={`loading-state full ${className}`} role="status" aria-live="polite">
-        <div className="full-skeleton-container">
+        <div className="fullSkeletonContainer">
           {renderSkeletons()}
         </div>
       </Card>

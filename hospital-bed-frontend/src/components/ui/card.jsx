@@ -16,7 +16,7 @@
  */
 
 import React from 'react';
-import './card.module.scss';
+import './card.scss';
 
 /**
  * Props:

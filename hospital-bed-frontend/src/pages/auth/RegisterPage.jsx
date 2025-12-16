@@ -35,7 +35,7 @@ import { useMutation } from '@tanstack/react-query';
 import { userApi } from '@services/api/userApi';
 import toast from 'react-hot-toast';
 import { ROLES } from '@lib/constants';
-import './RegisterPage.module.scss';
+import './RegisterPage.scss';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -103,22 +103,22 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="register-page">
-      <div className="register-container">
-        <Card className="register-card">
-          <div className="register-header">
-            <Link to="/login" className="back-link">
+    <div className="registerPage">
+      <div className="registerContainer">
+        <Card className="registerCard">
+          <div className="registerHeader">
+            <Link to="/login" className="backLink">
               <ArrowLeft size={20} />
               Back to Login
             </Link>
-            <h1 className="register-title">Create Staff Account</h1>
-            <p className="register-subtitle">
+            <h1 className="registerTitle">Create Staff Account</h1>
+            <p className="registerSubtitle">
               Register new hospital staff member
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="register-form">
-            <div className="form-group">
+          <form onSubmit={handleSubmit} className="registerForm">
+            <div className="formGroup">
               <Input
                 placeholder="Full Name"
                 value={formData.full_name}
@@ -128,7 +128,7 @@ const RegisterPage = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="formGroup">
               <Input
                 type="email"
                 placeholder="Email Address"
@@ -139,7 +139,7 @@ const RegisterPage = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="formGroup">
               <Input
                 type="tel"
                 placeholder="Phone Number"
@@ -150,11 +150,11 @@ const RegisterPage = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="formGroup">
               <select
                 value={formData.role}
                 onChange={handleChange('role')}
-                className="role-select"
+                className="roleSelect"
                 disabled={registerMutation.isPending}
               >
                 <option value={ROLES.DOCTOR}>Doctor</option>
@@ -164,7 +164,7 @@ const RegisterPage = () => {
               </select>
             </div>
 
-            <div className="form-group">
+            <div className="formGroup">
               <Input
                 type="password"
                 placeholder="Password"
@@ -175,7 +175,7 @@ const RegisterPage = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="formGroup">
               <Input
                 type="password"
                 placeholder="Confirm Password"
@@ -189,16 +189,16 @@ const RegisterPage = () => {
             <Button
               type="submit"
               size="lg"
-              className="register-button"
+              className="registerButton"
               isLoading={registerMutation.isPending}
               disabled={registerMutation.isPending}
             >
-              <Shield className="mr-2" />
+              <Shield className="mr2" />
               Create Account
             </Button>
           </form>
 
-          <div className="register-footer">
+          <div className="registerFooter">
             <p className="note">
               Staff accounts should be created by administrators only.
             </p>

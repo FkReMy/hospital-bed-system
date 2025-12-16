@@ -27,7 +27,7 @@ import Input from '@components/ui/input.jsx';
 import Button from '@components/ui/button.jsx';
 import Switch from '@components/ui/switch.jsx';
 import { useTheme } from '@hooks/useTheme';
-import './ProfileSettingsPage.module.scss';
+import './ProfileSettingsPage.scss';
 
 const ProfileSettingsPage = () => {
   const { user, updateUser } = useAuth();
@@ -107,18 +107,18 @@ const ProfileSettingsPage = () => {
   };
 
   return (
-    <div className="profile-settings-page">
-      <div className="page-header">
-        <h1 className="page-title">Profile Settings</h1>
-        <p className="page-subtitle">Manage your personal information and preferences</p>
+    <div className="profileSettingsPage">
+      <div className="pageHeader">
+        <h1 className="pageTitle">Profile Settings</h1>
+        <p className="pageSubtitle">Manage your personal information and preferences</p>
       </div>
 
-      <div className="settings-grid">
+      <div className="settingsGrid">
         {/* Profile Information */}
-        <Card className="profile-card">
-          <h2 className="section-title">Personal Information</h2>
+        <Card className="profileCard">
+          <h2 className="sectionTitle">Personal Information</h2>
           <form onSubmit={handleProfileSubmit}>
-            <div className="form-group">
+            <div className="formGroup">
               <label>Full Name</label>
               <Input
                 value={formData.full_name}
@@ -126,7 +126,7 @@ const ProfileSettingsPage = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="formGroup">
               <label>Email</label>
               <Input
                 type="email"
@@ -135,7 +135,7 @@ const ProfileSettingsPage = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="formGroup">
               <label>Phone Number</label>
               <Input
                 type="tel"
@@ -144,7 +144,7 @@ const ProfileSettingsPage = () => {
               />
             </div>
 
-            <div className="form-actions">
+            <div className="formActions">
               <Button type="submit" isLoading={updateProfileMutation.isPending}>
                 Save Changes
               </Button>
@@ -153,10 +153,10 @@ const ProfileSettingsPage = () => {
         </Card>
 
         {/* Password Change */}
-        <Card className="password-card">
-          <h2 className="section-title">Change Password</h2>
+        <Card className="passwordCard">
+          <h2 className="sectionTitle">Change Password</h2>
           <form onSubmit={handlePasswordSubmit}>
-            <div className="form-group">
+            <div className="formGroup">
               <label>New Password</label>
               <Input
                 type="password"
@@ -165,7 +165,7 @@ const ProfileSettingsPage = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="formGroup">
               <label>Confirm New Password</label>
               <Input
                 type="password"
@@ -174,7 +174,7 @@ const ProfileSettingsPage = () => {
               />
             </div>
 
-            <div className="form-actions">
+            <div className="formActions">
               <Button type="submit" isLoading={changePasswordMutation.isPending}>
                 Update Password
               </Button>
@@ -183,17 +183,17 @@ const ProfileSettingsPage = () => {
         </Card>
 
         {/* Notification Preferences */}
-        <Card className="notifications-card">
-          <h2 className="section-title">Notification Preferences</h2>
-          <div className="notification-options">
+        <Card className="notificationsCard">
+          <h2 className="sectionTitle">Notification Preferences</h2>
+          <div className="notificationOptions">
             <div className="option">
               <Switch
                 checked={formData.notifications.email}
                 onCheckedChange={() => handleNotificationToggle('email')}
               />
-              <div className="option-label">
+              <div className="optionLabel">
                 <span>Email Notifications</span>
-                <span className="option-description">Receive important updates via email</span>
+                <span className="optionDescription">Receive important updates via email</span>
               </div>
             </div>
 
@@ -202,14 +202,14 @@ const ProfileSettingsPage = () => {
                 checked={formData.notifications.inApp}
                 onCheckedChange={() => handleNotificationToggle('inApp')}
               />
-              <div className="option-label">
+              <div className="optionLabel">
                 <span>In-App Notifications</span>
-                <span className="option-description">Show notifications in the dashboard</span>
+                <span className="optionDescription">Show notifications in the dashboard</span>
               </div>
             </div>
           </div>
 
-          <div className="form-actions">
+          <div className="formActions">
             <Button onClick={() => updateProfileMutation.mutate({ notifications: formData.notifications })}>
               Save Notification Preferences
             </Button>
@@ -217,9 +217,9 @@ const ProfileSettingsPage = () => {
         </Card>
 
         {/* Theme Settings */}
-        <Card className="theme-card">
-          <h2 className="section-title">Theme Settings</h2>
-          <div className="theme-options">
+        <Card className="themeCard">
+          <h2 className="sectionTitle">Theme Settings</h2>
+          <div className="themeOptions">
             {['light', 'dark', 'system'].map(option => (
               <Button
                 key={option}

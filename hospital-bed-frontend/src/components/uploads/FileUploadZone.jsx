@@ -21,7 +21,7 @@ import { UploadCloud, FileText, XCircle, AlertCircle } from 'lucide-react';
 import Button from '@components/ui/button.jsx';
 import Progress from '@components/ui/progress.jsx';
 import FileUploadItem from '@components/uploads/FileUploadItem.jsx';
-import './FileUploadZone.module.scss';
+import './FileUploadZone.scss';
 
 /**
  * Props:
@@ -113,29 +113,29 @@ const FileUploadZone = ({
         multiple
         accept={acceptedTypes}
         onChange={handleChange}
-        className="file-input"
+        className="fileInput"
         aria-hidden="true"
       />
 
-      <div className="upload-prompt">
-        <UploadCloud className="upload-icon" size={48} />
-        <p className="prompt-text">
+      <div className="uploadPrompt">
+        <UploadCloud className="uploadIcon" size={48} />
+        <p className="promptText">
           Drag & drop files here or{' '}
           <Button 
             variant="link" 
             onClick={() => inputRef.current.click()}
-            className="browse-button"
+            className="browseButton"
           >
             browse
           </Button>
         </p>
-        <p className="file-limits">
+        <p className="fileLimits">
           Max {maxFiles} files • {maxSizeMB}MB each • {acceptedTypes}
         </p>
       </div>
 
       {files.length > 0 && (
-        <div className="file-list">
+        <div className="fileList">
           {files.map((file, index) => (
             <FileUploadItem
               key={index}

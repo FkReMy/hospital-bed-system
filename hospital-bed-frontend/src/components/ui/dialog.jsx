@@ -23,7 +23,7 @@ import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import Button from '@components/ui/button.jsx';
 import Card from '@components/ui/card.jsx';
-import './dialog.module.scss';
+import './dialog.scss';
 
 /**
  * Props:
@@ -77,7 +77,7 @@ const Dialog = ({
 
   return createPortal(
     <div 
-      className="dialog-overlay" 
+      className="dialogOverlay" 
       ref={overlayRef}
       onClick={handleOverlayClick}
       role="dialog"
@@ -94,7 +94,7 @@ const Dialog = ({
             variant="ghost"
             size="icon"
             onClick={() => onOpenChange(false)}
-            className="dialog-close-button"
+            className="dialogCloseButton"
             aria-label="Close dialog"
           >
             <X size={20} />
@@ -102,12 +102,12 @@ const Dialog = ({
         )}
 
         {title && (
-          <h2 id="dialog-title" className="dialog-title">
+          <h2 id="dialog-title" className="dialogTitle">
             {title}
           </h2>
         )}
 
-        <div className="dialog-body">
+        <div className="dialogBody">
           {children}
         </div>
       </Card>

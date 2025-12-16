@@ -37,7 +37,7 @@ import AssignBedDialog from '@components/beds/AssignBedDialog.jsx';
 import DischargeBedDialog from '@components/beds/DischargeBedDialog.jsx';
 import { useBedManagement } from '@hooks/useBedManagement';
 import { useRoleAccess } from '@hooks/useRoleAccess';
-import './DepartmentDetailPage.module.scss';
+import './DepartmentDetailPage.scss';
 
 const DepartmentDetailPage = () => {
   const { departmentId } = useParams();
@@ -77,7 +77,7 @@ const DepartmentDetailPage = () => {
 
   if (!department) {
     return (
-      <Card className="error-card">
+      <Card className="errorCard">
         <EmptyState
           title="Department not found"
           description="Please check the department ID or contact administrator"
@@ -87,65 +87,65 @@ const DepartmentDetailPage = () => {
   }
 
   return (
-    <div className="department-detail-page">
+    <div className="departmentDetailPage">
       {/* Department Header */}
-      <div className="department-header">
-        <div className="department-info">
-          <Building2 className="department-icon" />
+      <div className="departmentHeader">
+        <div className="departmentInfo">
+          <Building2 className="departmentIcon" />
           <div>
-            <h1 className="department-name">{department.name}</h1>
-            <p className="department-description">{department.description || 'Hospital department'}</p>
+            <h1 className="departmentName">{department.name}</h1>
+            <p className="departmentDescription">{department.description || 'Hospital department'}</p>
           </div>
         </div>
       </div>
 
       {/* Stats Summary */}
-      <div className="stats-grid">
+      <div className="statsGrid">
         <Card className="stat-card total">
-          <BedDouble className="stat-icon" />
-          <div className="stat-content">
-            <p className="stat-label">Total Beds</p>
-            <p className="stat-value">{totalBeds}</p>
+          <BedDouble className="statIcon" />
+          <div className="statContent">
+            <p className="statLabel">Total Beds</p>
+            <p className="statValue">{totalBeds}</p>
           </div>
         </Card>
 
         <Card className="stat-card available">
-          <UserCheck className="stat-icon success" />
-          <div className="stat-content">
-            <p className="stat-label">Available</p>
-            <p className="stat-value">{availableBeds}</p>
+          <UserCheck className="statIcon success" />
+          <div className="statContent">
+            <p className="statLabel">Available</p>
+            <p className="statValue">{availableBeds}</p>
           </div>
         </Card>
 
         <Card className="stat-card occupied">
-          <Users className="stat-icon" />
-          <div className="stat-content">
-            <p className="stat-label">Occupied</p>
-            <p className="stat-value">{occupiedBeds}</p>
+          <Users className="statIcon" />
+          <div className="statContent">
+            <p className="statLabel">Occupied</p>
+            <p className="statValue">{occupiedBeds}</p>
           </div>
         </Card>
 
         <Card className="stat-card maintenance">
-          <Wrench className="stat-icon warning" />
-          <div className="stat-content">
-            <p className="stat-label">Maintenance/Cleaning</p>
-            <p className="stat-value">{maintenanceBeds}</p>
+          <Wrench className="statIcon warning" />
+          <div className="statContent">
+            <p className="statLabel">Maintenance/Cleaning</p>
+            <p className="statValue">{maintenanceBeds}</p>
           </div>
         </Card>
 
         <Card className="stat-card occupancy">
-          <Activity className="stat-icon" />
-          <div className="stat-content">
-            <p className="stat-label">Occupancy Rate</p>
-            <p className="stat-value">{occupancyRate}%</p>
+          <Activity className="statIcon" />
+          <div className="statContent">
+            <p className="statLabel">Occupancy Rate</p>
+            <p className="statValue">{occupancyRate}%</p>
             <Progress value={occupancyRate} />
           </div>
         </Card>
       </div>
 
       {/* Beds Grid */}
-      <Card className="beds-section">
-        <h2 className="section-title">Beds in {department.name}</h2>
+      <Card className="bedsSection">
+        <h2 className="sectionTitle">Beds in {department.name}</h2>
         
         {departmentBeds.length === 0 ? (
           <EmptyState
@@ -154,37 +154,37 @@ const DepartmentDetailPage = () => {
             size="medium"
           />
         ) : (
-          <div className="beds-grid">
+          <div className="bedsGrid">
             {departmentBeds.map(bed => (
-              <Card key={bed.id} className="bed-card" interactive>
-                <div className="bed-header">
-                  <div className="bed-info">
-                    <h3 className="bed-number">{bed.bed_number}</h3>
+              <Card key={bed.id} className="bedCard" interactive>
+                <div className="bedHeader">
+                  <div className="bedInfo">
+                    <h3 className="bedNumber">{bed.bed_number}</h3>
                     <BedStatusBadge status={bed.status} />
                   </div>
                 </div>
 
-                <div className="bed-content">
+                <div className="bedContent">
                   {bed.current_patient ? (
-                    <div className="patient-info">
-                      <p className="patient-name">{bed.current_patient.full_name}</p>
-                      <p className="patient-id">ID: {bed.current_patient.patient_id}</p>
+                    <div className="patientInfo">
+                      <p className="patientName">{bed.current_patient.full_name}</p>
+                      <p className="patientId">ID: {bed.current_patient.patient_id}</p>
                     </div>
                   ) : (
-                    <p className="no-patient">Available</p>
+                    <p className="noPatient">Available</p>
                   )}
                 </div>
 
                 {canManageBeds && (
-                  <div className="bed-actions">
+                  <div className="bedActions">
                     {bed.status === 'available' ? (
                       <Button size="sm" onClick={() => handleAssign(bed)}>
-                        <UserCheck className="mr-2" size={16} />
+                        <UserCheck className="mr2" size={16} />
                         Assign Patient
                       </Button>
                     ) : bed.status === 'occupied' ? (
                       <Button variant="destructive" size="sm" onClick={() => handleDischarge(bed)}>
-                        <UserX className="mr-2" size={16} />
+                        <UserX className="mr2" size={16} />
                         Discharge
                       </Button>
                     ) : (

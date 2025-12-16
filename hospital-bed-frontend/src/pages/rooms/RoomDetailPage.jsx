@@ -34,7 +34,7 @@ import AssignBedDialog from '@components/beds/AssignBedDialog.jsx';
 import DischargeBedDialog from '@components/beds/DischargeBedDialog.jsx';
 import { useBedManagement } from '@hooks/useBedManagement';
 import { useRoleAccess } from '@hooks/useRoleAccess';
-import './RoomDetailPage.module.scss';
+import './RoomDetailPage.scss';
 
 const RoomDetailPage = () => {
   const { roomId } = useParams();
@@ -70,7 +70,7 @@ const RoomDetailPage = () => {
 
   if (!room) {
     return (
-      <Card className="error-card">
+      <Card className="errorCard">
         <EmptyState
           title="Room not found"
           description="Please check the room ID or contact administrator"
@@ -80,17 +80,17 @@ const RoomDetailPage = () => {
   }
 
   return (
-    <div className="room-detail-page">
+    <div className="roomDetailPage">
       {/* Room Header */}
-      <div className="room-header">
-        <div className="room-info">
-          <DoorClosed className="room-icon" />
+      <div className="roomHeader">
+        <div className="roomInfo">
+          <DoorClosed className="roomIcon" />
           <div>
-            <h1 className="room-name">{room.name || `Room ${room.room_number}`}</h1>
-            <p className="room-department">
+            <h1 className="roomName">{room.name || `Room ${room.room_number}`}</h1>
+            <p className="roomDepartment">
               {department?.name || 'General Department'}
             </p>
-            <p className="room-capacity">
+            <p className="roomCapacity">
               Capacity: {room.capacity || roomBeds.length} beds
             </p>
           </div>
@@ -98,8 +98,8 @@ const RoomDetailPage = () => {
       </div>
 
       {/* Bed Grid */}
-      <Card className="beds-section">
-        <h2 className="section-title">Beds in {room.name || `Room ${room.room_number}`}</h2>
+      <Card className="bedsSection">
+        <h2 className="sectionTitle">Beds in {room.name || `Room ${room.room_number}`}</h2>
         
         {roomBeds.length === 0 ? (
           <EmptyState
@@ -108,37 +108,37 @@ const RoomDetailPage = () => {
             size="medium"
           />
         ) : (
-          <div className="beds-grid">
+          <div className="bedsGrid">
             {roomBeds.map(bed => (
-              <Card key={bed.id} className="bed-card" interactive>
-                <div className="bed-header">
-                  <div className="bed-info">
-                    <h3 className="bed-number">{bed.bed_number}</h3>
+              <Card key={bed.id} className="bedCard" interactive>
+                <div className="bedHeader">
+                  <div className="bedInfo">
+                    <h3 className="bedNumber">{bed.bed_number}</h3>
                     <BedStatusBadge status={bed.status} />
                   </div>
                 </div>
 
-                <div className="bed-content">
+                <div className="bedContent">
                   {bed.current_patient ? (
-                    <div className="patient-info">
-                      <p className="patient-name">{bed.current_patient.full_name}</p>
-                      <p className="patient-id">ID: {bed.current_patient.patient_id}</p>
+                    <div className="patientInfo">
+                      <p className="patientName">{bed.current_patient.full_name}</p>
+                      <p className="patientId">ID: {bed.current_patient.patient_id}</p>
                     </div>
                   ) : (
-                    <p className="no-patient">Available</p>
+                    <p className="noPatient">Available</p>
                   )}
                 </div>
 
                 {canManageBeds && (
-                  <div className="bed-actions">
+                  <div className="bedActions">
                     {bed.status === 'available' ? (
                       <Button size="sm" onClick={() => handleAssign(bed)}>
-                        <UserCheck className="mr-2" size={16} />
+                        <UserCheck className="mr2" size={16} />
                         Assign Patient
                       </Button>
                     ) : bed.status === 'occupied' ? (
                       <Button variant="destructive" size="sm" onClick={() => handleDischarge(bed)}>
-                        <UserX className="mr-2" size={16} />
+                        <UserX className="mr2" size={16} />
                         Discharge
                       </Button>
                     ) : (

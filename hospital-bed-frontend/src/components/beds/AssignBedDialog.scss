@@ -1,0 +1,166 @@
+// src/components/beds/AssignBedDialog.module.scss
+/**
+ * AssignBedDialog Module Styles
+ * 
+ * Scoped styles for the AssignBedDialog component.
+ * Provides professional, clean layout with emphasis on bed summary,
+ * form clarity, and status feedback.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing, typography, colors, borders, shadows
+ * - Glassmorphic elevation
+ * - Responsive behavior
+ * - Dark/light theme compatibility
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.assignBedDialog {
+  // Max width constraint for readability
+  max-width: 520px;
+  width: 100%;
+
+  // Dialog content padding
+  :global(.dialogContent) {
+    padding: 0; // Override default if needed - header/footer handle spacing
+  }
+
+  // Bed summary section - highlighted for importance
+  .bedSummary {
+    background: rgba(var(--muted), 0.3);
+    border-radius: $radius-lg;
+    border: 1px solid var(--border);
+
+    .summaryHeader {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .bedInfo {
+        display: flex;
+        align-items: center;
+        gap: $spacing-md;
+
+        .bedIcon {
+          color: var(--primary);
+          flex-shrink: 0;
+        }
+
+        .bedDetails {
+          .bedNumber {
+            font-size: $text-xl;
+            font-weight: $font-bold;
+            color: var(--foreground);
+          }
+
+          .bedLocation {
+            font-size: $text-sm;
+            color: var(--muted-foreground);
+          }
+        }
+      }
+
+      // Status badge alignment
+      .statusBadge {
+        flex-shrink: 0;
+      }
+    }
+
+    // Warning for non-available beds
+    .availabilityWarning {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+      font-size: $text-sm;
+      font-weight: $font-medium;
+      margin-top: $spacing-md;
+      padding: $spacing-sm $spacing-md;
+      background: rgba(239, 68, 68, 0.1);
+      border-radius: $radius-md;
+      border-left: 4px solid $destructive;
+    }
+  }
+
+  // Form styling
+  .form {
+    padding: $spacing-xl $spacing-xl 0;
+
+    // Field groups
+    .fieldGroup {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-md;
+
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-xs;
+
+        .label {
+          font-size: $text-sm;
+          font-weight: $font-medium;
+          color: var(--foreground);
+          display: flex;
+          align-items: center;
+          gap: $spacing-xs;
+
+          .required {
+            color: $destructive;
+          }
+        }
+
+        // Select styling (native select enhancement)
+        select {
+          @include input-base;
+          padding: $spacing-md;
+          border-radius: $radius-md;
+          background: var(--background);
+          color: var(--foreground);
+
+          &:focus {
+            ring: 2px solid var(--ring);
+            box-shadow: $shadow-focus;
+          }
+
+          &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+          }
+        }
+
+        // Error message
+        .errorMessage {
+          font-size: $text-xs;
+          color: $destructive;
+          font-weight: $font-medium;
+        }
+      }
+    }
+  }
+
+  // Dialog footer actions
+  :global(.dialogFooter) {
+    padding: $spacing-lg $spacing-xl;
+    border-top: 1px solid var(--border);
+    background: rgba(var(--muted), 0.2);
+
+    // Button alignment
+    display: flex;
+    justify-content: flex-end;
+    gap: $spacing-md;
+
+    @media (max-width: $breakpoint-sm) {
+      flex-direction: column;
+
+      :global(.button) {
+        width: 100%;
+      }
+    }
+  }
+
+  // Optional glass elevation for entire dialog
+  &.glass {
+    @include glass-card;
+  }
+}

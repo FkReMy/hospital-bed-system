@@ -30,7 +30,7 @@ import Textarea from '@components/ui/textarea.jsx';
 import Button from '@components/ui/button.jsx';
 import Badge from '@components/ui/badge.jsx';
 import BedStatusBadge from '@components/beds/BedStatusBadge.jsx';
-import './DischargeBedDialog.module.scss';
+import './DischargeBedDialog.scss';
 
 /**
  * Props:
@@ -115,9 +115,9 @@ const DischargeBedDialog = ({
           )}
         </div>
 
-        <form onSubmit={handleDischarge} className="space-y-6">
+        <form onSubmit={handleDischarge} className="spaceY6">
           {/* Discharge Notes */}
-          <div className="space-y-2">
+          <div className="spaceY2">
             <Label htmlFor="dischargeNotes">
               <NotepadText className="inline w-4 h-4 mr-2" />
               Discharge Notes (Optional)

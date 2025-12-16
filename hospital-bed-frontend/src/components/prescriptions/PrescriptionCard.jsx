@@ -27,7 +27,7 @@ import {
 import Card from '@components/ui/card.jsx';
 import Badge from '@components/ui/badge.jsx';
 import Avatar from '@components/ui/avatar.jsx';
-import './PrescriptionCard.module.scss';
+import './PrescriptionCard.scss';
 
 /**
  * Props:
@@ -60,12 +60,12 @@ const PrescriptionCard = ({ prescription, onClick }) => {
       aria-label={`Prescription for ${medication_name}, ${is_dispensed ? 'dispensed' : 'pending'}`}
     >
       {/* Header: Medication + Dispensed Status */}
-      <div className="prescription-header">
-        <div className="medication-info">
-          <Pill className="medication-icon" size={24} />
-          <div className="medication-details">
-            <h3 className="medication-name">{medication_name}</h3>
-            <div className="dosage-info">
+      <div className="prescriptionHeader">
+        <div className="medicationInfo">
+          <Pill className="medicationIcon" size={24} />
+          <div className="medicationDetails">
+            <h3 className="medicationName">{medication_name}</h3>
+            <div className="dosageInfo">
               <span className="dosage">{dosage}</span>
               <span className="separator">•</span>
               <span className="frequency">{frequency}</span>
@@ -79,19 +79,19 @@ const PrescriptionCard = ({ prescription, onClick }) => {
           </div>
         </div>
 
-        <div className="status-section">
+        <div className="statusSection">
           <Badge 
             variant={is_dispensed ? 'success' : 'secondary'}
-            className="dispensed-badge"
+            className="dispensedBadge"
           >
             {is_dispensed ? (
               <>
-                <CheckCircle className="status-icon" size={14} />
+                <CheckCircle className="statusIcon" size={14} />
                 Dispensed
               </>
             ) : (
               <>
-                <AlertCircle className="status-icon" size={14} />
+                <AlertCircle className="statusIcon" size={14} />
                 Pending
               </>
             )}
@@ -100,43 +100,43 @@ const PrescriptionCard = ({ prescription, onClick }) => {
       </div>
 
       {/* Body: Doctor + Date + Instructions */}
-      <div className="prescription-body">
+      <div className="prescriptionBody">
         {/* Doctor Info */}
-        <div className="doctor-info">
-          <Avatar className="doctor-avatar">
-            <div className="avatar-initial">
+        <div className="doctorInfo">
+          <Avatar className="doctorAvatar">
+            <div className="avatarInitial">
               {doctor?.full_name?.charAt(0).toUpperCase() || 'D'}
             </div>
             <AvatarFallback>DR</AvatarFallback>
           </Avatar>
-          <div className="doctor-details">
-            <div className="doctor-label">
-              <Stethoscope className="doctor-icon" size={14} />
+          <div className="doctorDetails">
+            <div className="doctorLabel">
+              <Stethoscope className="doctorIcon" size={14} />
               Prescribed by
             </div>
-            <p className="doctor-name">
+            <p className="doctorName">
               Dr. {doctor?.full_name || 'Unknown Doctor'}
             </p>
           </div>
-          <div className="date-info">
-            <Calendar className="date-icon" size={14} />
-            <time className="prescribed-date">{prescribedDate}</time>
+          <div className="dateInfo">
+            <Calendar className="dateIcon" size={14} />
+            <time className="prescribedDate">{prescribedDate}</time>
           </div>
         </div>
 
         {/* Instructions Preview */}
         {instructions && (
-          <div className="instructions-section">
-            <p className="instructions-label">Instructions</p>
-            <p className="instructions-text">{instructions}</p>
+          <div className="instructionsSection">
+            <p className="instructionsLabel">Instructions</p>
+            <p className="instructionsText">{instructions}</p>
           </div>
         )}
       </div>
 
       {/* Hover Action Overlay */}
       {onClick && (
-        <div className="action-overlay">
-          <span className="action-text">View Details</span>
+        <div className="actionOverlay">
+          <span className="actionText">View Details</span>
         </div>
       )}
     </Card>

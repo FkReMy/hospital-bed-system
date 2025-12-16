@@ -19,7 +19,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '@hooks/useAuth';
-import './RoleAwareNav.module.scss';
+import './RoleAwareNav.scss';
 
 /**
  * Props:
@@ -48,13 +48,13 @@ const RoleAwareNav = ({ items = [], isSidebarOpen = true }) => {
   }
 
   return (
-    <nav className="role-aware-nav" aria-label="Role-based navigation">
-      <ul className="nav-list">
+    <nav className="roleAwareNav" aria-label="Role-based navigation">
+      <ul className="navList">
         {visibleItems.map((item) => {
           const Icon = item.icon;
 
           return (
-            <li key={item.path} className="nav-item">
+            <li key={item.path} className="navItem">
               <NavLink
                 to={item.path}
                 className={({ isActive }) => 
@@ -63,15 +63,15 @@ const RoleAwareNav = ({ items = [], isSidebarOpen = true }) => {
                 end // Matches exact path for nested routes
                 aria-current={({ isActive }) => isActive ? 'page' : undefined}
               >
-                {Icon && <Icon className="nav-icon" size={22} aria-hidden="true" />}
+                {Icon && <Icon className="navIcon" size={22} aria-hidden="true" />}
                 {isSidebarOpen && (
-                  <span className="nav-label">{item.label}</span>
+                  <span className="navLabel">{item.label}</span>
                 )}
               </NavLink>
 
               {/* Future: Sub-menu support */}
               {/* {item.children && isSidebarOpen && (
-                <ul className="sub-nav">
+                <ul className="subNav">
                   {item.children.map(sub => (...))}
                 </ul>
               )} */}

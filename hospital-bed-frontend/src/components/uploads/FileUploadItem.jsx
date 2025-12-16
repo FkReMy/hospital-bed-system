@@ -33,7 +33,7 @@ import Card from '@components/ui/card.jsx';
 import Badge from '@components/ui/badge.jsx';
 import Button from '@components/ui/button.jsx';
 import Progress from '@components/ui/progress.jsx';
-import './FileUploadItem.module.scss';
+import './FileUploadItem.scss';
 
 /**
  * Props:
@@ -74,41 +74,41 @@ const FileUploadItem = ({
 
   return (
     <Card className={`file-upload-item ${status}`}>
-      <div className="item-content">
+      <div className="itemContent">
         {/* Icon + File Info */}
-        <div className="file-info">
-          <div className="file-icon-wrapper">
-            <FileIcon className="file-icon" size={32} />
+        <div className="fileInfo">
+          <div className="fileIconWrapper">
+            <FileIcon className="fileIcon" size={32} />
           </div>
 
-          <div className="file-details">
-            <p className="file-name" title={name}>{name}</p>
-            <div className="file-meta">
-              <span className="file-size">{formatFileSize(size)}</span>
+          <div className="fileDetails">
+            <p className="fileName" title={name}>{name}</p>
+            <div className="fileMeta">
+              <span className="fileSize">{formatFileSize(size)}</span>
               <span className="separator">•</span>
-              <span className="file-type">{type || 'Unknown'}</span>
+              <span className="fileType">{type || 'Unknown'}</span>
             </div>
           </div>
         </div>
 
         {/* Status / Progress */}
-        <div className="item-status">
+        <div className="itemStatus">
           {isUploading && (
-            <div className="progress-section">
-              <Progress value={progress} className="upload-progress" />
-              <span className="progress-text">{progress}%</span>
+            <div className="progressSection">
+              <Progress value={progress} className="uploadProgress" />
+              <span className="progressText">{progress}%</span>
             </div>
           )}
 
           {!isUploading && isError && (
-            <Badge variant="destructive" className="status-badge">
+            <Badge variant="destructive" className="statusBadge">
               <AlertCircle size={14} />
               Upload Failed
             </Badge>
           )}
 
           {!isUploading && !isError && (
-            <Badge variant="success" className="status-badge">
+            <Badge variant="success" className="statusBadge">
               <CheckCircle size={14} />
               Uploaded
             </Badge>
@@ -116,7 +116,7 @@ const FileUploadItem = ({
         </div>
 
         {/* Actions */}
-        <div className="item-actions">
+        <div className="itemActions">
           {url && onDownload && (
             <Button
               variant="ghost"
@@ -133,7 +133,7 @@ const FileUploadItem = ({
             size="icon"
             onClick={() => onRemove?.(file)}
             aria-label="Remove file"
-            className="remove-button"
+            className="removeButton"
           >
             <X size={16} />
           </Button>
