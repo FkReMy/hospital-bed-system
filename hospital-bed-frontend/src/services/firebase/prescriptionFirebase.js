@@ -38,16 +38,16 @@ export const getAll = async (params = {}) => {
     const constraints = [];
     
     if (params.patientId) {
-      constraints.push(where('patient_id', '==', params.patientId));
+      constraints.push(where('patientId', '==', params.patientId));
     }
     if (params.doctorId) {
-      constraints.push(where('doctor_id', '==', params.doctorId));
+      constraints.push(where('doctorId', '==', params.doctorId));
     }
     if (params.status) {
       constraints.push(where('status', '==', params.status));
     }
     
-    constraints.push(firestoreOrderBy('created_at', 'desc'));
+    constraints.push(firestoreOrderBy('prescribedAt', 'desc'));
     
     if (constraints.length > 0) {
       prescriptionsQuery = query(prescriptionsQuery, ...constraints);
@@ -93,10 +93,16 @@ export const create = async (data) => {
     const prescriptionRef = doc(collection(db, PRESCRIPTIONS_COLLECTION));
     
     const newPrescription = {
-      ...data,
-      status: data.status || 'active',
-      created_at: Timestamp.now(),
-      updated_at: Timestamp.now(),
+      patientId: data.patientId || data.patient_id,
+      doctorId: data.doctorId || data.doctor_id,
+      appointmentId: data.appointmentId || data.appointment_id || null,
+      prescribedAt: Timestamp.now(),
+      medicationName: data.medicationName || data.medication_name,
+      dosage: data.dosage,
+      frequency: data.frequency,
+      duration: data.duration || null,
+      instructions: data.instructions || null,
+      isDispensed: data.isDispensed || data.is_dispensed || false,
     };
 
     await setDoc(prescriptionRef, newPrescription);
@@ -125,9 +131,22 @@ export const update = async (id, data) => {
       throw new Error('Prescription not found');
     }
 
+    // Convert snake_case to camelCase for updates
     const updatedData = {
-      ...data,
-      updated_at: Timestamp.now(),
+      ...(data.patientId && { patientId: data.patientId }),
+      ...(data.patient_id && { patientId: data.patient_id }),
+      ...(data.doctorId && { doctorId: data.doctorId }),
+      ...(data.doctor_id && { doctorId: data.doctor_id }),
+      ...(data.appointmentId && { appointmentId: data.appointmentId }),
+      ...(data.appointment_id && { appointmentId: data.appointment_id }),
+      ...(data.medicationName && { medicationName: data.medicationName }),
+      ...(data.medication_name && { medicationName: data.medication_name }),
+      ...(data.dosage !== undefined && { dosage: data.dosage }),
+      ...(data.frequency !== undefined && { frequency: data.frequency }),
+      ...(data.duration !== undefined && { duration: data.duration }),
+      ...(data.instructions !== undefined && { instructions: data.instructions }),
+      ...(data.isDispensed !== undefined && { isDispensed: data.isDispensed }),
+      ...(data.is_dispensed !== undefined && { isDispensed: data.is_dispensed }),
     };
 
     await updateDoc(prescriptionRef, updatedData);
@@ -140,7 +159,9 @@ export const update = async (id, data) => {
 };
 
 /**
- * Delete prescription
+ * Delete prescription (mark as cancelled, not dispensed)
+ * Note: In the new schema, we don't have a separate delete status
+ * Setting isDispensed to false effectively cancels the prescription
  * @param {string} id
  * @returns {Promise<void>}
  */
@@ -155,11 +176,9 @@ export const remove = async (id) => {
       throw new Error('Prescription not found');
     }
 
-    // Soft delete - update status
+    // Mark as not dispensed (effectively cancels the prescription)
     await updateDoc(prescriptionRef, {
-      status: 'deleted',
-      deleted_at: Timestamp.now(),
-      updated_at: Timestamp.now(),
+      isDispensed: false,
     });
   } catch (error) {
     console.error('Delete prescription error:', error);

@@ -43,7 +43,7 @@ export const getAll = async (params = {}) => {
       constraints.push(where('role', '==', params.role));
     }
     
-    constraints.push(orderBy('created_at', 'desc'));
+    constraints.push(orderBy('createdAt', 'desc'));
     
     if (constraints.length > 0) {
       usersQuery = query(usersQuery, ...constraints);
@@ -92,16 +92,21 @@ export const create = async (data) => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    // Create user profile in Firestore
+    // Create user profile in Firestore using camelCase schema
     const userData = {
       email: user.email,
-      full_name: full_name || '',
-      role: role || 'Nurse',
-      roles: [role || 'Nurse'],
-      department_id: department_id || null,
-      status: 'active',
-      created_at: Timestamp.now(),
-      updated_at: Timestamp.now(),
+      fullName: full_name || '',
+      phone: data.phone || null,
+      address: data.address || null,
+      hiringDate: data.hiring_date || data.hiringDate || null,
+      shiftType: data.shift_type || data.shiftType || null,
+      licenseNumber: data.license_number || data.licenseNumber || null,
+      yearsOfExperience: data.years_of_experience || data.yearsOfExperience || 0,
+      role: role || 'nurse',
+      specializations: data.specializations || [],
+      isActive: true,
+      createdAt: Timestamp.now(),
+      updatedAt: Timestamp.now(),
     };
 
     await setDoc(doc(db, USERS_COLLECTION, user.uid), userData);
@@ -133,9 +138,25 @@ export const update = async (id, data) => {
       throw new Error('User not found');
     }
 
+    // Convert snake_case to camelCase for updates
     const updatedData = {
-      ...data,
-      updated_at: Timestamp.now(),
+      ...(data.full_name && { fullName: data.full_name }),
+      ...(data.fullName && { fullName: data.fullName }),
+      ...(data.phone !== undefined && { phone: data.phone }),
+      ...(data.address !== undefined && { address: data.address }),
+      ...(data.hiring_date && { hiringDate: data.hiring_date }),
+      ...(data.hiringDate && { hiringDate: data.hiringDate }),
+      ...(data.shift_type && { shiftType: data.shift_type }),
+      ...(data.shiftType && { shiftType: data.shiftType }),
+      ...(data.license_number && { licenseNumber: data.license_number }),
+      ...(data.licenseNumber && { licenseNumber: data.licenseNumber }),
+      ...(data.years_of_experience !== undefined && { yearsOfExperience: data.years_of_experience }),
+      ...(data.yearsOfExperience !== undefined && { yearsOfExperience: data.yearsOfExperience }),
+      ...(data.role && { role: data.role }),
+      ...(data.specializations && { specializations: data.specializations }),
+      ...(data.isActive !== undefined && { isActive: data.isActive }),
+      ...(data.is_active !== undefined && { isActive: data.is_active }),
+      updatedAt: Timestamp.now(),
     };
 
     await updateDoc(userRef, updatedData);
@@ -163,11 +184,11 @@ export const remove = async (id) => {
       throw new Error('User not found');
     }
 
-    // Soft delete - update status
+    // Soft delete - update isActive status
     await updateDoc(userRef, {
-      status: 'deleted',
-      deleted_at: Timestamp.now(),
-      updated_at: Timestamp.now(),
+      isActive: false,
+      deletedAt: Timestamp.now(),
+      updatedAt: Timestamp.now(),
     });
   } catch (error) {
     console.error('Delete user error:', error);
@@ -194,9 +215,8 @@ export const updateRoles = async (id, roles) => {
     }
 
     await updateDoc(userRef, {
-      roles,
-      role: roles[0] || 'Nurse', // Set primary role
-      updated_at: Timestamp.now(),
+      role: roles[0] || 'nurse', // Set primary role
+      updatedAt: Timestamp.now(),
     });
 
     return { id, roles, role: roles[0] };
@@ -264,7 +284,7 @@ export const forcePasswordChange = async (id, mustChange = true) => {
 
     await updateDoc(userRef, {
       mustChangePassword: mustChange,
-      updated_at: Timestamp.now(),
+      updatedAt: Timestamp.now(),
     });
 
     return { message: `User will ${mustChange ? 'be required to' : 'not be required to'} change password on next login` };

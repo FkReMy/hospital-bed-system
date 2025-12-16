@@ -25,7 +25,7 @@ import {
 } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 
-const BED_ASSIGNMENTS_COLLECTION = 'bed_assignments';
+const BED_ASSIGNMENTS_COLLECTION = 'bedAssignments';
 
 /**
  * Get all bed assignments with optional filters
@@ -39,16 +39,16 @@ export const getAll = async (params = {}) => {
     const constraints = [];
     
     if (params.bedId) {
-      constraints.push(where('bed_id', '==', params.bedId));
+      constraints.push(where('bedId', '==', params.bedId));
     }
     if (params.patientId) {
-      constraints.push(where('patient_id', '==', params.patientId));
+      constraints.push(where('patientId', '==', params.patientId));
     }
     if (params.status) {
       constraints.push(where('status', '==', params.status));
     }
     
-    constraints.push(firestoreOrderBy('assigned_at', 'desc'));
+    constraints.push(firestoreOrderBy('assignedAt', 'desc'));
     
     if (constraints.length > 0) {
       assignmentsQuery = query(assignmentsQuery, ...constraints);
@@ -95,8 +95,8 @@ export const getHistoryByBedId = async (bedId) => {
   try {
     const historyQuery = query(
       collection(db, BED_ASSIGNMENTS_COLLECTION),
-      where('bed_id', '==', bedId),
-      firestoreOrderBy('assigned_at', 'desc')
+      where('bedId', '==', bedId),
+      firestoreOrderBy('assignedAt', 'desc')
     );
 
     const snapshot = await getDocs(historyQuery);
@@ -118,8 +118,8 @@ export const getHistoryByPatientId = async (patientId) => {
   try {
     const historyQuery = query(
       collection(db, BED_ASSIGNMENTS_COLLECTION),
-      where('patient_id', '==', patientId),
-      firestoreOrderBy('assigned_at', 'desc')
+      where('patientId', '==', patientId),
+      firestoreOrderBy('assignedAt', 'desc')
     );
 
     const snapshot = await getDocs(historyQuery);
@@ -140,10 +140,12 @@ export const create = async (data) => {
     const assignmentRef = doc(collection(db, BED_ASSIGNMENTS_COLLECTION));
     
     const newAssignment = {
-      ...data,
-      status: data.status || 'active',
-      assigned_at: Timestamp.now(),
-      created_at: Timestamp.now(),
+      patientId: data.patientId || data.patient_id,
+      bedId: data.bedId || data.bed_id,
+      assignedBy: data.assignedBy || data.assigned_by || 'system',
+      notes: data.notes || null,
+      assignedAt: Timestamp.now(),
+      dischargedAt: null,
     };
 
     await setDoc(assignmentRef, newAssignment);
@@ -172,9 +174,17 @@ export const update = async (id, data) => {
       throw new Error('Bed assignment not found');
     }
 
+    // Convert snake_case to camelCase for updates
     const updatedData = {
-      ...data,
-      updated_at: Timestamp.now(),
+      ...(data.patientId && { patientId: data.patientId }),
+      ...(data.patient_id && { patientId: data.patient_id }),
+      ...(data.bedId && { bedId: data.bedId }),
+      ...(data.bed_id && { bedId: data.bed_id }),
+      ...(data.assignedBy && { assignedBy: data.assignedBy }),
+      ...(data.assigned_by && { assignedBy: data.assigned_by }),
+      ...(data.notes !== undefined && { notes: data.notes }),
+      ...(data.dischargedAt !== undefined && { dischargedAt: data.dischargedAt }),
+      ...(data.discharged_at !== undefined && { dischargedAt: data.discharged_at }),
     };
 
     await updateDoc(assignmentRef, updatedData);

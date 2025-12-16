@@ -100,7 +100,7 @@ service cloud.firestore {
     }
     
     // Bed Assignments collection
-    match /bed_assignments/{assignmentId} {
+    match /bedAssignments/{assignmentId} {
       // Everyone authenticated can read bed assignments
       allow read: if isAuthenticated();
       

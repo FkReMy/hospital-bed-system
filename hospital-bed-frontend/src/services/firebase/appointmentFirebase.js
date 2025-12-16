@@ -39,16 +39,16 @@ export const getAll = async (params = {}) => {
     const constraints = [];
     
     if (params.patientId) {
-      constraints.push(where('patient_id', '==', params.patientId));
+      constraints.push(where('patientId', '==', params.patientId));
     }
     if (params.doctorId) {
-      constraints.push(where('doctor_id', '==', params.doctorId));
+      constraints.push(where('doctorId', '==', params.doctorId));
     }
     if (params.status) {
       constraints.push(where('status', '==', params.status));
     }
     
-    constraints.push(orderBy('appointment_date', 'desc'));
+    constraints.push(orderBy('appointmentDate', 'desc'));
     
     if (constraints.length > 0) {
       appointmentsQuery = query(appointmentsQuery, ...constraints);
@@ -94,10 +94,14 @@ export const create = async (data) => {
     const appointmentRef = doc(collection(db, APPOINTMENTS_COLLECTION));
     
     const newAppointment = {
-      ...data,
+      patientId: data.patientId || data.patient_id,
+      doctorId: data.doctorId || data.doctor_id,
+      appointmentDate: data.appointmentDate || data.appointment_date || Timestamp.now(),
       status: data.status || 'scheduled',
-      created_at: Timestamp.now(),
-      updated_at: Timestamp.now(),
+      reason: data.reason || null,
+      notes: data.notes || null,
+      createdBy: data.createdBy || data.created_by || 'system',
+      createdAt: Timestamp.now(),
     };
 
     await setDoc(appointmentRef, newAppointment);
@@ -126,9 +130,19 @@ export const update = async (id, data) => {
       throw new Error('Appointment not found');
     }
 
+    // Convert snake_case to camelCase for updates
     const updatedData = {
-      ...data,
-      updated_at: Timestamp.now(),
+      ...(data.patientId && { patientId: data.patientId }),
+      ...(data.patient_id && { patientId: data.patient_id }),
+      ...(data.doctorId && { doctorId: data.doctorId }),
+      ...(data.doctor_id && { doctorId: data.doctor_id }),
+      ...(data.appointmentDate && { appointmentDate: data.appointmentDate }),
+      ...(data.appointment_date && { appointmentDate: data.appointment_date }),
+      ...(data.status && { status: data.status }),
+      ...(data.reason !== undefined && { reason: data.reason }),
+      ...(data.notes !== undefined && { notes: data.notes }),
+      ...(data.createdBy && { createdBy: data.createdBy }),
+      ...(data.created_by && { createdBy: data.created_by }),
     };
 
     await updateDoc(appointmentRef, updatedData);
@@ -159,8 +173,6 @@ export const cancel = async (id) => {
     // Update status to cancelled instead of deleting
     await updateDoc(appointmentRef, {
       status: 'cancelled',
-      cancelled_at: Timestamp.now(),
-      updated_at: Timestamp.now(),
     });
   } catch (error) {
     console.error('Cancel appointment error:', error);
@@ -187,7 +199,6 @@ export const updateStatus = async (id, status) => {
 
     await updateDoc(appointmentRef, {
       status,
-      updated_at: Timestamp.now(),
     });
 
     return { id, status };

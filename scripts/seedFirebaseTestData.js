@@ -62,59 +62,86 @@ const TEST_USERS = [
   {
     email: 'admin@hospital.com',
     username: 'admin',
-    full_name: 'System Administrator',
+    fullName: 'System Administrator',
     role: 'admin',
-    department_id: null,
+    phone: '+1-555-0100',
+    address: '123 Admin St, Hospital City',
+    hiringDate: '2020-01-15',
+    shiftType: 'day',
+    licenseNumber: null,
+    yearsOfExperience: 10,
+    specializations: [],
   },
   
   // Doctors
   {
     email: 'dr.ahmed@hospital.com',
     username: 'dr_ahmed',
-    full_name: 'Dr. Ahmed Hassan',
+    fullName: 'Dr. Ahmed Hassan',
     role: 'doctor',
-    department_id: 'emergency', // Will be created if doesn't exist
+    phone: '+1-555-0101',
+    address: '456 Medical Ave, Hospital City',
+    hiringDate: '2018-03-20',
+    shiftType: 'day',
+    licenseNumber: 'MD-2018-45678',
+    yearsOfExperience: 15,
+    specializations: ['emergency', 'surgery'],
   },
   {
     email: 'dr.sarah@hospital.com',
     username: 'dr_sarah',
-    full_name: 'Dr. Sarah Johnson',
+    fullName: 'Dr. Sarah Johnson',
     role: 'doctor',
-    department_id: 'cardiology',
+    phone: '+1-555-0102',
+    address: '789 Cardio Blvd, Hospital City',
+    hiringDate: '2019-06-10',
+    shiftType: 'day',
+    licenseNumber: 'MD-2019-12345',
+    yearsOfExperience: 12,
+    specializations: ['cardiology'],
   },
   
   // Nurses
   {
     email: 'nurse.sara@hospital.com',
     username: 'nurse_sara',
-    full_name: 'Sara Wilson',
+    fullName: 'Sara Wilson',
     role: 'nurse',
-    department_id: 'emergency',
+    phone: '+1-555-0103',
+    address: '321 Nursing Rd, Hospital City',
+    hiringDate: '2020-09-15',
+    shiftType: 'night',
+    licenseNumber: 'RN-2020-98765',
+    yearsOfExperience: 5,
+    specializations: ['emergency'],
   },
   {
     email: 'nurse.james@hospital.com',
     username: 'nurse_james',
-    full_name: 'James Miller',
+    fullName: 'James Miller',
     role: 'nurse',
-    department_id: 'icu',
+    phone: '+1-555-0104',
+    address: '654 ICU Lane, Hospital City',
+    hiringDate: '2021-02-20',
+    shiftType: 'day',
+    licenseNumber: 'RN-2021-54321',
+    yearsOfExperience: 3,
+    specializations: ['icu'],
   },
   
   // Hospital Staff (Reception/Operations)
   {
     email: 'staff.reception@hospital.com',
     username: 'staff_reception',
-    full_name: 'Maria Garcia',
-    role: 'reception',
-    department_id: null,
-  },
-  
-  // Patient (for testing patient-facing features)
-  {
-    email: 'patient.john@example.com',
-    username: 'patient_john',
-    full_name: 'John Doe',
-    role: 'patient',
-    department_id: null,
+    fullName: 'Maria Garcia',
+    role: 'staff',
+    phone: '+1-555-0105',
+    address: '987 Front Desk Dr, Hospital City',
+    hiringDate: '2021-05-01',
+    shiftType: 'morning',
+    licenseNumber: null,
+    yearsOfExperience: 2,
+    specializations: [],
   },
 ];
 
@@ -150,7 +177,7 @@ async function createAuthUser(email, password) {
 }
 
 /**
- * Create or update user profile in Firestore
+ * Create or update user profile in Firestore with new camelCase schema
  */
 async function createFirestoreProfile(uid, userData) {
   try {
@@ -159,20 +186,24 @@ async function createFirestoreProfile(uid, userData) {
     
     const profileData = {
       email: userData.email,
-      full_name: userData.full_name,
+      fullName: userData.fullName,
+      phone: userData.phone || null,
+      address: userData.address || null,
+      hiringDate: userData.hiringDate || null,
+      shiftType: userData.shiftType || null,
+      licenseNumber: userData.licenseNumber || null,
+      yearsOfExperience: userData.yearsOfExperience || 0,
       role: userData.role,
-      roles: [userData.role],
-      department_id: userData.department_id,
-      status: 'active',
-      mustChangePassword: true, // Force password change on first login
-      created_at: admin.firestore.FieldValue.serverTimestamp(),
-      updated_at: admin.firestore.FieldValue.serverTimestamp(),
+      specializations: userData.specializations || [],
+      isActive: true,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     };
     
     if (userDoc.exists) {
       await userRef.update({
         ...profileData,
-        created_at: userDoc.data().created_at, // Preserve original creation time
+        createdAt: userDoc.data().createdAt, // Preserve original creation time
       });
       console.log(`   ℹ️  Updated Firestore profile: ${userData.email}`);
     } else {
@@ -208,12 +239,155 @@ async function createSampleDepartments() {
       await deptRef.set({
         name: dept.name,
         description: dept.description,
-        created_at: admin.firestore.FieldValue.serverTimestamp(),
-        updated_at: admin.firestore.FieldValue.serverTimestamp(),
       });
       console.log(`   ✅ Created department: ${dept.name}`);
     } else {
       console.log(`   ℹ️  Department already exists: ${dept.name}`);
+    }
+  }
+}
+
+/**
+ * Create sample rooms
+ */
+async function createSampleRooms() {
+  console.log('\n🏥 Creating sample rooms...');
+  
+  const rooms = [
+    { roomNumber: 'ICU-101', floor: 1, roomType: 'icu', capacity: 1, departmentId: 'icu' },
+    { roomNumber: 'ICU-102', floor: 1, roomType: 'icu', capacity: 1, departmentId: 'icu' },
+    { roomNumber: 'ICU-103', floor: 1, roomType: 'icu', capacity: 1, departmentId: 'icu' },
+    { roomNumber: 'ER-201', floor: 2, roomType: 'emergency', capacity: 2, departmentId: 'emergency' },
+    { roomNumber: 'ER-202', floor: 2, roomType: 'emergency', capacity: 2, departmentId: 'emergency' },
+    { roomNumber: 'ER-203', floor: 2, roomType: 'emergency', capacity: 2, departmentId: 'emergency' },
+    { roomNumber: 'CARD-301', floor: 3, roomType: 'ward', capacity: 2, departmentId: 'cardiology' },
+    { roomNumber: 'CARD-302', floor: 3, roomType: 'ward', capacity: 2, departmentId: 'cardiology' },
+    { roomNumber: 'SURG-401', floor: 4, roomType: 'operation_theater', capacity: 1, departmentId: 'surgery' },
+    { roomNumber: 'SURG-402', floor: 4, roomType: 'operation_theater', capacity: 1, departmentId: 'surgery' },
+  ];
+  
+  for (const room of rooms) {
+    // Check if room already exists
+    const existingRooms = await db.collection('rooms')
+      .where('roomNumber', '==', room.roomNumber)
+      .get();
+    
+    if (existingRooms.empty) {
+      await db.collection('rooms').add(room);
+      console.log(`   ✅ Created room: ${room.roomNumber}`);
+    } else {
+      console.log(`   ℹ️  Room already exists: ${room.roomNumber}`);
+    }
+  }
+}
+
+/**
+ * Create sample beds
+ */
+async function createSampleBeds() {
+  console.log('\n🛏️  Creating sample beds...');
+  
+  // Get all rooms
+  const roomsSnapshot = await db.collection('rooms').get();
+  const rooms = roomsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  
+  let bedsCreated = 0;
+  
+  for (const room of rooms) {
+    // Create beds based on room capacity
+    for (let i = 1; i <= room.capacity; i++) {
+      const bedNumber = `${room.roomNumber}-B${i}`;
+      
+      // Check if bed already exists
+      const existingBeds = await db.collection('beds')
+        .where('bedNumber', '==', bedNumber)
+        .get();
+      
+      if (existingBeds.empty) {
+        await db.collection('beds').add({
+          bedNumber: bedNumber,
+          roomId: room.id,
+          isOccupied: false,
+        });
+        bedsCreated++;
+      }
+    }
+  }
+  
+  console.log(`   ✅ Created ${bedsCreated} beds`);
+}
+
+/**
+ * Create sample patients
+ */
+async function createSamplePatients() {
+  console.log('\n👨‍⚕️ Creating sample patients...');
+  
+  const patients = [
+    {
+      fullName: 'John Smith',
+      dateOfBirth: '1975-05-15',
+      gender: 'male',
+      phone: '+1-555-1001',
+      address: '100 Main St, City',
+      bloodGroup: 'O+',
+      emergencyContact: { name: 'Jane Smith', phone: '+1-555-1002' },
+      status: 'admitted',
+      admissionDate: '2025-12-10',
+      department: 'emergency',
+    },
+    {
+      fullName: 'Mary Johnson',
+      dateOfBirth: '1982-08-22',
+      gender: 'female',
+      phone: '+1-555-1003',
+      address: '200 Oak Ave, City',
+      bloodGroup: 'A+',
+      emergencyContact: { name: 'Bob Johnson', phone: '+1-555-1004' },
+      status: 'admitted',
+      admissionDate: '2025-12-12',
+      department: 'icu',
+    },
+    {
+      fullName: 'Robert Williams',
+      dateOfBirth: '1965-03-10',
+      gender: 'male',
+      phone: '+1-555-1005',
+      address: '300 Pine Rd, City',
+      bloodGroup: 'B+',
+      emergencyContact: { name: 'Lisa Williams', phone: '+1-555-1006' },
+      status: 'admitted',
+      admissionDate: '2025-12-14',
+      department: 'cardiology',
+    },
+    {
+      fullName: 'Patricia Brown',
+      dateOfBirth: '1990-11-30',
+      gender: 'female',
+      phone: '+1-555-1007',
+      address: '400 Elm St, City',
+      bloodGroup: 'AB+',
+      emergencyContact: { name: 'Michael Brown', phone: '+1-555-1008' },
+      status: 'admitted',
+      admissionDate: '2025-12-15',
+      department: 'surgery',
+    },
+  ];
+  
+  for (const patient of patients) {
+    // Check if patient already exists
+    const existingPatients = await db.collection('patients')
+      .where('fullName', '==', patient.fullName)
+      .get();
+    
+    if (existingPatients.empty) {
+      await db.collection('patients').add({
+        ...patient,
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+      console.log(`   ✅ Created patient: ${patient.fullName}`);
+    } else {
+      console.log(`   ℹ️  Patient already exists: ${patient.fullName}`);
     }
   }
 }
@@ -230,11 +404,20 @@ async function seedTestData() {
     // Create departments first
     await createSampleDepartments();
     
+    // Create rooms
+    await createSampleRooms();
+    
+    // Create beds
+    await createSampleBeds();
+    
+    // Create patients
+    await createSamplePatients();
+    
     // Create users
     console.log('\n👥 Creating test users...\n');
     
     for (const user of TEST_USERS) {
-      console.log(`Processing: ${user.full_name} (${user.email})`);
+      console.log(`Processing: ${user.fullName} (${user.email})`);
       
       const password = generateDefaultPassword(user.username);
       
@@ -263,12 +446,24 @@ async function seedTestData() {
     });
     
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.log('\n⚠️  IMPORTANT: All users must change their password on first login!');
+    console.log('\n📊 Database Summary:');
+    const departmentsCount = (await db.collection('departments').get()).size;
+    const roomsCount = (await db.collection('rooms').get()).size;
+    const bedsCount = (await db.collection('beds').get()).size;
+    const patientsCount = (await db.collection('patients').get()).size;
+    const usersCount = (await db.collection('users').get()).size;
+    
+    console.log(`   • Departments: ${departmentsCount}`);
+    console.log(`   • Rooms: ${roomsCount}`);
+    console.log(`   • Beds: ${bedsCount}`);
+    console.log(`   • Patients: ${patientsCount}`);
+    console.log(`   • Users: ${usersCount}`);
+    
+    console.log('\n✅ Firebase Authentication and Firestore are now populated with test data.');
     console.log('\n🔒 Next Steps:');
     console.log('   1. Test login with any of the above credentials');
-    console.log('   2. User will be prompted to change password');
-    console.log('   3. After password change, normal login will work');
-    console.log('\n✅ Firebase Authentication and Firestore are now populated with test data.');
+    console.log('   2. All data uses camelCase field names as per the schema');
+    console.log('   3. Explore departments, rooms, beds, and patients');
     
   } catch (error) {
     console.error('\n❌ Seeding failed:', error);
