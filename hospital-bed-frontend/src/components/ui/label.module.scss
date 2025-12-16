@@ -4,6 +4,9 @@
  * Accessible form label with required indicator
  */
 
+@import '@styles/variables';
+@import '@styles/mixins';
+
 .label {
   display: inline-block;
   font-size: $text-sm;

@@ -45,32 +45,32 @@
   }
 
   &.success {
-    background: $success/20;
+    background: rgba($success, 0.2);
     color: $success;
-    border: 1px solid $success/30;
+    border: 1px solid rgba($success, 0.3);
 
     &:hover {
-      background: $success/30;
+      background: rgba($success, 0.3);
     }
   }
 
   &.destructive {
-    background: $destructive/20;
+    background: rgba($destructive, 0.2);
     color: $destructive;
-    border: 1px solid $destructive/30;
+    border: 1px solid rgba($destructive, 0.3);
 
     &:hover {
-      background: $destructive/30;
+      background: rgba($destructive, 0.3);
     }
   }
 
   &.secondary {
-    background: var(--muted/50);
-    color: var(--muted-foreground);
-    border: 1px solid var(--muted);
+    background: rgb(var(--muted) / 0.5);
+    color: rgb(var(--muted-foreground));
+    border: 1px solid rgb(var(--muted));
 
     &:hover {
-      background: var(--muted);
+      background: rgb(var(--muted));
     }
   }
 

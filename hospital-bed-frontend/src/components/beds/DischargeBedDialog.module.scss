@@ -4,6 +4,9 @@
  * Styling for the discharge bed dialog
  */
 
+@import '@styles/variables';
+@import '@styles/mixins';
+
 .discharge-bed-dialog {
   .bed-patient-summary {
     background: rgb(var(--muted) / 0.3);

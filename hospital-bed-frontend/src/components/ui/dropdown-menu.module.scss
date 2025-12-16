@@ -4,6 +4,9 @@
  * Accessible dropdown menu with smooth animations
  */
 
+@import '@styles/variables';
+@import '@styles/mixins';
+
 .dropdown-menu {
   position: relative;
   display: inline-block;
