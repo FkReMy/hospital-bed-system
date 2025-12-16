@@ -17,7 +17,7 @@
  * - Secure: uses authApi.login with httpOnly cookie
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Lock, Globe } from 'lucide-react';
 import Card from '@components/ui/card.jsx';

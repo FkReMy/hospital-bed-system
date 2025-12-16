@@ -16,7 +16,7 @@
  * - Responsive layout
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from '@hooks/useAuth';
 import { useMutation } from '@tanstack/react-query';
 import { userApi } from '@services/api/userApi';
