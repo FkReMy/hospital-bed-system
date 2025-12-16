@@ -1,0 +1,121 @@
+// src/components/ui/tooltip.module.scss
+/**
+ * Tooltip Module Styles
+ * 
+ * Scoped styles for the Tooltip component - premium glassmorphic popover with arrow,
+ * position variants, and smooth transitions.
+ * 
+ * Features:
+ * - Glassmorphic background with blur and shadow
+ * - Position variants (top/bottom/left/right) with arrow alignment
+ * - Fade-in animation on show
+ * - Dark/light theme compatibility via variables
+ * - Responsive content width
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.tooltipWrapper {
+  // Trigger wrapper - inline for natural flow
+  display: inline-block;
+  position: relative;
+}
+
+.tooltip {
+  // Base tooltip content
+  position: absolute;
+  z-index: 1000;
+  min-width: 120px;
+  max-width: 320px;
+  padding: $spacing-sm $spacing-md;
+  background: rgba(var(--background-rgb), 0.9);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: $radius-lg;
+  box-shadow: $shadow-2xl;
+  color: var(--foreground);
+  font-size: $text-sm;
+  font-weight: $font-medium;
+  text-align: center;
+  animation: fadeIn 0.2s ease-out;
+  pointer-events: none;
+
+  // Arrow pseudo-element
+  &::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+  }
+
+  // Position variants
+  &.top {
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: $spacing-sm;
+
+    &::before {
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-top-color: var(--border);
+    }
+  }
+
+  &.bottom {
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: $spacing-sm;
+
+    &::before {
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-bottom-color: var(--border);
+    }
+  }
+
+  &.left {
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-right: $spacing-sm;
+
+    &::before {
+      right: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-left-color: var(--border);
+    }
+  }
+
+  &.right {
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: $spacing-sm;
+
+    &::before {
+      left: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-right-color: var(--border);
+    }
+  }
+}
+
+// Fade-in animation
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,154 @@
+// src/components/ui/checkbox.module.scss
+/**
+ * Checkbox Module Styles
+ * 
+ * Scoped styles for the Checkbox component - premium custom checkbox
+ * with checkmark, indeterminate dash, size variants, and focus states.
+ * 
+ * Features:
+ * - Hidden native input with fully custom visual
+ * - Glassmorphic background with border
+ * - Smooth checkmark appearance
+ * - Indeterminate state (dash)
+ * - Size variants with proper scaling
+ * - Disabled and focus states
+ * - Dark/light theme compatibility
+ * 
+ * Unified with other form controls (input, radio, switch)
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.checkboxWrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-md;
+  cursor: pointer;
+  user-select: none;
+
+  // Size variants for wrapper
+  &.sm {
+    gap: $spacing-sm;
+  }
+
+  &.lg {
+    gap: $spacing-lg;
+  }
+
+  // Disabled state
+  &:has(.checkboxInput:disabled) {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// Hidden native checkbox
+.checkboxInput {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+// Custom checkbox visual
+.checkboxCustom {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--background);
+  border: 2px solid var(--border);
+  border-radius: $radius-md;
+  transition: all 0.2s ease;
+  box-shadow: $shadow-sm;
+
+  // Size variants
+  .checkboxWrapper.sm & {
+    width: 16px;
+    height: 16px;
+  }
+
+  .checkboxWrapper.md & {
+    width: 20px;
+    height: 20px;
+  }
+
+  .checkboxWrapper.lg & {
+    width: 24px;
+    height: 24px;
+  }
+
+  // Checked state
+  .checkboxInput:checked + & {
+    background: var(--primary);
+    border-color: var(--primary);
+  }
+
+  // Indeterminate state
+  .checkboxInput:indeterminate + & {
+    background: var(--primary);
+    border-color: var(--primary);
+  }
+
+  // Focus state (via keyboard)
+  .checkboxInput:focus-visible + & {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  // Disabled state
+  .checkboxInput:disabled + & {
+    background: var(--muted);
+    border-color: var(--border);
+  }
+
+  // Checkmark icon
+  .checkmark {
+    color: white;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    transform: scale(0.8);
+
+    .checkboxInput:checked + .checkboxCustom & {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  // Indeterminate dash
+  .indeterminateDash {
+    width: 60%;
+    height: 2px;
+    background: white;
+    border-radius: 1px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+
+    .checkboxInput:indeterminate + .checkboxCustom & {
+      opacity: 1;
+    }
+  }
+}
+
+// Label styling
+.checkboxLabel {
+  font-size: $text-base;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: color 0.2s ease;
+
+  .checkboxWrapper.sm & {
+    font-size: $text-sm;
+  }
+
+  .checkboxWrapper.lg & {
+    font-size: $text-lg;
+  }
+
+  // Disabled
+  .checkboxWrapper:has(.checkboxInput:disabled) & {
+    color: var(--muted-foreground);
+  }
+}

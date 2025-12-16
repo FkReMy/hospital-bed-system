@@ -1,0 +1,168 @@
+// src/components/ui/input.module.scss
+/**
+ * Input Module Styles
+ * 
+ * Scoped styles for the Input component - premium glassmorphic text input
+ * with icon support, size variants, error state, and focus ring.
+ * 
+ * Features:
+ * - Glassmorphic background with blur
+ * - Left/right icon slots with proper spacing
+ * - Error variant with red border/tint
+ * - Size variants with scaled padding/font
+ * - Focus ring and hover states
+ * - Disabled state
+ * - Dark/light theme compatibility
+ * 
+ * Unified with other form controls (select, textarea, checkbox)
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.inputWrapper {
+  // Wrapper for positioning icons
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+
+  // Icon positioning
+  .inputIcon {
+    position: absolute;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted-foreground);
+    transition: color 0.2s ease;
+    z-index: 10;
+
+    &.left {
+      left: $spacing-md;
+    }
+
+    &.right {
+      right: $spacing-md;
+    }
+  }
+
+  // Input field base
+  .inputField {
+    @include glass-card;
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: $radius-lg;
+    font-size: $text-base;
+    font-weight: $font-medium;
+    color: var(--foreground);
+    transition: all 0.2s ease;
+    background: transparent;
+
+    // Padding with icon support
+    padding: $spacing-md;
+
+    &.has-left-icon {
+      padding-left: $spacing-3xl;
+    }
+
+    &.has-right-icon {
+      padding-right: $spacing-3xl;
+    }
+
+    // Focus state
+    &:focus {
+      outline: none;
+      border-color: var(--ring);
+      box-shadow: 0 0 0 3px var(--ring/30);
+    }
+
+    // Disabled state
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      background: var(--muted/20);
+    }
+
+    // Placeholder
+    &::placeholder {
+      color: var(--muted-foreground);
+      opacity: 0.8;
+    }
+  }
+
+  // Size variants
+  &.sm {
+    .inputField {
+      padding: $spacing-sm;
+      font-size: $text-sm;
+
+      &.has-left-icon {
+        padding-left: $spacing-2xl;
+      }
+
+      &.has-right-icon {
+        padding-right: $spacing-2xl;
+      }
+    }
+
+    .inputIcon {
+      width: 32px;
+    }
+  }
+
+  &.md {
+    .inputField {
+      padding: $spacing-md;
+      font-size: $text-base;
+
+      &.has-left-icon {
+        padding-left: $spacing-3xl;
+      }
+
+      &.has-right-icon {
+        padding-right: $spacing-3xl;
+      }
+    }
+
+    .inputIcon {
+      width: 40px;
+    }
+  }
+
+  &.lg {
+    .inputField {
+      padding: $spacing-lg;
+      font-size: $text-lg;
+
+      &.has-left-icon {
+        padding-left: $spacing-4xl;
+      }
+
+      &.has-right-icon {
+        padding-right: $spacing-4xl;
+      }
+    }
+
+    .inputIcon {
+      width: 48px;
+    }
+  }
+
+  // Error variant
+  &.error {
+    .inputField {
+      border-color: $destructive;
+      background: $destructive/5;
+
+      &:focus {
+        border-color: $destructive;
+        box-shadow: 0 0 0 3px $destructive/30;
+      }
+    }
+
+    .inputIcon {
+      color: $destructive;
+    }
+  }
+}

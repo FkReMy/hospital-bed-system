@@ -1,0 +1,79 @@
+// src/components/prescriptions/PrescriptionList.module.scss
+/**
+ * PrescriptionList Module Styles
+ * 
+ * Scoped styles for the PrescriptionList component.
+ * Provides responsive grid layout for PrescriptionCard items with
+ * proper spacing, hover states, and loading/empty integration.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing, typography, colors, borders, shadows
+ * - Glassmorphic card elevation
+ * - Responsive grid behavior
+ * - Dark/light theme compatibility
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.prescriptionList {
+  // Full width container
+  width: 100%;
+
+  // Grid layout for prescription cards
+  .listGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: $spacing-2xl;
+
+    @media (max-width: $breakpoint-xl) {
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: $spacing-xl;
+    }
+
+    @media (max-width: $breakpoint-lg) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: $breakpoint-md) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // Loading state integration
+  .loadingContainer {
+    .listGrid {
+      gap: $spacing-2xl;
+
+      .loadingCard {
+        height: 320px;
+        border-radius: $radius-2xl;
+      }
+    }
+  }
+
+  // Empty state centering
+  .emptyContainer {
+    padding: $spacing-3xl;
+    text-align: center;
+  }
+
+  // Optional header (e.g., "Active Prescriptions")
+  .listHeader {
+    margin-bottom: $spacing-2xl;
+    padding-bottom: $spacing-lg;
+    border-bottom: 1px solid var(--border);
+
+    .headerTitle {
+      font-size: $text-2xl;
+      font-weight: $font-bold;
+      color: var(--foreground);
+    }
+
+    .headerActions {
+      display: flex;
+      gap: $spacing-md;
+      margin-top: $spacing-md;
+    }
+  }
+}

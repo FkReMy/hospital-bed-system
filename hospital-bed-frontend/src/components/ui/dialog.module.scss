@@ -1,0 +1,94 @@
+// src/components/ui/dialog.module.scss
+/**
+ * Dialog Module Styles
+ * 
+ * Scoped styles for the Dialog component - premium glassmorphic modal with overlay,
+ * content centering, close button, and animations.
+ * 
+ * Features:
+ * - Dark overlay with blur
+ * - Glassmorphic content card with elevation
+ * - Close button positioning
+ * - Responsive max-width and centering
+ * - Smooth fade-in/slide-up animation
+ * - Dark/light theme compatibility via variables
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.dialogOverlay {
+  // Full screen overlay
+  position: fixed;
+  inset: 0;
+  background: rgba(var(--foreground-rgb), 0.5);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-2xl;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-lg;
+  }
+
+  // Overlay click area (handled in JSX)
+}
+
+.dialogContent {
+  // Glassmorphic content
+  @include glass-card;
+  border-radius: $radius-2xl;
+  box-shadow: $shadow-2xl;
+  max-width: 640px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease-out;
+  position: relative;
+
+  // Close button
+  .dialogCloseButton {
+    position: absolute;
+    top: $spacing-md;
+    right: $spacing-md;
+    z-index: 10;
+  }
+
+  // Dialog title (if provided)
+  .dialogTitle {
+    font-size: $text-2xl;
+    font-weight: $font-bold;
+    color: var(--foreground);
+    margin: $spacing-xl $spacing-xl $spacing-sm;
+  }
+
+  // Dialog body
+  .dialogBody {
+    padding: 0 $spacing-xl $spacing-xl;
+  }
+}
+
+// Fade-in animation for overlay
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// Slide-up animation for content
+@keyframes slideUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

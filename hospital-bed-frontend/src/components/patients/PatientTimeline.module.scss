@@ -1,0 +1,188 @@
+// src/components/patients/PatientTimeline.module.scss
+/**
+ * PatientTimeline Module Styles
+ * 
+ * Scoped styles for the PatientTimeline component.
+ * Provides premium vertical timeline with connecting line, type-specific markers,
+ * event details, and responsive layout.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing, typography, colors, borders, shadows
+ * - Glassmorphic elevation
+ * - Smooth animations
+ * - Dark/light theme compatibility
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.patientTimeline {
+  @include glass-card;
+  border-radius: $radius-2xl;
+  overflow: hidden;
+  padding: $spacing-2xl;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-xl;
+  }
+
+  // Timeline container
+  .timelineContainer {
+    position: relative;
+    padding-left: $spacing-2xl;
+
+    // Connecting line (runs through all items except last)
+    &::before {
+      content: '';
+      position: absolute;
+      left: 28px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--border);
+      z-index: 0;
+    }
+  }
+
+  // Individual timeline item
+  .timelineItem {
+    position: relative;
+    padding-bottom: $spacing-3xl;
+    display: flex;
+    gap: $spacing-xl;
+
+    // Remove line after last item
+    &:last-child {
+      padding-bottom: 0;
+
+      .timelineLine {
+        display: none;
+      }
+    }
+
+    // Connecting line segment
+    .timelineLine {
+      position: absolute;
+      left: 28px;
+      top: 48px;
+      bottom: 0;
+      width: 2px;
+      background: var(--border);
+      z-index: 0;
+    }
+
+    // Marker (dot + icon)
+    .timelineMarker {
+      position: relative;
+      flex-shrink: 0;
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+
+      // Outer colored dot
+      .markerDot {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: var(--background);
+        border: 4px solid currentColor;
+        box-shadow: $shadow-sm;
+        transition: all 0.2s ease;
+      }
+
+      // Icon wrapper with type color
+      .markerIcon {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        transition: transform 0.2s ease;
+
+        &.success {
+          background: $success;
+        }
+
+        &.secondary {
+          background: $warning;
+        }
+
+        &.destructive {
+          background: $destructive;
+        }
+
+        &.default {
+          background: var(--primary);
+        }
+      }
+
+      // Hover effect
+      &:hover .markerIcon {
+        transform: scale(1.1);
+      }
+    }
+
+    // Content area
+    .timelineContent {
+      flex: 1;
+      min-width: 0;
+      padding-top: $spacing-sm;
+
+      .contentHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: $spacing-lg;
+        margin-bottom: $spacing-sm;
+
+        @media (max-width: $breakpoint-sm) {
+          flex-direction: column;
+          gap: $spacing-xs;
+        }
+
+        .eventTitle {
+          font-size: $text-lg;
+          font-weight: $font-semibold;
+          color: var(--foreground);
+          margin: 0;
+        }
+
+        .eventTime {
+          font-size: $text-sm;
+          color: var(--muted-foreground);
+          white-space: nowrap;
+        }
+      }
+
+      .eventDescription {
+        font-size: $text-base;
+        color: var(--foreground);
+        margin: $spacing-sm 0 $spacing-lg;
+        line-height: 1.6;
+      }
+
+      .eventMetadata {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $spacing-sm;
+        margin-bottom: $spacing-md;
+
+        .metaBadge {
+          font-size: $text-xs;
+        }
+      }
+
+      .eventFullTime {
+        font-size: $text-xs;
+        color: var(--muted-foreground);
+        font-family: 'JetBrains Mono', monospace;
+      }
+    }
+  }
+}

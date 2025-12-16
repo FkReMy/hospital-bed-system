@@ -1,0 +1,164 @@
+// src/components/uploads/FileUploadItem.module.scss
+/**
+ * FileUploadItem Module Styles
+ * 
+ * Scoped styles for the FileUploadItem component.
+ * Provides premium, clinical layout for uploaded files with icon,
+ * metadata, progress/status, and actions.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing, typography, colors, borders, shadows
+ * - Glassmorphic elevation
+ * - Hover states and animations
+ * - Dark/light theme compatibility
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.fileUploadItem {
+  @include glass-card;
+  border-radius: $radius-2xl;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  // Status-based border accent
+  &.uploading {
+    border-color: var(--primary/30);
+  }
+
+  &.success {
+    border-color: $success/30;
+  }
+
+  &.error {
+    border-color: $destructive/30;
+  }
+
+  // Main flex content
+  .itemContent {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xl;
+    padding: $spacing-lg $spacing-xl;
+
+    @media (max-width: $breakpoint-md) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $spacing-lg;
+    }
+  }
+
+  // File info section (icon + details)
+  .fileInfo {
+    display: flex;
+    align-items: center;
+    gap: $spacing-lg;
+    flex: 1;
+    min-width: 0; // Allow truncation
+
+    .fileIconWrapper {
+      flex-shrink: 0;
+      width: 56px;
+      height: 56px;
+      border-radius: $radius-lg;
+      background: var(--muted/30);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+
+      .fileIcon {
+        width: 32px;
+        height: 32px;
+      }
+    }
+
+    .fileDetails {
+      min-width: 0;
+
+      .fileName {
+        font-size: $text-base;
+        font-weight: $font-semibold;
+        color: var(--foreground);
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .fileMeta {
+        display: flex;
+        align-items: center;
+        gap: $spacing-md;
+        margin-top: $spacing-xs;
+        font-size: $text-sm;
+        color: var(--muted-foreground);
+
+        .separator {
+          color: var(--muted-foreground);
+        }
+      }
+    }
+  }
+
+  // Status / Progress section
+  .itemStatus {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: $spacing-md;
+    flex-shrink: 0;
+
+    @media (max-width: $breakpoint-md) {
+      align-items: stretch;
+      width: 100%;
+    }
+
+    .progressSection {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: $spacing-xs;
+      width: 100%;
+
+      .uploadProgress {
+        width: 100%;
+        max-width: 200px;
+      }
+
+      .progressText {
+        font-size: $text-sm;
+        font-weight: $font-medium;
+        color: var(--foreground);
+      }
+    }
+
+    .statusBadge {
+      padding: $spacing-sm $spacing-lg;
+      display: flex;
+      align-items: center;
+      gap: $spacing-xs;
+
+      .statusIcon {
+        flex-shrink: 0;
+      }
+    }
+  }
+
+  // Actions section
+  .itemActions {
+    display: flex;
+    gap: $spacing-sm;
+    flex-shrink: 0;
+
+    .removeButton {
+      color: var(--muted-foreground);
+
+      &:hover {
+        color: $destructive;
+        background: $destructive/10;
+      }
+    }
+  }
+}

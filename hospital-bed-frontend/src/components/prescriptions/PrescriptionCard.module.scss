@@ -1,0 +1,224 @@
+// src/components/prescriptions/PrescriptionCard.module.scss
+/**
+ * PrescriptionCard Module Styles
+ * 
+ * Scoped styles for the PrescriptionCard component.
+ * Provides premium, clinical layout with medication header, doctor info,
+ * instructions, and dispensed status.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing, typography, colors, borders, shadows
+ * - Glassmorphic elevation
+ * - Hover overlay and interactive states
+ * - Dark/light theme compatibility
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.prescriptionCard {
+  @include glass-card;
+  border-radius: $radius-2xl;
+  overflow: hidden;
+  padding: $spacing-xl;
+  position: relative;
+  transition: all 0.3s ease;
+  cursor: default;
+
+  // Interactive variant (clickable for details)
+  &.interactive {
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-8px);
+      box-shadow: $shadow-2xl;
+      border-color: var(--primary/30);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--ring);
+      outline-offset: 4px;
+    }
+  }
+
+  // Header: Medication + Status
+  .prescriptionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: $spacing-2xl;
+    margin-bottom: $spacing-xl;
+    padding-bottom: $spacing-xl;
+    border-bottom: 1px solid var(--border);
+
+    @media (max-width: $breakpoint-lg) {
+      flex-direction: column;
+      align-items: stretch;
+      gap: $spacing-lg;
+    }
+
+    // Medication info
+    .medicationInfo {
+      display: flex;
+      align-items: center;
+      gap: $spacing-lg;
+      flex: 1;
+
+      .medicationIcon {
+        color: var(--primary);
+        flex-shrink: 0;
+      }
+
+      .medicationDetails {
+        .medicationName {
+          font-size: $text-2xl;
+          font-weight: $font-bold;
+          color: var(--foreground);
+          margin: 0;
+          line-height: 1.2;
+        }
+
+        .dosageInfo {
+          display: flex;
+          align-items: center;
+          gap: $spacing-md;
+          margin-top: $spacing-sm;
+          font-size: $text-base;
+          color: var(--muted-foreground);
+          font-weight: $font-medium;
+
+          .separator {
+            color: var(--muted-foreground);
+          }
+        }
+      }
+    }
+
+    // Dispensed status
+    .statusSection {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: $spacing-md;
+
+      @media (max-width: $breakpoint-lg) {
+        align-items: stretch;
+      }
+
+      .dispensedBadge {
+        font-size: $text-sm;
+        padding: $spacing-sm $spacing-lg;
+        display: flex;
+        align-items: center;
+        gap: $spacing-xs;
+
+        .statusIcon {
+          flex-shrink: 0;
+        }
+      }
+    }
+  }
+
+  // Body: Doctor + Date + Instructions
+  .prescriptionBody {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xl;
+
+    // Doctor information
+    .doctorInfo {
+      display: flex;
+      align-items: center;
+      gap: $spacing-lg;
+
+      .doctorAvatar {
+        width: 48px;
+        height: 48px;
+        flex-shrink: 0;
+
+        .avatarInitial {
+          font-size: $text-xl;
+          font-weight: $font-bold;
+        }
+      }
+
+      .doctorDetails {
+        flex: 1;
+
+        .doctorLabel {
+          display: flex;
+          align-items: center;
+          gap: $spacing-xs;
+          font-size: $text-sm;
+          color: var(--muted-foreground);
+          margin-bottom: $spacing-xs;
+        }
+
+        .doctorName {
+          font-size: $text-lg;
+          font-weight: $font-semibold;
+          color: var(--foreground);
+          margin: 0;
+        }
+      }
+
+      .dateInfo {
+        display: flex;
+        align-items: center;
+        gap: $spacing-xs;
+        font-size: $text-sm;
+        color: var(--muted-foreground);
+        white-space: nowrap;
+
+        .prescribedDate {
+          font-weight: $font-medium;
+        }
+      }
+    }
+
+    // Instructions
+    .instructionsSection {
+      .instructionsLabel {
+        font-size: $text-sm;
+        font-weight: $font-medium;
+        color: var(--muted-foreground);
+        margin-bottom: $spacing-sm;
+      }
+
+      .instructionsText {
+        font-size: $text-base;
+        color: var(--foreground);
+        line-height: 1.6;
+        background: var(--muted/20);
+        padding: $spacing-lg;
+        border-radius: $radius-lg;
+        border-left: 4px solid var(--primary);
+      }
+    }
+  }
+
+  // Hover action overlay
+  .actionOverlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 60%, var(--primary)/90 100%);
+    color: white;
+    font-weight: $font-bold;
+    font-size: $text-base;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: $spacing-2xl;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+
+    .actionText {
+      text-align: center;
+    }
+  }
+
+  &:hover .actionOverlay {
+    opacity: 1;
+  }
+}

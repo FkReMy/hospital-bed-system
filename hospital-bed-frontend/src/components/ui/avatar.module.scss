@@ -1,0 +1,129 @@
+// src/components/ui/avatar.module.scss
+/**
+ * Avatar Module Styles
+ * 
+ * Scoped styles for the Avatar component.
+ * Provides premium circular avatars with image fallback to initials,
+ * size variants, and optional online/offline status indicator.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing, typography, colors, borders, shadows
+ * - Glassmorphic elevation
+ * - Dark/light theme compatibility
+ * - Responsive sizing
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.avatar {
+  // Base avatar container
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--muted);
+  color: white;
+  font-weight: $font-bold;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+
+  // Hide image on error (handled in JSX)
+  .avatarImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.2s ease;
+  }
+
+  // Fallback initials container
+  .avatarFallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary);
+    color: white;
+
+    .avatarInitials {
+      line-height: 1;
+    }
+  }
+
+  // Size variants
+  &.sm {
+    width: 32px;
+    height: 32px;
+
+    .avatarInitials {
+      font-size: $text-sm;
+    }
+  }
+
+  &.md {
+    width: 40px;
+    height: 40px;
+
+    .avatarInitials {
+      font-size: $text-base;
+    }
+  }
+
+  &.lg {
+    width: 56px;
+    height: 56px;
+
+    .avatarInitials {
+      font-size: $text-2xl;
+    }
+  }
+
+  &.xl {
+    width: 80px;
+    height: 80px;
+
+    .avatarInitials {
+      font-size: $text-4xl;
+    }
+  }
+
+  // Status indicator (online/offline dot)
+  &.status-online,
+  &.status-offline {
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 3px solid var(--background);
+      box-shadow: $shadow-sm;
+    }
+  }
+
+  &.status-online::after {
+    background: $success;
+  }
+
+  &.status-offline::after {
+    background: $muted-foreground;
+  }
+
+  // Hover enhancement
+  &:hover {
+    box-shadow: $shadow-md;
+    transform: scale(1.05);
+  }
+
+  // Focus state for accessibility
+  &:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
