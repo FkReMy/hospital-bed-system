@@ -15,14 +15,12 @@
  * - Unified with global Card, Badge, Button, LoadingState, EmptyState components
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { 
   DoorClosed, 
-  BedDouble, 
   UserCheck,
   UserX,
-  Wrench
 } from 'lucide-react';
 import Card from '@components/ui/card.jsx';
 import Badge from '@components/ui/badge.jsx';

@@ -27,7 +27,7 @@ import { useBedManagement } from '@hooks/useBedManagement';
 import './RoomListPage.scss';
 
 const RoomListPage = () => {
-  const { beds, rooms, departments, isLoadingBeds } = useBedManagement();
+  const { beds, rooms, departments: _departments, isLoadingBeds } = useBedManagement();
 
   // Calculate stats per room
   const roomStats = rooms.map(room => {

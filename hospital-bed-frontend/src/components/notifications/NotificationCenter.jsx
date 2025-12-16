@@ -41,7 +41,7 @@ import './NotificationCenter.scss';
  */
 const NotificationCenter = ({
   open,
-  onOpenChange,
+  onOpenChange: _onOpenChange,
   notifications = [],
   onMarkAsRead,
   onMarkAllAsRead,

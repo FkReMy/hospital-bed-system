@@ -18,7 +18,7 @@
  * - Reception-only access (protected by ReceptionRoute)
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { 
   Users, 
   Calendar, 
@@ -85,7 +85,7 @@ const ReceptionDashboard = () => {
         <Card className="statCard todayAppointments">
           <Calendar className="statIcon" />
           <div className="statContent">
-            <p className="statLabel">Today's Appointments</p>
+            <p className="statLabel">Today&apos;s Appointments</p>
             <p className="statValue">{todayAppointments.length}</p>
           </div>
         </Card>
@@ -137,7 +137,7 @@ const ReceptionDashboard = () => {
 
       {/* Today's Appointments */}
       <Card className="appointmentsCard">
-        <h2 className="sectionTitle">Today's Appointments</h2>
+        <h2 className="sectionTitle">Today&apos;s Appointments</h2>
         {recentAppointments.length === 0 ? (
           <EmptyState
             description="All clear! Check upcoming or create new"

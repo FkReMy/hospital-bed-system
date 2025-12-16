@@ -17,7 +17,7 @@
  * - Admin-only access (protected by AdminRoute)
  */
 
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { 
   User, 
   Mail, 
@@ -32,11 +32,16 @@ import Card from '@components/ui/card.jsx';
 import Badge from '@components/ui/badge.jsx';
 import Button from '@components/ui/button.jsx';
 import Table from '@components/ui/table.jsx';
+import TableHeader from '@components/ui/table-header.jsx';
+import TableBody from '@components/ui/table-body.jsx';
+import TableHead from '@components/ui/table-head.jsx';
+import TableRow from '@components/ui/table-row.jsx';
+import TableCell from '@components/ui/table-cell.jsx';
 import LoadingState from '@components/common/LoadingState.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
 import { useUserDetail } from '@hooks/useUserDetail'; // Custom hook (to be implemented)
 import { useRoleAccess } from '@hooks/useRoleAccess';
-import { formatDate } from '@lib/dateUtils';
+import { formatDate, formatDateTime } from '@lib/dateUtils';
 import './UserDetailPage.scss';
 
 const UserDetailPage = () => {

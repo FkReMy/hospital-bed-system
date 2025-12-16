@@ -34,7 +34,7 @@ import { useBedManagement } from '@hooks/useBedManagement';
 import './LandingPage.scss';
 
 const LandingPage = () => {
-  const { beds = [], isLoadingBeds } = useBedManagement();
+  const { beds = [], isLoadingBeds: _isLoadingBeds } = useBedManagement();
 
   // Calculate real-time stats
   const totalBeds = beds.length;

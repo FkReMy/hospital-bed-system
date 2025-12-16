@@ -17,7 +17,7 @@
  * - Unified with global Card, Badge, Button, Progress, Chart components
  */
 
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { 
   Building2, 
   BedDouble, 
@@ -31,15 +31,13 @@ import Button from '@components/ui/button.jsx';
 import Badge from '@components/ui/badge.jsx';
 import Progress from '@components/ui/progress.jsx';
 import LoadingState from '@components/common/LoadingState.jsx';
-import EmptyState from '@components/common/EmptyState.jsx';
 import { useBedManagement } from '@hooks/useBedManagement';
 import { useAuth } from '@hooks/useAuth';
-import { formatDateTime } from '@lib/dateUtils';
 import './DepartmentLoadReportPage.scss';
 
 const DepartmentLoadReportPage = () => {
   const { beds, departments, isLoadingBeds } = useBedManagement();
-  const { user } = useAuth();
+  const { user: _user } = useAuth();
 
   const [selectedDepartment, setSelectedDepartment] = useState('all');
 

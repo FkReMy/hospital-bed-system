@@ -19,19 +19,15 @@
  * - Real-time updates via notificationChannel (when appointment changes)
  */
 
-import React, { useState, useMemo } from 'react';
-import { format } from 'date-fns';
+import { useState, useMemo } from 'react';
 import { 
-  Calendar,
   Search,
-  Filter,
   Plus,
   MoreVertical,
 } from 'lucide-react';
 import Card from '@components/ui/card.jsx';
 import Button from '@components/ui/button.jsx';
 import Input from '@components/ui/input.jsx';
-import Badge from '@components/ui/badge.jsx';
 import {
   Table,
   TableHeader,

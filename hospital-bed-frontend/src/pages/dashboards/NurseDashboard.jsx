@@ -21,9 +21,7 @@ import {
   BedDouble, 
   Users, 
   AlertCircle,
-  Activity,
   UserCheck,
-  UserX,
   Wrench,
   Calendar
 } from 'lucide-react';
@@ -31,9 +29,7 @@ import Card from '@components/ui/card.jsx';
 import Badge from '@components/ui/badge.jsx';
 import Button from '@components/ui/button.jsx';
 import Progress from '@components/ui/progress.jsx';
-import BedStatusBadge from '@components/beds/BedStatusBadge.jsx';
 import LoadingState from '@components/common/LoadingState.jsx';
-import EmptyState from '@components/common/EmptyState.jsx';
 import AssignBedDialog from '@components/beds/AssignBedDialog.jsx';
 import DischargeBedDialog from '@components/beds/DischargeBedDialog.jsx';
 import { useBedManagement } from '@hooks/useBedManagement';
@@ -46,7 +42,7 @@ import './NurseDashboard.scss';
 const NurseDashboard = () => {
   const { user } = useAuth();
   const { beds, departments, isLoadingBeds } = useBedManagement();
-  const { notifications, unreadCount, isLoadingNotifications } = useNotificationFeed();
+  const { notifications, unreadCount: _unreadCount, isLoadingNotifications } = useNotificationFeed();
 
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
   const [dischargeDialogOpen, setDischargeDialogOpen] = useState(false);
@@ -70,13 +66,13 @@ const NurseDashboard = () => {
     .filter(n => n.type === 'error' || n.type === 'warning')
     .slice(0, 5);
 
-  const handleAssign = (bed) => {
-    setSelectedBed(bed);
+  const _handleAssign = (_bed) => {
+    setSelectedBed(_bed);
     setAssignDialogOpen(true);
   };
 
-  const handleDischarge = (bed) => {
-    setSelectedBed(bed);
+  const _handleDischarge = (_bed) => {
+    setSelectedBed(_bed);
     setDischargeDialogOpen(true);
   };
 

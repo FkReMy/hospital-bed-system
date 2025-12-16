@@ -20,7 +20,6 @@
 import { 
   Calendar, 
   Users, 
-  Activity,
   Clock,
   BedDouble,
   AlertCircle
@@ -43,7 +42,7 @@ const DoctorDashboard = () => {
   const { user } = useAuth();
   const { appointments, isLoadingAppointments } = useAppointmentManagement();
   const { beds, isLoadingBeds } = useBedManagement();
-  const { notifications, unreadCount, isLoadingNotifications } = useNotificationFeed();
+  const { notifications: _notifications, unreadCount, isLoadingNotifications } = useNotificationFeed();
 
   // Today's appointments for current doctor
   const todayAppointments = appointments.filter(a => 
@@ -54,7 +53,7 @@ const DoctorDashboard = () => {
   // Current inpatients assigned to this doctor (via bed assignment)
   const currentPatients = beds
     .filter(b => b.status === 'occupied' && b.current_patient)
-    .filter(b => 
+    .filter(_b => 
       // In real system: check if doctor is responsible for patient
       // For now: show all occupied beds (can be refined with assignment logic)
        true
@@ -87,7 +86,7 @@ const DoctorDashboard = () => {
         <Card className="statCard todayAppointments">
           <Calendar className="statIcon" />
           <div className="statContent">
-            <p className="statLabel">Today's Appointments</p>
+            <p className="statLabel">Today&apos;s Appointments</p>
             <p className="statValue">{todayAppointments.length}</p>
           </div>
         </Card>
@@ -119,7 +118,7 @@ const DoctorDashboard = () => {
 
       {/* Today's Schedule */}
       <Card className="scheduleCard">
-        <h2 className="sectionTitle">Today's Schedule</h2>
+        <h2 className="sectionTitle">Today&apos;s Schedule</h2>
         {todayAppointments.length === 0 ? (
           <EmptyState
             description="Enjoy your day off or check upcoming appointments"

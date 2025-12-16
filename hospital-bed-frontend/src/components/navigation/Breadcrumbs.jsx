@@ -43,7 +43,7 @@ const Breadcrumbs = ({ crumbs, maxItems = 5 }) => {
 
     let accumulatedPath = '';
 
-    paths.forEach((segment, index) => {
+    paths.forEach((segment, _index) => {
       accumulatedPath += `/${segment}`;
       const label = segment
         .split('-')

@@ -21,7 +21,6 @@ import {
   BedDouble, 
   Users, 
   Calendar, 
-  Activity,
   TrendingUp,
   AlertCircle,
   CheckCircle,
@@ -106,7 +105,7 @@ const AdminDashboard = () => {
             <Calendar size={32} />
           </div>
           <div className="metricContent">
-            <p className="metricLabel">Today's Appointments</p>
+            <p className="metricLabel">Today&apos;s Appointments</p>
             <p className="metricValue">{todayAppointments}</p>
           </div>
         </Card>

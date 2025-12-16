@@ -17,11 +17,9 @@
  * - Role-aware actions (nurse/admin can assign/discharge)
  */
 
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { 
-  BedDouble, 
   Search, 
-  Plus, 
   UserCheck,
   UserX,
   Wrench,
@@ -30,7 +28,6 @@ import {
 import Card from '@components/ui/card.jsx';
 import Button from '@components/ui/button.jsx';
 import Input from '@components/ui/input.jsx';
-import Badge from '@components/ui/badge.jsx';
 import BedStatusBadge from '@components/beds/BedStatusBadge.jsx';
 import LoadingState from '@components/common/LoadingState.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
@@ -38,7 +35,6 @@ import AssignBedDialog from '@components/beds/AssignBedDialog.jsx';
 import DischargeBedDialog from '@components/beds/DischargeBedDialog.jsx';
 import { useBedManagement } from '@hooks/useBedManagement';
 import { useRoleAccess } from '@hooks/useRoleAccess';
-import { BED_STATUS } from '@lib/constants';
 import './BedManagementPage.scss';
 
 const BedManagementPage = () => {

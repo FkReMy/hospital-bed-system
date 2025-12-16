@@ -17,25 +17,29 @@
  * - Unified with global Card, Badge, Button, Tabs, Table components
  */
 
-import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { 
-  User, 
   BedDouble, 
-  Calendar, 
-  Pill, 
-  Clock,
-  Edit,
-  Download
 } from 'lucide-react';
 import Card from '@components/ui/card.jsx';
 import Badge from '@components/ui/badge.jsx';
 import Button from '@components/ui/button.jsx';
 import Tabs from '@components/ui/tabs.jsx';
+import TabsList from '@components/ui/tabs-list.jsx';
+import TabsTrigger from '@components/ui/tabs-trigger.jsx';
+import TabsContent from '@components/ui/tabs-content.jsx';
 import Table from '@components/ui/table.jsx';
+import TableHeader from '@components/ui/table-header.jsx';
+import TableBody from '@components/ui/table-body.jsx';
+import TableHead from '@components/ui/table-head.jsx';
+import TableRow from '@components/ui/table-row.jsx';
+import TableCell from '@components/ui/table-cell.jsx';
 import LoadingState from '@components/common/LoadingState.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
 import PatientSummaryCard from '@components/patients/PatientSummaryCard.jsx';
+import BedStatusBadge from '@components/beds/BedStatusBadge.jsx';
+import AppointmentStatusBadge from '@components/appointments/AppointmentStatusBadge.jsx';
 import { usePatientProfile } from '@hooks/usePatientProfile';
 import { useBedManagement } from '@hooks/useBedManagement';
 import { formatDateTime } from '@lib/dateUtils';

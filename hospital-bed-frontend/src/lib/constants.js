@@ -118,6 +118,5 @@ export default {
   ANIMATION,
   API,
   NOTIFICATIONS,
-  THEMES,
   ROUTES,
 };
