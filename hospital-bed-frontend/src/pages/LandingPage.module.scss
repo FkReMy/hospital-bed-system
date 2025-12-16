@@ -213,19 +213,19 @@
       border-left: 4px solid var(--primary);
 
       &.rose {
-        border-left-color: #f43f5e;
+        border-left-color: #EF4444; // Soft Red - for urgent/emergency departments
       }
 
       &.indigo {
-        border-left-color: #6366f1;
+        border-left-color: #2563EB; // Trust Blue - for general departments
       }
 
       &.emerald {
-        border-left-color: #10b981;
+        border-left-color: #16A34A; // Medical Healing Green - for recovery departments
       }
 
       &.cyan {
-        border-left-color: #06b6d4;
+        border-left-color: #14B8A6; // Clinical Teal - for specialized care
       }
 
       .deptHeader {

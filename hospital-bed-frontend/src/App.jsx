@@ -4,10 +4,10 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast'; // Optional lightweight toast notifications (can be replaced later)
-import AppRouter from '@router/index.jsx';
-import { AuthProvider } from '@hooks/useAuth.jsx'; // Centralized auth context
-import { ThemeProvider } from '@hooks/useTheme.jsx'; // Dark/light theme support
-import AppShell from '@components/layout/AppShell.jsx'; // Unified layout wrapper (sidebar, topbar, etc.)
+import AppRouter from './router/index.jsx';
+import { AuthProvider } from './hooks/useAuth.js'; // Centralized auth context
+import { ThemeProvider } from './hooks/useTheme.js'; // Dark/light theme support
+import AppShell from './components/layout/AppShell.jsx'; // Unified layout wrapper (sidebar, topbar, etc.)
 
 /**
  * Main App component
@@ -47,13 +47,13 @@ function App() {
                 },
                 success: {
                   iconTheme: {
-                    primary: '#10b981',
+                    primary: '#22C55E',  // Soft Green for success
                     secondary: '#fff',
                   },
                 },
                 error: {
                   iconTheme: {
-                    primary: '#ef4444',
+                    primary: '#EF4444',  // Soft Red for error
                     secondary: '#fff',
                   },
                 },

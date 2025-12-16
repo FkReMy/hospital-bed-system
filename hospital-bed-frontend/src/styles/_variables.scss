@@ -83,14 +83,25 @@ $animation-fast: 0.2s;
 $animation-default: 0.3s;
 $animation-slow: 0.5s;
 
-/* Colors (raw values for SCSS use) */
-$primary: #3b82f6;
-$primary-hover: #2563eb;
-$primary-active: #1d4ed8;
-$destructive: #ef4444;
+/* Colors (raw values for SCSS use) - Hospital Theme */
+/* Primary: Medical Healing Green */
+$primary: #16A34A;
+$primary-hover: #15803D;
+$primary-active: #166534;
+/* Secondary: Trust Blue */
+$secondary-blue: #2563EB;
+$secondary-blue-hover: #1d4ed8;
+/* Status colors */
+$destructive: #EF4444;
 $destructive-hover: #dc2626;
-$success: #22c55e;
-$warning: #f59e0b;
+$destructive-active: #b91c1c;
+$success: #22C55E;
+$success-hover: #16a34a;
+$warning: #F59E0B;
+$warning-hover: #d97706;
+/* Accent colors */
+$accent-yellow: #FACC15;
+$accent-teal: #14B8A6;
 
 /* Export root variables for JS/CSS access if needed */
 :root {
