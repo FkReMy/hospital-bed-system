@@ -10,6 +10,11 @@ import App from './App.jsx';
 // Global styles - imported once here to ensure consistent application across the entire app
 import '@styles/global.scss';
 
+// Import accessibility testing tools in development
+if (import.meta.env.DEV) {
+  import('./lib/a11yTests.js');
+}
+
 // Create a single QueryClient instance for the entire application
 // Configured for production-ready defaults with sensible caching and retry behavior
 const queryClient = new QueryClient({
