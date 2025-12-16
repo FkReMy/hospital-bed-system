@@ -38,7 +38,7 @@ export const getAll = async (params = {}) => {
     const constraints = [];
     
     if (params.departmentId) {
-      constraints.push(where('department_id', '==', params.departmentId));
+      constraints.push(where('departmentId', '==', params.departmentId));
     }
     if (params.floor) {
       constraints.push(where('floor', '==', parseInt(params.floor)));
@@ -88,9 +88,11 @@ export const create = async (data) => {
     const roomRef = doc(collection(db, ROOMS_COLLECTION));
     
     const newRoom = {
-      ...data,
-      created_at: Timestamp.now(),
-      updated_at: Timestamp.now(),
+      roomNumber: data.roomNumber || data.room_number,
+      floor: data.floor || null,
+      roomType: data.roomType || data.room_type,
+      capacity: data.capacity || 1,
+      departmentId: data.departmentId || data.department_id,
     };
 
     await setDoc(roomRef, newRoom);
@@ -119,9 +121,16 @@ export const update = async (id, data) => {
       throw new Error('Room not found');
     }
 
+    // Convert snake_case to camelCase for updates
     const updatedData = {
-      ...data,
-      updated_at: Timestamp.now(),
+      ...(data.roomNumber && { roomNumber: data.roomNumber }),
+      ...(data.room_number && { roomNumber: data.room_number }),
+      ...(data.floor !== undefined && { floor: data.floor }),
+      ...(data.roomType && { roomType: data.roomType }),
+      ...(data.room_type && { roomType: data.room_type }),
+      ...(data.capacity !== undefined && { capacity: data.capacity }),
+      ...(data.departmentId && { departmentId: data.departmentId }),
+      ...(data.department_id && { departmentId: data.department_id }),
     };
 
     await updateDoc(roomRef, updatedData);

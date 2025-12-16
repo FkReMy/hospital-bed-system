@@ -41,14 +41,14 @@ export const getAll = async (params = {}) => {
     
     // Apply filters
     if (params.departmentId) {
-      constraints.push(where('department_id', '==', params.departmentId));
+      constraints.push(where('department', '==', params.departmentId));
     }
     if (params.status) {
       constraints.push(where('status', '==', params.status));
     }
     
     // Apply ordering
-    constraints.push(orderBy('created_at', 'desc'));
+    constraints.push(orderBy('createdAt', 'desc'));
     
     // Apply limit
     if (params.limit) {
@@ -64,15 +64,6 @@ export const getAll = async (params = {}) => {
 
     for (const docSnap of snapshot.docs) {
       const patient = { id: docSnap.id, ...docSnap.data() };
-      
-      // Fetch current bed if assigned
-      if (patient.current_bed_id) {
-        const bedDoc = await getDoc(doc(db, 'beds', patient.current_bed_id));
-        if (bedDoc.exists()) {
-          patient.current_bed = { id: bedDoc.id, ...bedDoc.data() };
-        }
-      }
-      
       patients.push(patient);
     }
 
@@ -101,16 +92,14 @@ export const search = async (searchQuery, params = {}) => {
     const searchTerm = searchQuery.trim().toLowerCase();
     
     return allPatients.filter(patient => {
-      const fullName = (patient.full_name || '').toLowerCase();
-      const email = (patient.email || '').toLowerCase();
-      const phone = (patient.phone_number || '').toLowerCase();
-      const patientId = (patient.patient_id || '').toLowerCase();
+      const fullName = (patient.fullName || '').toLowerCase();
+      const phone = (patient.phone || '').toLowerCase();
+      const bloodGroup = (patient.bloodGroup || '').toLowerCase();
       
       return (
         fullName.includes(searchTerm) ||
-        email.includes(searchTerm) ||
         phone.includes(searchTerm) ||
-        patientId.includes(searchTerm)
+        bloodGroup.includes(searchTerm)
       );
     });
   } catch (error) {
@@ -136,19 +125,11 @@ export const getById = async (id) => {
 
     const patient = { id: patientDoc.id, ...patientDoc.data() };
     
-    // Fetch current bed if assigned
-    if (patient.current_bed_id) {
-      const bedDoc = await getDoc(doc(db, 'beds', patient.current_bed_id));
-      if (bedDoc.exists()) {
-        patient.current_bed = { id: bedDoc.id, ...bedDoc.data() };
-      }
-    }
-    
     // Fetch appointments
     const appointmentsQuery = query(
       collection(db, 'appointments'),
-      where('patient_id', '==', id),
-      orderBy('appointment_date', 'desc')
+      where('patientId', '==', id),
+      orderBy('appointmentDate', 'desc')
     );
     const appointmentsSnapshot = await getDocs(appointmentsQuery);
     patient.appointments = appointmentsSnapshot.docs.map(doc => ({
@@ -159,8 +140,8 @@ export const getById = async (id) => {
     // Fetch prescriptions
     const prescriptionsQuery = query(
       collection(db, 'prescriptions'),
-      where('patient_id', '==', id),
-      orderBy('created_at', 'desc')
+      where('patientId', '==', id),
+      orderBy('prescribedAt', 'desc')
     );
     const prescriptionsSnapshot = await getDocs(prescriptionsQuery);
     patient.prescriptions = prescriptionsSnapshot.docs.map(doc => ({
@@ -185,12 +166,20 @@ export const create = async (data) => {
     const patientRef = doc(collection(db, PATIENTS_COLLECTION));
     
     const newPatient = {
-      ...data,
-      patient_id: data.patient_id || `P${Date.now()}`,
-      status: data.status || 'active',
-      current_bed_id: null,
-      created_at: Timestamp.now(),
-      updated_at: Timestamp.now(),
+      fullName: data.fullName || data.full_name || '',
+      dateOfBirth: data.dateOfBirth || data.date_of_birth || null,
+      gender: data.gender || null,
+      phone: data.phone || data.phone_number || null,
+      address: data.address || null,
+      bloodGroup: data.bloodGroup || data.blood_group || null,
+      emergencyContact: data.emergencyContact || data.emergency_contact || {
+        name: null,
+        phone: null
+      },
+      status: data.status || 'admitted',
+      admissionDate: data.admissionDate || data.admission_date || new Date().toISOString().split('T')[0],
+      department: data.department || data.department_id || null,
+      createdAt: Timestamp.now(),
     };
 
     await setDoc(patientRef, newPatient);
@@ -219,9 +208,25 @@ export const update = async (id, data) => {
       throw new Error('Patient not found');
     }
 
+    // Convert snake_case to camelCase for updates
     const updatedData = {
-      ...data,
-      updated_at: Timestamp.now(),
+      ...(data.fullName && { fullName: data.fullName }),
+      ...(data.full_name && { fullName: data.full_name }),
+      ...(data.dateOfBirth && { dateOfBirth: data.dateOfBirth }),
+      ...(data.date_of_birth && { dateOfBirth: data.date_of_birth }),
+      ...(data.gender !== undefined && { gender: data.gender }),
+      ...(data.phone !== undefined && { phone: data.phone }),
+      ...(data.phone_number !== undefined && { phone: data.phone_number }),
+      ...(data.address !== undefined && { address: data.address }),
+      ...(data.bloodGroup && { bloodGroup: data.bloodGroup }),
+      ...(data.blood_group && { bloodGroup: data.blood_group }),
+      ...(data.emergencyContact && { emergencyContact: data.emergencyContact }),
+      ...(data.emergency_contact && { emergencyContact: data.emergency_contact }),
+      ...(data.status && { status: data.status }),
+      ...(data.admissionDate && { admissionDate: data.admissionDate }),
+      ...(data.admission_date && { admissionDate: data.admission_date }),
+      ...(data.department !== undefined && { department: data.department }),
+      ...(data.department_id !== undefined && { department: data.department_id }),
     };
 
     await updateDoc(patientRef, updatedData);
@@ -252,8 +257,6 @@ export const remove = async (id) => {
     // Soft delete - update status to 'deleted'
     await updateDoc(patientRef, {
       status: 'deleted',
-      deleted_at: Timestamp.now(),
-      updated_at: Timestamp.now(),
     });
 
     // For hard delete, use:

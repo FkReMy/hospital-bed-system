@@ -27,7 +27,7 @@ import { db } from './firebaseConfig';
 
 const BEDS_COLLECTION = 'beds';
 const DEPARTMENTS_COLLECTION = 'departments';
-const BED_ASSIGNMENTS_COLLECTION = 'bed_assignments';
+const BED_ASSIGNMENTS_COLLECTION = 'bedAssignments';
 
 /**
  * Get all beds with optional filters
@@ -41,13 +41,13 @@ export const getAll = async (params = {}) => {
     // Apply filters if provided
     const constraints = [];
     if (params.departmentId) {
-      constraints.push(where('department_id', '==', params.departmentId));
-    }
-    if (params.status) {
-      constraints.push(where('status', '==', params.status));
+      constraints.push(where('departmentId', '==', params.departmentId));
     }
     if (params.roomId) {
-      constraints.push(where('room_id', '==', params.roomId));
+      constraints.push(where('roomId', '==', params.roomId));
+    }
+    if (params.isOccupied !== undefined) {
+      constraints.push(where('isOccupied', '==', params.isOccupied));
     }
     
     if (constraints.length > 0) {
@@ -59,15 +59,6 @@ export const getAll = async (params = {}) => {
 
     for (const docSnap of snapshot.docs) {
       const bed = { id: docSnap.id, ...docSnap.data() };
-      
-      // Fetch related data if needed
-      if (bed.current_patient_id) {
-        const patientDoc = await getDoc(doc(db, 'patients', bed.current_patient_id));
-        if (patientDoc.exists()) {
-          bed.current_patient = { id: patientDoc.id, ...patientDoc.data() };
-        }
-      }
-      
       beds.push(bed);
     }
 
@@ -108,14 +99,6 @@ export const getById = async (bedId) => {
     }
 
     const bed = { id: bedDoc.id, ...bedDoc.data() };
-    
-    // Fetch current patient if assigned
-    if (bed.current_patient_id) {
-      const patientDoc = await getDoc(doc(db, 'patients', bed.current_patient_id));
-      if (patientDoc.exists()) {
-        bed.current_patient = { id: patientDoc.id, ...patientDoc.data() };
-      }
-    }
 
     return bed;
   } catch (error) {
@@ -130,14 +113,18 @@ export const getById = async (bedId) => {
  * @returns {Promise<Object>} assignment record
  */
 export const assign = async (payload) => {
-  const { bed_id, patient_id, assigned_by } = payload;
+  const { bedId, bed_id, patientId, patient_id, assignedBy, assigned_by } = payload;
   
-  if (!bed_id || !patient_id) {
+  const finalBedId = bedId || bed_id;
+  const finalPatientId = patientId || patient_id;
+  const finalAssignedBy = assignedBy || assigned_by || 'system';
+  
+  if (!finalBedId || !finalPatientId) {
     throw new Error('Bed ID and Patient ID are required');
   }
   
   try {
-    const bedRef = doc(db, BEDS_COLLECTION, bed_id);
+    const bedRef = doc(db, BEDS_COLLECTION, finalBedId);
     const bedDoc = await getDoc(bedRef);
     
     if (!bedDoc.exists()) {
@@ -146,40 +133,30 @@ export const assign = async (payload) => {
 
     const bedData = bedDoc.data();
     
-    if (bedData.status === 'occupied') {
+    if (bedData.isOccupied) {
       throw new Error('Bed is already occupied');
     }
 
     // Create assignment record
-    const assignmentId = `${bed_id}_${patient_id}_${Date.now()}`;
-    const assignmentRef = doc(db, BED_ASSIGNMENTS_COLLECTION, assignmentId);
+    const assignmentRef = doc(collection(db, BED_ASSIGNMENTS_COLLECTION));
     
     const assignmentData = {
-      bed_id,
-      patient_id,
-      assigned_by: assigned_by || 'system',
-      assigned_at: Timestamp.now(),
-      status: 'active',
-      created_at: Timestamp.now(),
+      bedId: finalBedId,
+      patientId: finalPatientId,
+      assignedBy: finalAssignedBy,
+      assignedAt: Timestamp.now(),
+      dischargedAt: null,
+      notes: payload.notes || null,
     };
 
     await setDoc(assignmentRef, assignmentData);
 
     // Update bed status
     await updateDoc(bedRef, {
-      status: 'occupied',
-      current_patient_id: patient_id,
-      updated_at: Timestamp.now(),
+      isOccupied: true,
     });
 
-    // Update patient record
-    const patientRef = doc(db, 'patients', patient_id);
-    await updateDoc(patientRef, {
-      current_bed_id: bed_id,
-      updated_at: Timestamp.now(),
-    });
-
-    return { id: assignmentId, ...assignmentData };
+    return { id: assignmentRef.id, ...assignmentData };
   } catch (error) {
     console.error('Assign bed error:', error);
     throw new Error(error.message || 'Failed to assign bed');
@@ -204,52 +181,32 @@ export const discharge = async (bedId) => {
 
     const bedData = bedDoc.data();
     
-    if (bedData.status !== 'occupied') {
+    if (!bedData.isOccupied) {
       throw new Error('Bed is not occupied');
     }
 
-    const patientId = bedData.current_patient_id;
+    // Find and close active assignment
+    const assignmentsQuery = query(
+      collection(db, BED_ASSIGNMENTS_COLLECTION),
+      where('bedId', '==', bedId),
+      where('dischargedAt', '==', null)
+    );
+    
+    const assignmentsSnapshot = await getDocs(assignmentsQuery);
+    for (const assignmentDoc of assignmentsSnapshot.docs) {
+      await updateDoc(doc(db, BED_ASSIGNMENTS_COLLECTION, assignmentDoc.id), {
+        dischargedAt: Timestamp.now(),
+      });
+    }
 
     // Update bed status
     await updateDoc(bedRef, {
-      status: 'available',
-      current_patient_id: null,
-      updated_at: Timestamp.now(),
+      isOccupied: false,
     });
 
-    // Update patient record if exists
-    if (patientId) {
-      const patientRef = doc(db, 'patients', patientId);
-      const patientDoc = await getDoc(patientRef);
-      if (patientDoc.exists()) {
-        await updateDoc(patientRef, {
-          current_bed_id: null,
-          updated_at: Timestamp.now(),
-        });
-      }
-
-      // Find and close active assignment
-      const assignmentsQuery = query(
-        collection(db, BED_ASSIGNMENTS_COLLECTION),
-        where('bed_id', '==', bedId),
-        where('patient_id', '==', patientId),
-        where('status', '==', 'active')
-      );
-      
-      const assignmentsSnapshot = await getDocs(assignmentsQuery);
-      for (const assignmentDoc of assignmentsSnapshot.docs) {
-        await updateDoc(doc(db, BED_ASSIGNMENTS_COLLECTION, assignmentDoc.id), {
-          status: 'discharged',
-          discharged_at: Timestamp.now(),
-          updated_at: Timestamp.now(),
-        });
-      }
-    }
-
     return {
-      bed_id: bedId,
-      patient_id: patientId,
-      discharged_at: new Date().toISOString(),
+      bedId: bedId,
+      dischargedAt: new Date().toISOString(),
     };
   } catch (error) {
     console.error('Discharge bed error:', error);
@@ -259,12 +216,14 @@ export const discharge = async (bedId) => {
 
 /**
  * Update bed status (maintenance, cleaning, etc.)
+ * Note: In the new schema, we only have isOccupied boolean
+ * This function is kept for compatibility but doesn't change status
  * @param {string} bedId
- * @param {string} status - 'available', 'maintenance', 'cleaning'
+ * @param {string} status - legacy parameter, ignored in new schema
  * @returns {Promise<Object>}
  */
 export const updateStatus = async (bedId, status) => {
-  if (!bedId || !status) throw new Error('Bed ID and status are required');
+  if (!bedId) throw new Error('Bed ID is required');
   
   try {
     const bedRef = doc(db, BEDS_COLLECTION, bedId);
@@ -274,12 +233,9 @@ export const updateStatus = async (bedId, status) => {
       throw new Error('Bed not found');
     }
 
-    await updateDoc(bedRef, {
-      status,
-      updated_at: Timestamp.now(),
-    });
-
-    return { id: bedId, status };
+    // In the new schema, we don't have a status field
+    // isOccupied is the only status indicator
+    return { id: bedId, isOccupied: bedDoc.data().isOccupied };
   } catch (error) {
     console.error('Update bed status error:', error);
     throw new Error(error.message || 'Failed to update bed status');
@@ -295,11 +251,9 @@ export const create = async (bedData) => {
   try {
     const bedRef = doc(collection(db, BEDS_COLLECTION));
     const newBed = {
-      ...bedData,
-      status: bedData.status || 'available',
-      current_patient_id: null,
-      created_at: Timestamp.now(),
-      updated_at: Timestamp.now(),
+      bedNumber: bedData.bedNumber || bedData.bed_number,
+      roomId: bedData.roomId || bedData.room_id,
+      isOccupied: bedData.isOccupied || bedData.is_occupied || false,
     };
 
     await setDoc(bedRef, newBed);
