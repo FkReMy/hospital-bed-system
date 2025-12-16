@@ -10,7 +10,7 @@
  * - User avatar with dropdown menu (profile, logout)
  * - RoleSwitcher integration for multi-role users
  * - Notification bell with badge/count
- * - Theme toggle (light/dark/system)
+ * - Theme toggle (light/dark with sun/moon icons)
  * - Sidebar collapse/expand toggle
  * - Unified with global Avatar, Button, DropdownMenu, Badge components
  * - Premium glassmorphic design with blur
@@ -24,7 +24,6 @@ import {
   Bell,           // Notifications
   Moon,           // Dark mode
   Sun,            // Light mode
-  Monitor,        // System theme
   User,           // Profile
   LogOut,
 } from 'lucide-react';
@@ -54,21 +53,12 @@ const Topbar = ({ sidebarOpen, onSidebarToggle }) => {
     logout();
   };
 
-  const getThemeIcon = () => {
-    switch (theme) {
-      case 'dark': return Moon;
-      case 'light': return Sun;
-      default: return Monitor;
-    }
-  };
-
-  const ThemeIcon = getThemeIcon();
-
-  const cycleTheme = () => {
-    const themes = ['light', 'dark', 'system'];
-    const currentIndex = themes.indexOf(theme);
-    const nextTheme = themes[(currentIndex + 1) % themes.length];
-    setTheme(nextTheme);
+  // Determine if current theme is dark (handles system preference)
+  const isDarkMode = theme === 'dark' || (theme === 'system' && document.documentElement.classList.contains('dark'));
+  
+  // Toggle between light and dark themes
+  const toggleTheme = () => {
+    setTheme(isDarkMode ? 'light' : 'dark');
   };
 
   if (!user) return null;
@@ -96,15 +86,15 @@ const Topbar = ({ sidebarOpen, onSidebarToggle }) => {
 
         {/* Right: User actions */}
         <div className="rightSection">
-          {/* Theme Toggle */}
+          {/* Theme Toggle - Sun/Moon Button */}
           <Button
             variant="ghost"
             size="icon"
-            onClick={cycleTheme}
-            aria-label={`Switch to ${theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light'} theme`}
+            onClick={toggleTheme}
+            aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
             className="themeToggle"
           >
-            <ThemeIcon size={18} />
+            {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
           </Button>
 
           {/* Notifications */}
