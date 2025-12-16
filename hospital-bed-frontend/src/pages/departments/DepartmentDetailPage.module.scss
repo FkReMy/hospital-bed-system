@@ -1,0 +1,207 @@
+// src/pages/departments/DepartmentDetailPage.module.scss
+/**
+ * DepartmentDetailPage Module Styles
+ * 
+ * Scoped styles for the DepartmentDetailPage component.
+ * Provides premium, detailed department view with header, stats, and bed grid.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing, typography, colors, borders, shadows
+ * - Glassmorphic elevation
+ * - Responsive grid behavior
+ * - Dark/light theme compatibility
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.departmentDetailPage {
+  // Full page container
+  width: 100%;
+  padding: $spacing-xl;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-lg;
+  }
+
+  // Department header
+  .departmentHeader {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2xl;
+    margin-bottom: $spacing-3xl;
+    padding: $spacing-2xl;
+    background: var(--muted/20);
+    border-radius: $radius-2xl;
+    border-left: 4px solid var(--primary);
+
+    .departmentIcon {
+      width: 80px;
+      height: 80px;
+      color: var(--primary);
+      background: var(--primary/10);
+      border-radius: $radius-xl;
+      padding: $spacing-lg;
+      flex-shrink: 0;
+
+      @media (max-width: $breakpoint-sm) {
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+    .departmentInfo {
+      .departmentName {
+        font-size: $text-4xl;
+        font-weight: $font-bold;
+        color: var(--foreground);
+        margin-bottom: $spacing-sm;
+      }
+
+      .departmentDescription {
+        font-size: $text-lg;
+        color: var(--muted-foreground);
+      }
+    }
+  }
+
+  // Stats grid
+  .statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: $spacing-xl;
+    margin-bottom: $spacing-3xl;
+
+    .statCard {
+      @include glass-card-elevated;
+      padding: $spacing-xl;
+      display: flex;
+      align-items: center;
+      gap: $spacing-xl;
+
+      .statIcon {
+        width: 56px;
+        height: 56px;
+        border-radius: $radius-xl;
+        background: var(--primary/10);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+
+        &.success {
+          background: $success/10;
+          color: $success;
+        }
+
+        &.warning {
+          background: $warning/10;
+          color: $warning;
+        }
+      }
+
+      .statContent {
+        .statLabel {
+          font-size: $text-base;
+          color: var(--muted-foreground);
+          margin-bottom: $spacing-xs;
+        }
+
+        .statValue {
+          font-size: $text-4xl;
+          font-weight: $font-bold;
+          color: var(--foreground);
+        }
+      }
+    }
+  }
+
+  // Beds section
+  .bedsSection {
+    @include glass-card-elevated;
+    padding: $spacing-2xl;
+
+    .sectionTitle {
+      font-size: $text-3xl;
+      font-weight: $font-bold;
+      color: var(--foreground);
+      margin-bottom: $spacing-xl;
+    }
+
+    // Beds grid
+    .bedsGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: $spacing-xl;
+
+      @media (max-width: $breakpoint-lg) {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      }
+
+      @media (max-width: $breakpoint-md) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    // Individual bed card
+    .bedCard {
+      @include glass-card;
+      border-radius: $radius-xl;
+      padding: $spacing-lg;
+      transition: all 0.3s ease;
+
+      &:hover {
+        @include hover-lift;
+      }
+
+      .bedHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: $spacing-md;
+
+        .bedInfo {
+          display: flex;
+          flex-direction: column;
+          gap: $spacing-sm;
+
+          .bedNumber {
+            font-size: $text-2xl;
+            font-weight: $font-bold;
+            color: var(--foreground);
+            margin: 0;
+          }
+        }
+      }
+
+      .bedContent {
+        margin-bottom: $spacing-lg;
+
+        .patientInfo {
+          .patientName {
+            font-size: $text-lg;
+            font-weight: $font-semibold;
+            color: var(--foreground);
+            margin-bottom: $spacing-xs;
+          }
+
+          .patientId {
+            font-size: $text-sm;
+            color: var(--muted-foreground);
+          }
+        }
+
+        .noPatient {
+          font-size: $text-base;
+          color: var(--muted-foreground);
+          font-style: italic;
+        }
+      }
+
+      .bedActions {
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
+  }
+}

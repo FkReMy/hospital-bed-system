@@ -1,0 +1,198 @@
+// src/pages/reports/DepartmentLoadReportPage.module.scss
+/**
+ * DepartmentLoadReportPage Module Styles
+ * 
+ * Scoped styles for the DepartmentLoadReportPage component.
+ * Provides premium, responsive layout for department load report with stats, selector, and critical alerts.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing, typography, colors, borders, shadows
+ * - Glassmorphic elevation
+ * - Responsive grid behavior
+ * - Dark/light theme compatibility
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.departmentLoadReportPage {
+  // Full page container
+  width: 100%;
+  padding: $spacing-xl;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-lg;
+  }
+
+  // Page header
+  .pageHeader {
+    margin-bottom: $spacing-2xl;
+
+    .pageTitle {
+      font-size: $text-4xl;
+      font-weight: $font-bold;
+      color: var(--foreground);
+      margin: 0 0 $spacing-sm;
+    }
+
+    .pageSubtitle {
+      font-size: $text-xl;
+      color: var(--muted-foreground);
+      margin: 0;
+    }
+  }
+
+  // Department selector
+  .selectorCard {
+    @include glass-card;
+    padding: $spacing-2xl;
+    margin-bottom: $spacing-2xl;
+    border-radius: $radius-2xl;
+
+    .sectionTitle {
+      font-size: $text-2xl;
+      font-weight: $font-bold;
+      margin-bottom: $spacing-lg;
+    }
+
+    .departmentSelector {
+      width: 100%;
+      max-width: 400px;
+      padding: $spacing-md $spacing-lg;
+      border-radius: $radius-lg;
+      border: 1px solid var(--border);
+      background: var(--background);
+      color: var(--foreground);
+      font-size: $text-base;
+
+      &:focus {
+        @include focus-ring;
+      }
+    }
+  }
+
+  // Stats grid
+  .statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: $spacing-xl;
+    margin-bottom: $spacing-3xl;
+
+    .statCard {
+      @include glass-card-elevated;
+      padding: $spacing-xl;
+      display: flex;
+      align-items: center;
+      gap: $spacing-xl;
+
+      .statIcon {
+        width: 56px;
+        height: 56px;
+        border-radius: $radius-xl;
+        background: var(--primary/10);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+
+        &.success {
+          background: $success/10;
+          color: $success;
+        }
+      }
+
+      .statContent {
+        .statLabel {
+          font-size: $text-base;
+          color: var(--muted-foreground);
+          margin-bottom: $spacing-xs;
+        }
+
+        .statValue {
+          font-size: $text-4xl;
+          font-weight: $font-bold;
+          color: var(--foreground);
+        }
+      }
+    }
+  }
+
+  // Critical alert
+  .criticalAlert {
+    @include glass-card-elevated;
+    padding: $spacing-2xl;
+    margin-bottom: $spacing-3xl;
+    border-left: 4px solid $destructive;
+
+    .sectionTitle {
+      font-size: $text-2xl;
+      font-weight: $font-bold;
+      color: $destructive;
+      margin-bottom: $spacing-lg;
+      display: flex;
+      align-items: center;
+    }
+
+    .criticalList {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-md;
+
+      .criticalItem {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: $spacing-md;
+        background: var(--muted/20);
+        border-radius: $radius-lg;
+
+        .deptName {
+          font-size: $text-lg;
+          font-weight: $font-semibold;
+        }
+      }
+    }
+  }
+
+  // Detail card
+  .detailCard {
+    @include glass-card;
+    padding: $spacing-2xl;
+    margin-bottom: $spacing-3xl;
+    border-radius: $radius-2xl;
+
+    .sectionTitle {
+      font-size: $text-2xl;
+      font-weight: $font-bold;
+      margin-bottom: $spacing-lg;
+    }
+
+    .detailStats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: $spacing-xl;
+
+      .detailItem {
+        text-align: center;
+
+        .label {
+          font-size: $text-base;
+          color: var(--muted-foreground);
+          margin-bottom: $spacing-sm;
+        }
+
+        .value {
+          font-size: $text-3xl;
+          font-weight: $font-bold;
+          color: var(--foreground);
+        }
+      }
+    }
+  }
+
+  // Export section
+  .exportSection {
+    text-align: center;
+    margin-top: $spacing-2xl;
+  }
+}

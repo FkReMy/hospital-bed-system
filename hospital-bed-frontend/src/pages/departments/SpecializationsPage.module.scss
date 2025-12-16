@@ -1,0 +1,161 @@
+// src/pages/departments/SpecializationsPage.module.scss
+/**
+ * SpecializationsPage Module Styles
+ * 
+ * Scoped styles for the official academic project submission cover page.
+ * Exact visual replica of the provided printed submission sheet for Modern Academy.
+ * 
+ * Features:
+ * - Faithful reproduction of logos, layout, typography, and spacing
+ * - Print-optimized (A4 portrait, black text, no backgrounds)
+ * - Clean, professional academic formatting
+ * - Responsive for on-screen viewing
+ * - No colors or decorative elements - pure document style
+ */
+
+@import '@styles/variables';
+
+.specializationsPage {
+  // A4 page simulation for screen
+  max-width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  padding: 40mm 30mm;
+  background: white;
+  color: black;
+  font-family: 'Times New Roman', Times, serif;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+
+  @media print {
+    padding: 30mm 25mm;
+    box-shadow: none;
+  }
+
+  // Page border (screen only)
+  @media screen {
+    border: 1px solid #000;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Header with logos */
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 40px;
+  border-bottom: 2px solid black;
+  padding-bottom: 20px;
+
+  .logos {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .logoModernAcademy,
+    .logoMinistry {
+      width: 150px;
+      height: 80px;
+      background: #ccc; // Placeholder - replace with actual logo images
+      border: 1px solid #999;
+    }
+  }
+
+  .academyInfo {
+    text-align: right;
+
+    .academyName {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .academySubtitle {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .department,
+    .academicYear {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+  }
+}
+
+/* Main project info */
+.projectInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+
+  .projectTitle {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 40px;
+    line-height: 1.3;
+  }
+
+  .courseCodes {
+    font-size: 20px;
+    margin-bottom: 60px;
+  }
+}
+
+/* Submitted by section */
+.submittedBy {
+  margin-bottom: 60px;
+
+  h3 {
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .studentsList {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    font-size: 18px;
+
+    @media (max-width: $breakpoint-md) {
+      grid-template-columns: 1fr;
+    }
+
+    li {
+      display: flex;
+      justify-content: space-between;
+
+      .studentName {
+        font-weight: bold;
+      }
+
+      .section {
+        font-style: italic;
+      }
+    }
+  }
+}
+
+/* Submitted to section */
+.submittedTo {
+  text-align: center;
+
+  h3 {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .supervisorName {
+    font-size: 24px;
+    font-weight: bold;
+  }
+}

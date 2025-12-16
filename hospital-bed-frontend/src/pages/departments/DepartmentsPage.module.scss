@@ -1,0 +1,165 @@
+// src/pages/departments/DepartmentsPage.module.scss
+/**
+ * DepartmentsPage Module Styles
+ * 
+ * Scoped styles for the DepartmentsPage component.
+ * Provides premium, responsive grid of department cards with real-time stats.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing, typography, colors, borders, shadows
+ * - Glassmorphic elevation and hover lift
+ * - Responsive grid behavior
+ * - Dark/light theme compatibility
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.departmentsPage {
+  // Full page container
+  width: 100%;
+  padding: $spacing-xl;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-lg;
+  }
+
+  // Page header
+  .pageHeader {
+    margin-bottom: $spacing-3xl;
+
+    .pageTitle {
+      font-size: $text-4xl;
+      font-weight: $font-bold;
+      color: var(--foreground);
+      margin: 0 0 $spacing-md;
+    }
+
+    .pageSubtitle {
+      font-size: $text-xl;
+      color: var(--muted-foreground);
+      margin: 0;
+    }
+  }
+
+  // Departments grid
+  .departmentsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: $spacing-2xl;
+
+    @media (max-width: $breakpoint-lg) {
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    }
+
+    @media (max-width: $breakpoint-md) {
+      grid-template-columns: 1fr;
+    }
+
+    // Link wrapper (no underline)
+    .departmentLink {
+      text-decoration: none;
+      color: inherit;
+    }
+  }
+
+  // Department card
+  .departmentCard {
+    @include glass-card-elevated;
+    border-radius: $radius-2xl;
+    padding: $spacing-2xl;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+      @include hover-lift;
+    }
+
+    .departmentHeader {
+      display: flex;
+      align-items: center;
+      gap: $spacing-xl;
+      margin-bottom: $spacing-xl;
+
+      .departmentIcon {
+        width: 64px;
+        height: 64px;
+        color: var(--primary);
+        background: var(--primary/10);
+        border-radius: $radius-xl;
+        padding: $spacing-lg;
+        flex-shrink: 0;
+      }
+
+      .departmentInfo {
+        .departmentName {
+          font-size: $text-3xl;
+          font-weight: $font-bold;
+          color: var(--foreground);
+          margin-bottom: $spacing-sm;
+        }
+
+        .departmentDescription {
+          font-size: $text-base;
+          color: var(--muted-foreground);
+        }
+      }
+    }
+
+    .departmentStats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: $spacing-lg;
+      margin-bottom: $spacing-xl;
+      padding: $spacing-lg;
+      background: var(--muted/20);
+      border-radius: $radius-xl;
+
+      .statItem {
+        text-align: center;
+
+        .statLabel {
+          font-size: $text-sm;
+          color: var(--muted-foreground);
+          margin-bottom: $spacing-xs;
+        }
+
+        .statValue {
+          font-size: $text-2xl;
+          font-weight: $font-bold;
+          color: var(--foreground);
+
+          &.highlight {
+            color: $success;
+          }
+        }
+      }
+    }
+
+    .departmentProgress {
+      margin-bottom: $spacing-xl;
+
+      .progressInfo {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: $spacing-sm;
+
+        .progressLabel {
+          font-size: $text-base;
+          color: var(--muted-foreground);
+        }
+
+        .progressValue {
+          font-size: $text-lg;
+          font-weight: $font-semibold;
+          color: var(--foreground);
+        }
+      }
+    }
+
+    .departmentStatus {
+      text-align: right;
+    }
+  }
+}

@@ -1,0 +1,231 @@
+// src/pages/dashboards/AdminDashboard.module.scss
+/**
+ * AdminDashboard Module Styles
+ * 
+ * Scoped styles for the AdminDashboard component.
+ * Provides premium, responsive grid layout for metrics, department overview, actions, and activity.
+ * 
+ * Uses global variables and mixins for:
+ * - Spacing, typography, colors, borders, shadows
+ * - Glassmorphic elevation
+ * - Responsive grid behavior
+ * - Dark/light theme compatibility
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.adminDashboard {
+  // Full page container
+  width: 100%;
+  padding: $spacing-xl;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-lg;
+  }
+
+  // Dashboard header
+  .dashboardHeader {
+    margin-bottom: $spacing-2xl;
+
+    .dashboardTitle {
+      font-size: $text-4xl;
+      font-weight: $font-bold;
+      color: var(--foreground);
+      margin: 0 0 $spacing-sm;
+    }
+
+    .dashboardSubtitle {
+      font-size: $text-xl;
+      color: var(--muted-foreground);
+      margin: 0;
+    }
+  }
+
+  // Metrics grid
+  .metricsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: $spacing-xl;
+    margin-bottom: $spacing-3xl;
+
+    .metricCard {
+      @include glass-card-elevated;
+      padding: $spacing-xl;
+      display: flex;
+      align-items: center;
+      gap: $spacing-xl;
+
+      .metricIcon {
+        width: 64px;
+        height: 64px;
+        border-radius: $radius-xl;
+        background: var(--primary/10);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+
+        &.success {
+          background: $success/10;
+          color: $success;
+        }
+
+        &.destructive {
+          background: $destructive/10;
+          color: $destructive;
+        }
+      }
+
+      .metricContent {
+        flex: 1;
+
+        .metricLabel {
+          font-size: $text-base;
+          color: var(--muted-foreground);
+          margin-bottom: $spacing-xs;
+        }
+
+        .metricValue {
+          font-size: $text-4xl;
+          font-weight: $font-bold;
+          color: var(--foreground);
+        }
+
+        .metricProgress {
+          margin-top: $spacing-md;
+        }
+      }
+    }
+  }
+
+  // Department overview
+  .departmentOverview {
+    @include glass-card-elevated;
+    padding: $spacing-2xl;
+    margin-bottom: $spacing-3xl;
+
+    .sectionTitle {
+      font-size: $text-3xl;
+      font-weight: $font-bold;
+      color: var(--foreground);
+      margin-bottom: $spacing-xl;
+    }
+
+    .departmentsList {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-lg;
+
+      .departmentItem {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: $spacing-lg;
+        background: var(--muted/20);
+        border-radius: $radius-xl;
+
+        .departmentInfo {
+          .departmentName {
+            font-size: $text-xl;
+            font-weight: $font-semibold;
+            color: var(--foreground);
+            margin-bottom: $spacing-xs;
+          }
+
+          .departmentStats {
+            font-size: $text-base;
+            color: var(--muted-foreground);
+          }
+        }
+
+        .departmentProgress {
+          display: flex;
+          align-items: center;
+          gap: $spacing-md;
+          min-width: 200px;
+
+          .progressLabel {
+            font-size: $text-lg;
+            font-weight: $font-medium;
+            color: var(--foreground);
+            min-width: 50px;
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
+
+  // Quick actions
+  .quickActions {
+    @include glass-card-elevated;
+    padding: $spacing-2xl;
+    margin-bottom: $spacing-3xl;
+
+    .sectionTitle {
+      font-size: $text-3xl;
+      font-weight: $font-bold;
+      color: var(--foreground);
+      margin-bottom: $spacing-xl;
+    }
+
+    .actionsGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: $spacing-xl;
+    }
+  }
+
+  // Recent activity
+  .recentActivity {
+    @include glass-card-elevated;
+    padding: $spacing-2xl;
+
+    .sectionTitle {
+      font-size: $text-3xl;
+      font-weight: $font-bold;
+      color: var(--foreground);
+      margin-bottom: $spacing-xl;
+      display: flex;
+      align-items: center;
+    }
+
+    .emptyNotifications {
+      text-align: center;
+      padding: $spacing-3xl;
+      color: var(--muted-foreground);
+      font-size: $text-lg;
+    }
+
+    .notificationsList {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-md;
+
+      .notificationItem {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: $spacing-lg;
+        background: var(--muted/20);
+        border-radius: $radius-xl;
+
+        .notificationContent {
+          flex: 1;
+
+          .notificationMessage {
+            font-size: $text-base;
+            color: var(--foreground);
+            margin-bottom: $spacing-xs;
+          }
+
+          .notificationTime {
+            font-size: $text-sm;
+            color: var(--muted-foreground);
+          }
+        }
+      }
+    }
+  }
+}

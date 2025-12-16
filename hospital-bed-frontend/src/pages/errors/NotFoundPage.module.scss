@@ -1,0 +1,111 @@
+// src/pages/errors/NotFoundPage.module.scss
+/**
+ * NotFoundPage Module Styles
+ * 
+ * Scoped styles for the NotFoundPage component.
+ * Provides premium, centered, glassmorphic 404 error card with clear messaging and actions.
+ * 
+ * Features:
+ * - Full viewport centered layout
+ * - Glassmorphic elevated error card
+ * - Custom 404 illustration placeholder
+ * - Clear error hierarchy and messaging
+ * - Action buttons with icons
+ * - Responsive design
+ * - Dark/light theme compatibility
+ */
+
+@import '@styles/variables';
+@import '@styles/mixins';
+
+.notFoundPage {
+  // Full viewport background
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--primary/10) 0%, var(--background) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xl;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-lg;
+  }
+}
+
+.errorContainer {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-3xl;
+  align-items: center;
+}
+
+.errorCard {
+  @include glass-card-elevated;
+  border-radius: $radius-2xl;
+  padding: $spacing-3xl;
+  width: 100%;
+  text-align: center;
+}
+
+.errorIcon {
+  margin-bottom: $spacing-2xl;
+
+  .notFoundIllustration {
+    width: 240px;
+    height: 180px;
+    margin: 0 auto;
+    background: var(--primary/10);
+    border-radius: $radius-2xl;
+    background-image: url('/404-illustration.svg'); // Replace with actual asset
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+}
+
+.errorContent {
+  margin-bottom: $spacing-3xl;
+
+  .errorTitle {
+    font-size: $text-5xl;
+    font-weight: $font-bold;
+    color: var(--foreground);
+    margin-bottom: $spacing-lg;
+  }
+
+  .errorMessage {
+    font-size: $text-xl;
+    color: var(--foreground);
+    margin-bottom: $spacing-lg;
+    line-height: 1.6;
+  }
+
+  .errorHelp {
+    font-size: $text-base;
+    color: var(--muted-foreground);
+  }
+}
+
+.errorActions {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+  width: 100%;
+
+  @media (min-width: $breakpoint-sm) {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.pageFooter {
+  text-align: center;
+  color: var(--muted-foreground);
+  font-size: $text-sm;
+
+  p {
+    margin: $spacing-xs 0;
+  }
+}
