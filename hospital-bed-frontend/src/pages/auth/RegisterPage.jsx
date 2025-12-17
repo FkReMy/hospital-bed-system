@@ -103,22 +103,30 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="registerPage">
-      <div className="registerContainer">
-        <Card className="registerCard">
-          <div className="registerHeader">
-            <Link className="backLink" to="/login">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-8 relative overflow-hidden">
+      {/* Decorative blurred orbs */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-green-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000" />
+      <div className="absolute -bottom-8 left-20 w-96 h-96 bg-green-50 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000" />
+      
+      <div className="relative z-10 w-full max-w-md">
+        <div className="bg-white/80 backdrop-blur-md border border-gray-200/50 shadow-glass-lg rounded-2xl p-8">
+          <div className="mb-6">
+            <Link className="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 transition-colors" to="/login">
               <ArrowLeft size={20} />
               Back to Login
             </Link>
-            <h1 className="registerTitle">Create Staff Account</h1>
-            <p className="registerSubtitle">
+          </div>
+
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">Create Staff Account</h1>
+            <p className="text-lg text-gray-600">
               Register new hospital staff member
             </p>
           </div>
 
-          <form className="registerForm" onSubmit={handleSubmit}>
-            <div className="formGroup">
+          <form className="space-y-4" onSubmit={handleSubmit}>
+            <div>
               <Input
                 disabled={registerMutation.isPending}
                 leftIcon={User}
@@ -128,7 +136,7 @@ const RegisterPage = () => {
               />
             </div>
 
-            <div className="formGroup">
+            <div>
               <Input
                 disabled={registerMutation.isPending}
                 leftIcon={Mail}
@@ -139,7 +147,7 @@ const RegisterPage = () => {
               />
             </div>
 
-            <div className="formGroup">
+            <div>
               <Input
                 disabled={registerMutation.isPending}
                 leftIcon={Phone}
@@ -150,9 +158,9 @@ const RegisterPage = () => {
               />
             </div>
 
-            <div className="formGroup">
+            <div>
               <select
-                className="roleSelect"
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all duration-300"
                 disabled={registerMutation.isPending}
                 value={formData.role}
                 onChange={handleChange('role')}
@@ -164,7 +172,7 @@ const RegisterPage = () => {
               </select>
             </div>
 
-            <div className="formGroup">
+            <div>
               <Input
                 disabled={registerMutation.isPending}
                 leftIcon={Lock}
@@ -175,7 +183,7 @@ const RegisterPage = () => {
               />
             </div>
 
-            <div className="formGroup">
+            <div>
               <Input
                 disabled={registerMutation.isPending}
                 leftIcon={Lock}
@@ -187,7 +195,7 @@ const RegisterPage = () => {
             </div>
 
             <Button
-              className="registerButton"
+              className="w-full"
               disabled={registerMutation.isPending}
               isLoading={registerMutation.isPending}
               size="lg"
@@ -198,12 +206,12 @@ const RegisterPage = () => {
             </Button>
           </form>
 
-          <div className="registerFooter">
-            <p className="note">
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-600">
               Staff accounts should be created by administrators only.
             </p>
           </div>
-        </Card>
+        </div>
       </div>
     </div>
   );
