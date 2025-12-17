@@ -290,6 +290,14 @@ async function fixExistingBeds() {
   
   // Get all beds
   const bedsSnapshot = await db.collection('beds').get();
+  
+  // Get all rooms at once to avoid N+1 queries
+  const roomsSnapshot = await db.collection('rooms').get();
+  const roomsMap = {};
+  roomsSnapshot.docs.forEach(doc => {
+    roomsMap[doc.id] = doc.data();
+  });
+  
   let bedsFixed = 0;
   
   for (const bedDoc of bedsSnapshot.docs) {
@@ -297,16 +305,15 @@ async function fixExistingBeds() {
     
     // Check if bed is missing departmentId but has roomId
     if (!bedData.departmentId && bedData.roomId) {
-      // Get the room to find its departmentId
-      const roomDoc = await db.collection('rooms').doc(bedData.roomId).get();
+      const roomData = roomsMap[bedData.roomId];
       
-      if (roomDoc.exists && roomDoc.data().departmentId) {
+      if (roomData && roomData.departmentId) {
         // Update the bed with departmentId from room
         await db.collection('beds').doc(bedDoc.id).update({
-          departmentId: roomDoc.data().departmentId,
+          departmentId: roomData.departmentId,
         });
         bedsFixed++;
-        console.log(`   ✅ Fixed bed ${bedData.bedNumber} - added departmentId: ${roomDoc.data().departmentId}`);
+        console.log(`   ✅ Fixed bed ${bedData.bedNumber} - added departmentId: ${roomData.departmentId}`);
       }
     }
   }
