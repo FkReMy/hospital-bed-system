@@ -16,6 +16,9 @@ import { bedAssignmentFirebase } from '../services/firebase/bedAssignmentFirebas
 import { db } from '../services/firebase/firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
 
+// Test configuration constants
+const LISTENER_INIT_DELAY_MS = 200; // Time to wait for listener initialization
+
 /**
  * Test suite for Firestore connection
  */
@@ -110,7 +113,7 @@ export const verifyConnection = async () => {
     }
     
     // Wait briefly to ensure no immediate errors
-    await new Promise(resolve => setTimeout(resolve, 200));
+    await new Promise(resolve => setTimeout(resolve, LISTENER_INIT_DELAY_MS));
     
     // Cleanup
     unsubscribe();
