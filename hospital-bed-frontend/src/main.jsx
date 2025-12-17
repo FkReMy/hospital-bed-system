@@ -8,7 +8,8 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import App from './App.jsx';
 
 // Global styles - imported once here to ensure consistent application across the entire app
-import '@styles/global.scss';
+// Import Tailwind CSS first, then SCSS for gradual migration
+import './index.css';
 
 // Import accessibility testing tools in development
 if (import.meta.env.DEV) {
