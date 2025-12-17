@@ -416,8 +416,10 @@ export const subscribeToBeds = (callback, params = {}) => {
           callback(beds);
         })
         .catch((error) => {
+          // This catch is unlikely to be reached since individual promises
+          // have their own error handling, but kept as a safety net for
+          // unexpected errors (e.g., callback throwing an error)
           console.error('Error processing bed updates:', error);
-          // Notify UI of error state with empty array
           callback([]);
         });
       }, 

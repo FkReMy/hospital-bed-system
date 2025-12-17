@@ -226,7 +226,8 @@ export const subscribeToNotifications = (userId, callback) => {
           callback(notifications);
         } catch (error) {
           console.error('Error processing notification updates:', error);
-          // Don't break the subscription
+          // Notify UI of error state with empty array
+          callback([]);
         }
       }, 
       (error) => {
