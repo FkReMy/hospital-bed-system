@@ -298,6 +298,8 @@ async function fixExistingBeds() {
     roomsMap[doc.id] = doc.data();
   });
   
+  // Use batch writes for better performance
+  const batch = db.batch();
   let bedsFixed = 0;
   
   for (const bedDoc of bedsSnapshot.docs) {
@@ -309,19 +311,22 @@ async function fixExistingBeds() {
       
       if (roomData && roomData.departmentId) {
         // Update the bed with departmentId from room
-        await db.collection('beds').doc(bedDoc.id).update({
+        batch.update(bedDoc.ref, {
           departmentId: roomData.departmentId,
         });
         bedsFixed++;
         console.log(`   ✅ Fixed bed ${bedData.bedNumber} - added departmentId: ${roomData.departmentId}`);
+      } else if (!roomData) {
+        console.log(`   ⚠️  Warning: Bed ${bedData.bedNumber} has invalid roomId: ${bedData.roomId}`);
       }
     }
   }
   
-  if (bedsFixed === 0) {
-    console.log('   ℹ️  No beds needed fixing');
-  } else {
+  if (bedsFixed > 0) {
+    await batch.commit();
     console.log(`   ✅ Fixed ${bedsFixed} beds`);
+  } else {
+    console.log('   ℹ️  No beds needed fixing');
   }
 }
 
