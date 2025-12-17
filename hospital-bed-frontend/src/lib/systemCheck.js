@@ -5,7 +5,14 @@
  * Validates that all critical components, services, and routes are properly imported
  * and can be loaded without errors.
  * 
- * Usage: Import this file in development to run checks
+ * NOTE: This is designed to run in the BROWSER environment via window.systemCheck().
+ * The relative paths are resolved by Vite's module system in the browser context.
+ * For Node.js validation, use scripts/validate-imports.js instead.
+ * 
+ * Usage: 
+ * 1. Start dev server: npm run dev
+ * 2. Open browser console
+ * 3. Run: window.systemCheck()
  */
 
 // Check all critical imports

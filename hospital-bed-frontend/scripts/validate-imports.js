@@ -8,7 +8,7 @@
 
 import { readdir } from 'fs/promises';
 import { join, extname, relative } from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -63,8 +63,9 @@ async function validateImports() {
     const relativePath = relative(srcDir, file);
     
     try {
-      // Try to import the file dynamically
-      await import(file);
+      // Try to import the file dynamically using proper file URL
+      const fileUrl = pathToFileURL(file).href;
+      await import(fileUrl);
       passed++;
       console.log(`${colors.green}✓${colors.reset} ${relativePath}`);
     } catch (error) {
