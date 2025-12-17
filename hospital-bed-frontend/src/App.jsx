@@ -5,14 +5,13 @@ import { BrowserRouter } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast'; // Optional lightweight toast notifications (can be replaced later)
 import AppRouter from './router/index.jsx';
 import { AuthProvider } from './hooks/useAuth.js'; // Centralized auth context
-import AppShell from './components/layout/AppShell.jsx'; // Unified layout wrapper (sidebar, topbar, etc.)
 
 /**
  * Main App component
  * - Wraps the entire application with essential providers
  * - Uses BrowserRouter for client-side routing
  * - Provides global auth context
- * - Renders the unified AppShell layout with dynamic routing inside
+ * - AppShell layout is applied only to protected routes via ProtectedRoute component
  */
 function App() {
   return (
@@ -21,11 +20,9 @@ function App() {
       <BrowserRouter>
         {/* AuthProvider manages JWT, user roles, login/logout state */}
         <AuthProvider>
-          {/* AppShell provides consistent layout: Sidebar, Topbar, main content area */}
-          {/* All protected and public routes are rendered inside via AppRouter */}
-          <AppShell>
-            <AppRouter />
-          </AppShell>
+          {/* AppRouter renders all routes (public and protected) */}
+          {/* AppShell is applied only to protected routes in ProtectedRoute.jsx */}
+          <AppRouter />
 
           {/* Global toast notifications - positioned top-center, auto-dismiss */}
           <Toaster
