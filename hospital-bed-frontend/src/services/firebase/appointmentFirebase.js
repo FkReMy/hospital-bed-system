@@ -30,6 +30,10 @@ const APPOINTMENTS_COLLECTION = 'appointments';
 const PATIENTS_COLLECTION = 'patients';
 const USERS_COLLECTION = 'users';
 
+// Fallback constants for missing data
+const UNKNOWN_PATIENT = 'Unknown Patient';
+const UNKNOWN_DOCTOR = 'Unknown Doctor';
+
 /**
  * Transform Firestore appointment data to match expected UI format
  * @param {Object} appointmentData - raw Firestore appointment data
@@ -38,15 +42,15 @@ const USERS_COLLECTION = 'users';
  */
 const transformAppointmentData = async (appointmentData, appointmentId) => {
   try {
-    let patientName = 'Unknown Patient';
-    let doctorName = 'Unknown Doctor';
+    let patientName = UNKNOWN_PATIENT;
+    let doctorName = UNKNOWN_DOCTOR;
 
     // Get patient info
     if (appointmentData.patientId) {
       const patientDoc = await getDoc(doc(db, PATIENTS_COLLECTION, appointmentData.patientId));
       if (patientDoc.exists()) {
         const patientData = patientDoc.data();
-        patientName = patientData.fullName || patientData.full_name || 'Unknown Patient';
+        patientName = patientData.fullName || patientData.full_name || UNKNOWN_PATIENT;
       }
     }
 
@@ -55,7 +59,7 @@ const transformAppointmentData = async (appointmentData, appointmentId) => {
       const doctorDoc = await getDoc(doc(db, USERS_COLLECTION, appointmentData.doctorId));
       if (doctorDoc.exists()) {
         const doctorData = doctorDoc.data();
-        doctorName = doctorData.fullName || doctorData.full_name || 'Unknown Doctor';
+        doctorName = doctorData.fullName || doctorData.full_name || UNKNOWN_DOCTOR;
       }
     }
 
@@ -90,8 +94,8 @@ const transformAppointmentData = async (appointmentData, appointmentId) => {
       id: appointmentId,
       patient_id: appointmentData.patientId,
       doctor_user_id: appointmentData.doctorId,
-      patient_name: 'Unknown Patient',
-      doctor_name: 'Unknown Doctor',
+      patient_name: UNKNOWN_PATIENT,
+      doctor_name: UNKNOWN_DOCTOR,
       appointment_date: appointmentDate,
       status: appointmentData.status || 'scheduled',
       reason: appointmentData.reason,
@@ -316,16 +320,54 @@ export const subscribeToAppointments = (callback, params = {}) => {
       appointmentsQuery = query(appointmentsQuery, ...constraints);
     }
 
-    return onSnapshot(appointmentsQuery, async (snapshot) => {
-      const appointments = [];
-      for (const docSnap of snapshot.docs) {
-        const transformedAppointment = await transformAppointmentData(docSnap.data(), docSnap.id);
-        appointments.push(transformedAppointment);
+    return onSnapshot(
+      appointmentsQuery, 
+      (snapshot) => {
+        // Process snapshot synchronously to avoid race conditions
+        // Transform data asynchronously but handle errors per-appointment
+        Promise.all(
+          snapshot.docs.map(async (docSnap) => {
+            try {
+              return await transformAppointmentData(docSnap.data(), docSnap.id);
+            } catch (error) {
+              console.error(`Error transforming appointment ${docSnap.id}:`, error);
+              // Return basic appointment data if transformation fails
+              const appointmentData = docSnap.data();
+              let appointmentDate = appointmentData.appointmentDate;
+              if (appointmentDate && appointmentDate.toDate) {
+                appointmentDate = appointmentDate.toDate().toISOString();
+              }
+              return {
+                id: docSnap.id,
+                patient_id: appointmentData.patientId,
+                doctor_user_id: appointmentData.doctorId,
+                patient_name: UNKNOWN_PATIENT,
+                doctor_name: UNKNOWN_DOCTOR,
+                appointment_date: appointmentDate,
+                status: appointmentData.status || 'scheduled',
+                reason: appointmentData.reason,
+                notes: appointmentData.notes,
+              };
+            }
+          })
+        )
+        .then((appointments) => {
+          callback(appointments);
+        })
+        .catch((error) => {
+          // This catch is unlikely to be reached since individual promises
+          // have their own error handling, but kept as a safety net for
+          // unexpected errors (e.g., callback throwing an error)
+          console.error('Error processing appointment updates:', error);
+          callback([]);
+        });
+      }, 
+      (error) => {
+        console.error('Appointment subscription error:', error);
+        // Attempt to recover by calling the callback with empty array
+        callback([]);
       }
-      callback(appointments);
-    }, (error) => {
-      console.error('Appointment subscription error:', error);
-    });
+    );
   } catch (error) {
     console.error('Subscribe to appointments error:', error);
     throw new Error(error.message || 'Failed to subscribe to appointments');
