@@ -41,8 +41,8 @@ const LoginPage = () => {
     onSuccess: async (userData) => {
       toast.success('Login successful');
       
-      // Invalidate auth query to trigger refetch of user data
-      await queryClient.invalidateQueries({ queryKey: ['auth', 'me'] });
+      // Refetch auth query to ensure user data is loaded before navigation
+      await queryClient.refetchQueries({ queryKey: ['auth', 'me'] });
       
       // Direct redirect to role-specific dashboard
       const roleRouteMap = {
