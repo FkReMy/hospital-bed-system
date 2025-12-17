@@ -39,7 +39,7 @@ import './AssignBedDialog.scss';
  */
 const assignBedSchema = z.object({
   patientId: z.string().min(1, 'Patient selection is required'),
-  notes: z.string().optional().max(500, 'Notes cannot exceed 500 characters'),
+  notes: z.string().max(500, 'Notes cannot exceed 500 characters').optional(),
 });
 
 /**
