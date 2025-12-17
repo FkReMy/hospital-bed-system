@@ -417,7 +417,8 @@ export const subscribeToBeds = (callback, params = {}) => {
         })
         .catch((error) => {
           console.error('Error processing bed updates:', error);
-          // Don't break the subscription, just log the error
+          // Notify UI of error state with empty array
+          callback([]);
         });
       }, 
       (error) => {

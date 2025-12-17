@@ -30,6 +30,10 @@ const APPOINTMENTS_COLLECTION = 'appointments';
 const PATIENTS_COLLECTION = 'patients';
 const USERS_COLLECTION = 'users';
 
+// Fallback constants for missing data
+const UNKNOWN_PATIENT = 'Unknown Patient';
+const UNKNOWN_DOCTOR = 'Unknown Doctor';
+
 /**
  * Transform Firestore appointment data to match expected UI format
  * @param {Object} appointmentData - raw Firestore appointment data
@@ -38,15 +42,15 @@ const USERS_COLLECTION = 'users';
  */
 const transformAppointmentData = async (appointmentData, appointmentId) => {
   try {
-    let patientName = 'Unknown Patient';
-    let doctorName = 'Unknown Doctor';
+    let patientName = UNKNOWN_PATIENT;
+    let doctorName = UNKNOWN_DOCTOR;
 
     // Get patient info
     if (appointmentData.patientId) {
       const patientDoc = await getDoc(doc(db, PATIENTS_COLLECTION, appointmentData.patientId));
       if (patientDoc.exists()) {
         const patientData = patientDoc.data();
-        patientName = patientData.fullName || patientData.full_name || 'Unknown Patient';
+        patientName = patientData.fullName || patientData.full_name || UNKNOWN_PATIENT;
       }
     }
 
@@ -55,7 +59,7 @@ const transformAppointmentData = async (appointmentData, appointmentId) => {
       const doctorDoc = await getDoc(doc(db, USERS_COLLECTION, appointmentData.doctorId));
       if (doctorDoc.exists()) {
         const doctorData = doctorDoc.data();
-        doctorName = doctorData.fullName || doctorData.full_name || 'Unknown Doctor';
+        doctorName = doctorData.fullName || doctorData.full_name || UNKNOWN_DOCTOR;
       }
     }
 
@@ -90,8 +94,8 @@ const transformAppointmentData = async (appointmentData, appointmentId) => {
       id: appointmentId,
       patient_id: appointmentData.patientId,
       doctor_user_id: appointmentData.doctorId,
-      patient_name: 'Unknown Patient',
-      doctor_name: 'Unknown Doctor',
+      patient_name: UNKNOWN_PATIENT,
+      doctor_name: UNKNOWN_DOCTOR,
       appointment_date: appointmentDate,
       status: appointmentData.status || 'scheduled',
       reason: appointmentData.reason,
@@ -337,8 +341,8 @@ export const subscribeToAppointments = (callback, params = {}) => {
                 id: docSnap.id,
                 patient_id: appointmentData.patientId,
                 doctor_user_id: appointmentData.doctorId,
-                patient_name: 'Unknown Patient',
-                doctor_name: 'Unknown Doctor',
+                patient_name: UNKNOWN_PATIENT,
+                doctor_name: UNKNOWN_DOCTOR,
                 appointment_date: appointmentDate,
                 status: appointmentData.status || 'scheduled',
                 reason: appointmentData.reason,
@@ -352,7 +356,8 @@ export const subscribeToAppointments = (callback, params = {}) => {
         })
         .catch((error) => {
           console.error('Error processing appointment updates:', error);
-          // Don't break the subscription, just log the error
+          // Notify UI of error state with empty array
+          callback([]);
         });
       }, 
       (error) => {
