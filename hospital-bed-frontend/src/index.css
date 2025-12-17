@@ -62,7 +62,7 @@
 
   /* Sidebar Active Link */
   .sidebar-link-active {
-    @apply bg-primary-soft text-primary font-medium;
+    @apply bg-green-50 text-green-600 font-medium;
   }
 }
 
@@ -85,7 +85,11 @@
     @apply backdrop-blur-lg;
   }
 
-  /* Animation delay utilities */
+  /* Animation delay utilities - custom since Tailwind doesn't support animationDelay in theme */
+  [style*="--animation-delay"] {
+    animation-delay: var(--animation-delay);
+  }
+  
   .animation-delay-2000 {
     animation-delay: 2s;
   }

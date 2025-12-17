@@ -159,10 +159,6 @@ export default {
       transitionDuration: {
         '300': '300ms',
       },
-      animationDelay: {
-        '2000': '2s',
-        '4000': '4s',
-      },
     },
   },
   plugins: [],

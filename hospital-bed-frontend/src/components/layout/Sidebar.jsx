@@ -102,7 +102,7 @@ const Sidebar = ({ isOpen, onToggle }) => {
           className="w-10 h-10" 
           src={logoLight}
         />
-        {isOpen && <span className="font-bold text-xl text-primary-600">HBMS</span>}
+        {isOpen && <span className="font-bold text-xl text-green-600">HBMS</span>}
       </div>
 
       {/* Navigation List */}
@@ -118,7 +118,7 @@ const Sidebar = ({ isOpen, onToggle }) => {
                   className={({ isActive }) => 
                     `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                       isActive 
-                        ? 'bg-green-50 text-primary-600 font-medium' 
+                        ? 'bg-green-50 text-green-600 font-medium' 
                         : 'text-gray-600 hover:bg-gray-100'
                     }`
                   }
