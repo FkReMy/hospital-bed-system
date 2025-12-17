@@ -19,40 +19,41 @@
 // src/hooks/useAuth.js
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { authApi } from '@services/api/authApi'; // Ensure this path is correct for your project
-import { authFirebase } from '@services/firebase/authFirebase'; // Import the firebase service directly
+import { authApi } from '@services/api/authApi';
+import { authFirebase } from '@services/firebase/authFirebase';
 import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  // Start loading as true to prevent premature redirects
+  // Default to TRUE to prevent redirecting before we know the status
   const [isLoading, setIsLoading] = useState(true);
   const [currentRole, setCurrentRole] = useState(null);
   
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  // Listen for Firebase Auth state changes
+  // 1. LISTEN FOR FIREBASE AUTH CHANGES
   useEffect(() => {
     const unsubscribe = authFirebase.onAuthStateChange((userData) => {
       setUser(userData);
       
-      // Update React Query cache so other components can access it if needed
+      // Sync with React Query so other components can access data
       if (userData) {
         queryClient.setQueryData(['auth', 'me'], userData);
       } else {
         queryClient.setQueryData(['auth', 'me'], null);
       }
       
-      setIsLoading(false); // Auth check is complete
+      // Auth check is finished, now we can render the app
+      setIsLoading(false); 
     });
 
     return () => unsubscribe();
   }, [queryClient]);
 
-  // Handle Role Switching
+  // 2. SET DEFAULT ROLE
   useEffect(() => {
     if (user && !currentRole) {
       const userRoles = user.roles || [];
@@ -63,6 +64,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, [user, currentRole]);
 
+  // 3. LOGOUT HANDLER
   const logout = async () => {
     try {
       await authApi.logout();
@@ -83,7 +85,7 @@ export const AuthProvider = ({ children }) => {
   const value = {
     user,
     isAuthenticated: !!user,
-    isLoading, // This will now stay true until Firebase is ready
+    isLoading, 
     userRoles: user?.roles || [],
     currentRole,
     setCurrentRole,
