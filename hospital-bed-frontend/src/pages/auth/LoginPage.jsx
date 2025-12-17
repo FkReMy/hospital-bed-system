@@ -38,7 +38,7 @@ const LoginPage = () => {
 
   const loginMutation = useMutation({
     mutationFn: authApi.login,
-    onSuccess: async (userData) => {
+    onSuccess: async () => {
       toast.success('Login successful');
       // Set flag to indicate we're in the process of logging in
       // Navigation will happen once auth state is fully updated
