@@ -2,19 +2,19 @@
 /**
  * RegisterPage Component
  * 
- * Production-ready staff registration page for HBMS (admin-only creation recommended).
+ * Production-ready patient registration page for HBMS.
  * 
- * IMPORTANT: In production hospital systems, staff accounts are typically created by administrators,
- * not via public self-registration. This page is included for completeness but should be
- * protected by AdminRoute in production.
+ * This page allows patients to self-register and create their own accounts.
+ * Staff accounts should be created by administrators through the admin panel.
  * 
  * Features:
- * - Full staff registration form (name, email, phone, role, password)
+ * - Patient registration form (name, email, phone, password)
+ * - Patient role is automatically assigned
  * - Form validation with toast feedback
  * - Loading state on submit
  * - Success redirect to login
  * - Responsive glassmorphic card layout
- * - Unified with global Card, Input, Button, Select components
+ * - Unified with global Card, Input, Button components
  * - Secure password handling
  */
 
@@ -28,7 +28,6 @@ import {
   Shield,
   ArrowLeft 
 } from 'lucide-react';
-import Card from '@components/ui/card.jsx';
 import Input from '@components/ui/input.jsx';
 import Button from '@components/ui/button.jsx';
 import { useMutation } from '@tanstack/react-query';
@@ -42,7 +41,7 @@ const RegisterPage = () => {
     full_name: '',
     email: '',
     phone: '',
-    role: ROLES.DOCTOR, // default
+    role: ROLES.PATIENT, // Always patient role for self-registration
     password: '',
     confirmPassword: '',
   });
@@ -50,7 +49,7 @@ const RegisterPage = () => {
   const registerMutation = useMutation({
     mutationFn: userApi.create,
     onSuccess: () => {
-      toast.success('Staff account created successfully. Please log in.');
+      toast.success('Patient account created successfully. Please log in.');
       // Redirect to login after success
       window.location.href = '/login';
     },
@@ -119,9 +118,9 @@ const RegisterPage = () => {
           </div>
 
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">Create Staff Account</h1>
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">Create Patient Account</h1>
             <p className="text-lg text-gray-600">
-              Register new hospital staff member
+              Register as a new patient
             </p>
           </div>
 
@@ -156,20 +155,6 @@ const RegisterPage = () => {
                 value={formData.phone}
                 onChange={handleChange('phone')}
               />
-            </div>
-
-            <div>
-              <select
-                className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all duration-300"
-                disabled={registerMutation.isPending}
-                value={formData.role}
-                onChange={handleChange('role')}
-              >
-                <option value={ROLES.DOCTOR}>Doctor</option>
-                <option value={ROLES.NURSE}>Nurse</option>
-                <option value={ROLES.RECEPTION}>Reception</option>
-                <option value={ROLES.ADMIN}>Administrator</option>
-              </select>
             </div>
 
             <div>
@@ -208,7 +193,7 @@ const RegisterPage = () => {
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
-              Staff accounts should be created by administrators only.
+              Already have an account? <Link className="text-blue-600 hover:text-blue-700 font-medium" to="/login">Sign in</Link>
             </p>
           </div>
         </div>

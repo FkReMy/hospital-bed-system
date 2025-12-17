@@ -23,6 +23,7 @@ export const ROLES = {
   DOCTOR: 'doctor',
   NURSE: 'nurse',
   RECEPTION: 'reception',
+  PATIENT: 'patient',
 };
 
 // Array for role-based checks
