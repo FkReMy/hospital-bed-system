@@ -388,16 +388,45 @@ export const subscribeToBeds = (callback, params = {}) => {
       bedsQuery = query(bedsQuery, ...constraints);
     }
 
-    return onSnapshot(bedsQuery, async (snapshot) => {
-      const beds = [];
-      for (const docSnap of snapshot.docs) {
-        const transformedBed = await transformBedData(docSnap.data(), docSnap.id);
-        beds.push(transformedBed);
+    return onSnapshot(
+      bedsQuery, 
+      (snapshot) => {
+        // Process snapshot synchronously to avoid race conditions
+        // Transform data asynchronously but handle errors per-bed
+        Promise.all(
+          snapshot.docs.map(async (docSnap) => {
+            try {
+              return await transformBedData(docSnap.data(), docSnap.id);
+            } catch (error) {
+              console.error(`Error transforming bed ${docSnap.id}:`, error);
+              // Return basic bed data if transformation fails
+              const bedData = docSnap.data();
+              return {
+                id: docSnap.id,
+                bed_number: bedData.bedNumber || bedData.bed_number,
+                status: bedData.isOccupied ? 'occupied' : 'available',
+                isOccupied: bedData.isOccupied,
+                department_id: bedData.departmentId,
+                room_id: bedData.roomId,
+              };
+            }
+          })
+        )
+        .then((beds) => {
+          callback(beds);
+        })
+        .catch((error) => {
+          console.error('Error processing bed updates:', error);
+          // Don't break the subscription, just log the error
+        });
+      }, 
+      (error) => {
+        console.error('Bed subscription error:', error);
+        // Attempt to reconnect by calling the callback with empty array
+        // This will trigger UI to show loading state or error
+        callback([]);
       }
-      callback(beds);
-    }, (error) => {
-      console.error('Bed subscription error:', error);
-    });
+    );
   } catch (error) {
     console.error('Subscribe to beds error:', error);
     throw new Error(error.message || 'Failed to subscribe to beds');

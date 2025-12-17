@@ -216,14 +216,25 @@ export const subscribeToNotifications = (userId, callback) => {
       firestoreLimit(50)
     );
 
-    return onSnapshot(notificationsQuery, (snapshot) => {
-      const notifications = snapshot.docs.map(doc => 
-        transformNotificationData(doc.data(), doc.id)
-      );
-      callback(notifications);
-    }, (error) => {
-      console.error('Notification subscription error:', error);
-    });
+    return onSnapshot(
+      notificationsQuery, 
+      (snapshot) => {
+        try {
+          const notifications = snapshot.docs.map(doc => 
+            transformNotificationData(doc.data(), doc.id)
+          );
+          callback(notifications);
+        } catch (error) {
+          console.error('Error processing notification updates:', error);
+          // Don't break the subscription
+        }
+      }, 
+      (error) => {
+        console.error('Notification subscription error:', error);
+        // Attempt to recover by calling the callback with empty array
+        callback([]);
+      }
+    );
   } catch (error) {
     console.error('Subscribe to notifications error:', error);
     throw new Error(error.message || 'Failed to subscribe to notifications');

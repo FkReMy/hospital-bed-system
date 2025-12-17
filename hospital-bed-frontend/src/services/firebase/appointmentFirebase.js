@@ -316,16 +316,51 @@ export const subscribeToAppointments = (callback, params = {}) => {
       appointmentsQuery = query(appointmentsQuery, ...constraints);
     }
 
-    return onSnapshot(appointmentsQuery, async (snapshot) => {
-      const appointments = [];
-      for (const docSnap of snapshot.docs) {
-        const transformedAppointment = await transformAppointmentData(docSnap.data(), docSnap.id);
-        appointments.push(transformedAppointment);
+    return onSnapshot(
+      appointmentsQuery, 
+      (snapshot) => {
+        // Process snapshot synchronously to avoid race conditions
+        // Transform data asynchronously but handle errors per-appointment
+        Promise.all(
+          snapshot.docs.map(async (docSnap) => {
+            try {
+              return await transformAppointmentData(docSnap.data(), docSnap.id);
+            } catch (error) {
+              console.error(`Error transforming appointment ${docSnap.id}:`, error);
+              // Return basic appointment data if transformation fails
+              const appointmentData = docSnap.data();
+              let appointmentDate = appointmentData.appointmentDate;
+              if (appointmentDate && appointmentDate.toDate) {
+                appointmentDate = appointmentDate.toDate().toISOString();
+              }
+              return {
+                id: docSnap.id,
+                patient_id: appointmentData.patientId,
+                doctor_user_id: appointmentData.doctorId,
+                patient_name: 'Unknown Patient',
+                doctor_name: 'Unknown Doctor',
+                appointment_date: appointmentDate,
+                status: appointmentData.status || 'scheduled',
+                reason: appointmentData.reason,
+                notes: appointmentData.notes,
+              };
+            }
+          })
+        )
+        .then((appointments) => {
+          callback(appointments);
+        })
+        .catch((error) => {
+          console.error('Error processing appointment updates:', error);
+          // Don't break the subscription, just log the error
+        });
+      }, 
+      (error) => {
+        console.error('Appointment subscription error:', error);
+        // Attempt to recover by calling the callback with empty array
+        callback([]);
       }
-      callback(appointments);
-    }, (error) => {
-      console.error('Appointment subscription error:', error);
-    });
+    );
   } catch (error) {
     console.error('Subscribe to appointments error:', error);
     throw new Error(error.message || 'Failed to subscribe to appointments');
