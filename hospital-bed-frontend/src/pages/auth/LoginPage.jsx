@@ -23,7 +23,7 @@ import { Mail, Lock, Globe } from 'lucide-react';
 import Card from '@components/ui/card.jsx';
 import Input from '@components/ui/input.jsx';
 import Button from '@components/ui/button.jsx';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { authApi } from '@services/api/authApi';
 import { useAuth } from '@hooks/useAuth';
 import toast from 'react-hot-toast';
@@ -31,14 +31,18 @@ import './LoginPage.scss';
 
 const LoginPage = () => {
   const { loginSuccess } = useAuth();
+  const queryClient = useQueryClient();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
 
   const loginMutation = useMutation({
     mutationFn: authApi.login,
-    onSuccess: (userData) => {
+    onSuccess: async (userData) => {
       toast.success('Login successful');
+      
+      // Invalidate auth query to trigger refetch of user data
+      await queryClient.invalidateQueries({ queryKey: ['auth', 'me'] });
       
       // Direct redirect to role-specific dashboard
       const roleRouteMap = {
