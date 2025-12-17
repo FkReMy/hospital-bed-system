@@ -1,10 +1,11 @@
 /* Tailwind CSS base styles */
+/* Import must come first */
+@import './styles/global.scss';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Import existing SCSS styles for gradual migration */
-@import './styles/global.scss';
 
 /* Custom Tailwind utilities and component classes */
 @layer components {
