@@ -7,7 +7,7 @@
  * - doctor → /dashboard/doctor
  * - nurse → /dashboard/nurse
  * - reception → /dashboard/reception
- * - default → /dashboard/admin (fallback)
+ * - default → /dashboard/reception (fallback for unknown roles)
  * 
  * This component ensures users land on the correct dashboard based on their role.
  */
