@@ -48,13 +48,13 @@ const Topbar = ({ sidebarOpen, onSidebarToggle }) => {
   if (!user) return null;
 
   return (
-    <header className="topbar" role="banner">
-      <div className="topbarContent">
+    <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm" role="banner">
+      <div className="flex items-center justify-between h-16 px-6">
         {/* Left: Sidebar toggle (mobile + desktop) */}
-        <div className="leftSection">
+        <div className="flex items-center gap-2">
           <Button
             aria-label={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
-            className="sidebarToggle"
+            className="text-gray-600 hover:bg-gray-100"
             size="icon"
             variant="ghost"
             onClick={onSidebarToggle}
@@ -64,12 +64,12 @@ const Topbar = ({ sidebarOpen, onSidebarToggle }) => {
         </div>
 
         {/* Center: Spacer (for future breadcrumbs/search) */}
-        <div className="centerSection">
+        <div className="flex-1">
           {/* Future: Breadcrumbs or page title can go here */}
         </div>
 
         {/* Right: User actions */}
-        <div className="rightSection">
+        <div className="flex items-center gap-3">
           {/* Notifications */}
           <NotificationBell />
 
@@ -79,21 +79,21 @@ const Topbar = ({ sidebarOpen, onSidebarToggle }) => {
           {/* User Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button className="userMenuTrigger" variant="ghost">
+              <Button className="flex items-center gap-2" variant="ghost">
                 <Avatar 
-                  className="userAvatar"
+                  className="w-8 h-8"
                   initials={user.full_name?.slice(0, 2).toUpperCase() || 'US'}
                 />
-                <span className="userName">{user.full_name}</span>
+                <span className="text-sm font-medium text-gray-900 hidden md:inline">{user.full_name}</span>
               </Button>
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent align="end" className="userMenu">
+            <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuItem>
                 <User className="mr-2" size={16} />
                 Profile
               </DropdownMenuItem>
-              <DropdownMenuItem className="logoutItem" onClick={handleLogout}>
+              <DropdownMenuItem className="text-red-600 focus:text-red-700" onClick={handleLogout}>
                 <LogOut className="mr-2" size={16} />
                 Logout
               </DropdownMenuItem>

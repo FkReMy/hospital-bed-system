@@ -91,35 +91,41 @@ const Sidebar = ({ isOpen, onToggle }) => {
   return (
     <aside 
       aria-label="Main navigation"
-      className={`sidebar ${isOpen ? 'open' : 'collapsed'}`}
+      className={`fixed top-0 left-0 h-screen bg-white/90 backdrop-blur-md text-gray-900 flex flex-col transition-all duration-300 z-50 shadow-glass-lg ${
+        isOpen ? 'w-[280px]' : 'w-20'
+      }`}
     >
       {/* Brand Header */}
-      <div className="sidebarBrand">
+      <div className="flex items-center px-6 py-4 gap-4 border-b border-gray-200 min-h-[72px]">
         <img 
           alt="HBMS Logo" 
-          className="brandLogo" 
+          className="w-10 h-10" 
           src={logoLight}
         />
-        {isOpen && <span className="brandText">HBMS</span>}
+        {isOpen && <span className="font-bold text-xl text-primary-600">HBMS</span>}
       </div>
 
       {/* Navigation List */}
-      <nav aria-label="Primary navigation" className="sidebarNav">
-        <ul className="navList">
+      <nav aria-label="Primary navigation" className="flex-1 py-4 overflow-y-auto">
+        <ul className="space-y-2 px-3">
           {visibleNavItems.map((item) => {
             const Icon = item.icon;
 
             return (
-              <li className="navItem" key={item.path}>
+              <li key={item.path}>
                 <NavLink
                   aria-current={({ isActive }) => isActive ? 'page' : undefined}
                   className={({ isActive }) => 
-                    `navLink ${isActive ? 'active' : ''}`
+                    `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+                      isActive 
+                        ? 'bg-green-50 text-primary-600 font-medium' 
+                        : 'text-gray-600 hover:bg-gray-100'
+                    }`
                   }
                   to={item.path}
                 >
-                  <Icon className="navIcon" size={22} />
-                  {isOpen && <span className="navLabel">{item.label}</span>}
+                  <Icon className="flex-shrink-0" size={22} />
+                  {isOpen && <span className="transition-opacity duration-200">{item.label}</span>}
                 </NavLink>
               </li>
             );
@@ -128,22 +134,22 @@ const Sidebar = ({ isOpen, onToggle }) => {
       </nav>
 
       {/* Footer Actions */}
-      <div className="sidebarFooter">
+      <div className="border-t border-gray-200 p-4 space-y-2">
         {/* Logout */}
         <button
           aria-label="Logout"
-          className="navLink logoutLink"
+          className="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-gray-600 hover:bg-gray-100 transition-all duration-200"
           onClick={handleLogout}
         >
-          <LogOut className="navIcon" size={22} />
-          {isOpen && <span className="navLabel">Logout</span>}
+          <LogOut className="flex-shrink-0" size={22} />
+          {isOpen && <span className="transition-opacity duration-200">Logout</span>}
         </button>
 
         {/* Collapse Toggle */}
         <button
           aria-expanded={isOpen}
           aria-label={isOpen ? 'Collapse sidebar' : 'Expand sidebar'}
-          className="toggleButton"
+          className="flex items-center justify-center w-full py-2 rounded-xl text-gray-600 hover:bg-gray-100 transition-all duration-200"
           onClick={onToggle}
         >
           {isOpen ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
