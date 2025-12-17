@@ -23,7 +23,7 @@ import toast from 'react-hot-toast';
 export const useNotificationFeed = ({
   limit = 50,           // Max notifications to fetch
   pollInterval = 30000, // 30 seconds polling fallback
-}) => {
+} = {}) => {
   const queryClient = useQueryClient();
 
   // Fetch notifications
