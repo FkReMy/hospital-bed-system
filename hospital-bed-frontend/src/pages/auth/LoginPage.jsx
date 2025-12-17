@@ -41,6 +41,8 @@ const LoginPage = () => {
     onSuccess: async (userData) => {
       toast.success('Login successful');
       // Store login data to trigger navigation after auth state updates
+      // Note: We don't use queryClient.refetchQueries here because auth state
+      // is managed by Firebase's onAuthStateChange listener, not React Query
       setLoginData(userData);
     },
     onError: (error) => {
@@ -48,7 +50,9 @@ const LoginPage = () => {
     },
   });
 
-  // Navigate after user state is updated in auth context
+  // Wait for Firebase auth state to propagate to AuthContext before navigation
+  // This prevents a redirect race condition where useAuthGuard sees isAuthenticated=false
+  // and redirects back to login before the onAuthStateChange listener updates the user state
   useEffect(() => {
     if (loginData && isAuthenticated && user) {
       // Direct redirect to role-specific dashboard
