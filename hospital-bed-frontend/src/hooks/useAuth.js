@@ -16,58 +16,66 @@
  * 
  * Usage: Wrap app with <AuthProvider> in App.jsx
  */
-
+// src/hooks/useAuth.js
 import { createContext, useContext, useState, useEffect } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { authApi } from '@services/api/authApi';
+import { useQueryClient } from '@tanstack/react-query';
+import { authApi } from '@services/api/authApi'; // Ensure this path is correct for your project
+import { authFirebase } from '@services/firebase/authFirebase'; // Import the firebase service directly
 import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  // Start loading as true to prevent premature redirects
+  const [isLoading, setIsLoading] = useState(true);
   const [currentRole, setCurrentRole] = useState(null);
+  
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  // Fetch current user - enabled only after login
-  const { data: user, isLoading, isError, error } = useQuery({
-    queryKey: ['auth', 'me'],
-    queryFn: authApi.me,
-    retry: 1,
-    staleTime: 1000 * 60 * 30, // 30 minutes
-    refetchOnWindowFocus: false,
-    // Only run if we have a token (cookie exists)
-    enabled: true,
-  });
+  // Listen for Firebase Auth state changes
+  useEffect(() => {
+    const unsubscribe = authFirebase.onAuthStateChange((userData) => {
+      setUser(userData);
+      
+      // Update React Query cache so other components can access it if needed
+      if (userData) {
+        queryClient.setQueryData(['auth', 'me'], userData);
+      } else {
+        queryClient.setQueryData(['auth', 'me'], null);
+      }
+      
+      setIsLoading(false); // Auth check is complete
+    });
 
-  // Derive available roles from user
-  const userRoles = user?.roles || [];
+    return () => unsubscribe();
+  }, [queryClient]);
 
-  // Set initial currentRole on login
+  // Handle Role Switching
   useEffect(() => {
     if (user && !currentRole) {
-      // Prefer admin if available, else first role
-      const preferred = userRoles.includes('admin') ? 'admin' : userRoles[0];
+      const userRoles = user.roles || [];
+      const preferred = userRoles.includes('admin') ? 'admin' : userRoles[0] || 'staff';
       setCurrentRole(preferred);
+    } else if (!user) {
+      setCurrentRole(null);
     }
-  }, [user, userRoles, currentRole]);
+  }, [user, currentRole]);
 
-  // Logout handler
   const logout = async () => {
     try {
       await authApi.logout();
     } catch (err) {
-      // Continue logout even if server error
       console.warn('Logout API failed', err);
     } finally {
       queryClient.clear();
-      queryClient.removeQueries();
+      setUser(null);
       setCurrentRole(null);
       navigate('/login', { replace: true });
     }
   };
 
-  // Login redirect helper (used in LoginPage)
   const loginSuccess = (redirectTo = '/dashboard') => {
     navigate(redirectTo, { replace: true });
   };
@@ -75,10 +83,8 @@ export const AuthProvider = ({ children }) => {
   const value = {
     user,
     isAuthenticated: !!user,
-    isLoading,
-    isError,
-    error,
-    userRoles,
+    isLoading, // This will now stay true until Firebase is ready
+    userRoles: user?.roles || [],
     currentRole,
     setCurrentRole,
     logout,
@@ -92,7 +98,6 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Custom hook for consuming auth context
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

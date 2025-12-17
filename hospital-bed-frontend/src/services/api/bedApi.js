@@ -48,6 +48,8 @@ export const discharge = bedFirebase.discharge;
  */
 export const updateStatus = bedFirebase.updateStatus;
 
+export const subscribeToBeds = bedFirebase.subscribeToBeds;
+
 // Export as named object and default
 export const bedApi = {
   getAll,
@@ -55,6 +57,7 @@ export const bedApi = {
   assign,
   discharge,
   updateStatus,
+  subscribeToBeds, 
 };
 
 export default bedApi;

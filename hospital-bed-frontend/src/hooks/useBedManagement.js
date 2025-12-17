@@ -17,6 +17,8 @@
  * Returns queries and mutations for use in BedManagementPage, HospitalFloorMap, etc.
  */
 
+// src/hooks/useBedManagement.js
+import { useEffect } from 'react'; // Add useEffect
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { bedApi } from '@services/api/bedApi';
 import toast from 'react-hot-toast';
@@ -24,7 +26,7 @@ import toast from 'react-hot-toast';
 export const useBedManagement = () => {
   const queryClient = useQueryClient();
 
-  // Fetch all beds (with nested relations)
+  // 1. Initial Fetch (Static)
   const {
     data: beds = [],
     isLoading: isLoadingBeds,
@@ -33,99 +35,63 @@ export const useBedManagement = () => {
   } = useQuery({
     queryKey: ['beds'],
     queryFn: bedApi.getAll,
-    staleTime: 1000 * 60 * 2, // 2 minutes - beds change infrequently
+    staleTime: Infinity, // Rely on real-time updates instead of refetching
     refetchOnWindowFocus: false,
   });
 
-  // Fetch departments (for filters/grouping)
+  // 2. Real-time Subscription
+  useEffect(() => {
+    // Subscribe to real-time updates
+    const unsubscribe = bedApi.subscribeToBeds((updatedBeds) => {
+      // Directly update React Query cache with fresh data from Firestore
+      queryClient.setQueryData(['beds'], updatedBeds);
+    });
+
+    // Cleanup listener when component unmounts
+    return () => unsubscribe();
+  }, [queryClient]);
+
   const {
     data: departments = [],
     isLoading: isLoadingDepartments,
   } = useQuery({
     queryKey: ['departments'],
     queryFn: bedApi.getDepartments,
-    staleTime: 1000 * 60 * 30, // 30 minutes
+    staleTime: 1000 * 60 * 30,
   });
 
   // Assign bed mutation
   const assignBedMutation = useMutation({
     mutationFn: bedApi.assign,
-    onMutate: async (payload) => {
-      // Cancel outgoing queries
-      await queryClient.cancelQueries({ queryKey: ['beds'] });
-
-      // Optimistic update
-      const previousBeds = queryClient.getQueryData(['beds']);
-
-      queryClient.setQueryData(['beds'], (old = []) => 
-        old.map(bed => 
-          bed.id === payload.bed_id 
-            ? { ...bed, status: 'occupied', current_patient: { id: payload.patient_id } }
-            : bed
-        )
-      );
-
-      return { previousBeds };
-    },
-    onError: (err, payload, context) => {
-      // Rollback on error
-      queryClient.setQueryData(['beds'], context.previousBeds);
-      toast.error(err.message || 'Failed to assign bed');
-    },
     onSuccess: () => {
       toast.success('Bed assigned successfully');
+      // No need to invalidate queries; onSnapshot will catch the change automatically
     },
-    onSettled: () => {
-      // Always refetch to ensure consistency
-      queryClient.invalidateQueries({ queryKey: ['beds'] });
+    onError: (err) => {
+      toast.error(err.message || 'Failed to assign bed');
     },
   });
 
   // Discharge bed mutation
   const dischargeBedMutation = useMutation({
     mutationFn: bedApi.discharge,
-    onMutate: async (bedId) => {
-      await queryClient.cancelQueries({ queryKey: ['beds'] });
-
-      const previousBeds = queryClient.getQueryData(['beds']);
-
-      queryClient.setQueryData(['beds'], (old = []) => 
-        old.map(bed => 
-          bed.id === bedId 
-            ? { ...bed, status: 'available', current_patient: null }
-            : bed
-        )
-      );
-
-      return { previousBeds };
-    },
-    onError: (err, bedId, context) => {
-      queryClient.setQueryData(['beds'], context.previousBeds);
-      toast.error(err.message || 'Failed to discharge patient');
-    },
     onSuccess: () => {
       toast.success('Patient discharged successfully');
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['beds'] });
+    onError: (err) => {
+      toast.error(err.message || 'Failed to discharge patient');
     },
   });
 
   return {
-    // Data
     beds,
     departments,
-
-    // Loading & Error
     isLoadingBeds,
     isLoadingDepartments,
     isErrorBeds,
     bedsError,
-
-    // Mutations
     assignBed: assignBedMutation.mutate,
     isAssigning: assignBedMutation.isPending,
-
     dischargeBed: dischargeBedMutation.mutate,
     isDischarging: dischargeBedMutation.isPending,
   };
