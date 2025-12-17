@@ -343,6 +343,14 @@ The bed management operations require proper Firestore security rules:
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Helper function to check if user document exists and has required role
+    function hasRole(roles) {
+      let userDoc = get(/databases/$(database)/documents/users/$(request.auth.uid));
+      return userDoc != null && 
+             userDoc.data.role != null && 
+             userDoc.data.role in roles;
+    }
+    
     // Beds collection
     match /beds/{bedId} {
       allow read: if request.auth != null;
@@ -358,15 +366,14 @@ service cloud.firestore {
       allow update: if request.auth != null && 
                        hasRole(['Admin', 'Doctor', 'Nurse', 'Reception']);
     }
-    
-    // Helper function
-    function hasRole(roles) {
-      return get(/databases/$(database)/documents/users/$(request.auth.uid))
-        .data.role in roles;
-    }
   }
 }
 ```
+
+**Note**: These rules assume:
+- User documents exist in `users` collection with ID matching Firebase Auth UID
+- Each user document has a `role` field (e.g., "Admin", "Doctor", "Nurse", "Reception")
+- See `hospital-bed-frontend/src/services/firebase/userFirebase.js` for user structure
 
 ## Summary
 

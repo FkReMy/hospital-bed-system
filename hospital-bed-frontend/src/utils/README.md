@@ -17,11 +17,18 @@ This utility provides automated tests to verify that the bed management system i
 
 3. Open browser console (F12)
 
-4. Run the verification:
+4. Run the verification using dynamic import:
    ```javascript
-   import { verifyConnection } from './src/utils/verifyFirestoreConnection.js';
-   verifyConnection();
+   // Method 1: Using full URL (works reliably in all browsers)
+   const module = await import('http://localhost:5173/src/utils/verifyFirestoreConnection.js');
+   module.verifyConnection();
+   
+   // Method 2: Using relative import (may vary based on Vite config)
+   const module = await import('./src/utils/verifyFirestoreConnection.js');
+   module.verifyConnection();
    ```
+
+   **Note**: Replace `5173` with your actual Vite dev server port if different.
 
 ### Programmatic Usage
 
