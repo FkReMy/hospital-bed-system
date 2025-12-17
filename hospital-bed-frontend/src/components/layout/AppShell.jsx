@@ -47,7 +47,7 @@ const AppShell = ({
   };
 
   return (
-    <div className={`appShell ${sidebarOpen ? 'sidebarOpen' : 'sidebarCollapsed'}`}>
+    <div className="flex h-screen overflow-hidden bg-gray-50">
       {/* Sidebar - fixed position */}
       <Sidebar 
         isOpen={sidebarOpen} 
@@ -55,7 +55,11 @@ const AppShell = ({
       />
 
       {/* Main layout container */}
-      <div className="mainLayout">
+      <div 
+        className={`flex-1 flex flex-col transition-all duration-300 ${
+          sidebarOpen ? 'ml-[280px]' : 'ml-20'
+        }`}
+      >
         {/* Topbar - sticky */}
         <Topbar 
           sidebarOpen={sidebarOpen}
@@ -63,8 +67,8 @@ const AppShell = ({
         />
 
         {/* Main content area */}
-        <main className="mainContent" role="main">
-          <div className="contentWrapper">
+        <main className="flex-1 overflow-y-auto p-6" role="main">
+          <div className="max-w-[1920px] mx-auto">
             {children}
           </div>
         </main>

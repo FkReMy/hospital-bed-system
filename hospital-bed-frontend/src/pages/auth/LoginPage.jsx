@@ -84,16 +84,21 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="loginPage">
-      <div className="loginContainer">
-        <Card className="loginCard">
-          <div className="loginHeader">
-            <h1 className="loginTitle">HBMS Login</h1>
-            <p className="loginSubtitle">Hospital Bed Management System</p>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-8 relative overflow-hidden">
+      {/* Decorative blurred orbs */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-green-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000" />
+      <div className="absolute -bottom-8 left-20 w-96 h-96 bg-green-50 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000" />
+      
+      <div className="relative z-10 w-full max-w-md"  >
+        <div className="bg-white/80 backdrop-blur-md border border-gray-200/50 shadow-glass-lg rounded-2xl p-8">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">HBMS Login</h1>
+            <p className="text-lg text-gray-600">Hospital Bed Management System</p>
           </div>
 
-          <form className="loginForm" onSubmit={handleSubmit}>
-            <div className="formGroup">
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            <div>
               <Input
                 aria-label="Email address"
                 disabled={loginMutation.isPending}
@@ -105,7 +110,7 @@ const LoginPage = () => {
               />
             </div>
 
-            <div className="formGroup">
+            <div>
               <Input
                 aria-label="Password"
                 disabled={loginMutation.isPending}
@@ -117,24 +122,28 @@ const LoginPage = () => {
               />
             </div>
 
-            <div className="formOptions">
-              <label className="rememberMe">
+            <div className="flex items-center justify-between">
+              <label className="flex items-center gap-2 text-sm text-gray-900 cursor-pointer">
                 <input
                   checked={rememberMe}
                   disabled={loginMutation.isPending}
                   type="checkbox"
+                  className="w-4 h-4 accent-green-600"
                   onChange={(e) => setRememberMe(e.target.checked)}
                 />
                 <span>Remember me</span>
               </label>
 
-              <Link className="forgotLink" to="/forgot-password">
+              <Link 
+                className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-colors" 
+                to="/forgot-password"
+              >
                 Forgot password?
               </Link>
             </div>
 
             <Button
-              className="loginButton"
+              className="w-full"
               disabled={loginMutation.isPending}
               isLoading={loginMutation.isPending}
               size="lg"
@@ -144,15 +153,24 @@ const LoginPage = () => {
             </Button>
           </form>
 
-          <div className="loginFooter">
-            <Button className="languageToggle" size="sm" variant="ghost">
+          {/* Create Patient Account Button */}
+          <div className="mt-6 text-center">
+            <Link to="/register">
+              <Button variant="outline" className="w-full" size="lg">
+                Create Patient Account
+              </Button>
+            </Link>
+          </div>
+
+          <div className="mt-6 text-center">
+            <Button className="text-green-600 hover:bg-green-50" size="sm" variant="ghost">
               <Globe className="mr-2" size={16} />
               العربية
             </Button>
           </div>
-        </Card>
+        </div>
 
-        <div className="pageFooter">
+        <div className="text-center mt-6 text-gray-600 text-sm">
           <p>© 2025 Hospital Bed Management System</p>
           <p>For authorized staff only</p>
         </div>

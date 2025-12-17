@@ -1,0 +1,100 @@
+/* Tailwind CSS base styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import existing SCSS styles for gradual migration */
+@import './styles/global.scss';
+
+/* Custom Tailwind utilities and component classes */
+@layer components {
+  /* Glass Card Effect - Healthcare Glassmorphism */
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-md border border-gray-200/50 shadow-glass rounded-2xl;
+  }
+
+  .glass-card-elevated {
+    @apply bg-white/90 backdrop-blur-lg border border-gray-200/60 shadow-glass-lg rounded-2xl;
+  }
+
+  /* Status Badge Styles */
+  .status-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+  }
+
+  .status-badge-available {
+    @apply bg-success-50 text-success-600 border border-success-500/20;
+  }
+
+  .status-badge-occupied {
+    @apply bg-error-50 text-error-600 border border-error-500/20;
+  }
+
+  .status-badge-cleaning {
+    @apply bg-warning-50 text-warning-600 border border-warning-500/20;
+  }
+
+  .status-badge-maintenance {
+    @apply bg-info-50 text-info-600 border border-info-500/20;
+  }
+
+  /* Button Styles */
+  .btn-primary {
+    @apply bg-primary hover:bg-primary-hover text-white shadow-md rounded-xl px-4 py-2 font-medium transition-all duration-300;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary hover:bg-secondary-hover text-white shadow-md rounded-xl px-4 py-2 font-medium transition-all duration-300;
+  }
+
+  .btn-accent {
+    @apply bg-accent-teal hover:bg-teal-600 text-white shadow-lg shadow-teal rounded-xl px-4 py-2 font-medium transition-all duration-300;
+  }
+
+  .btn-ghost {
+    @apply text-neutral-600 hover:bg-neutral-100 rounded-xl px-4 py-2 font-medium transition-all duration-300;
+  }
+
+  /* Input Styles */
+  .input-base {
+    @apply bg-neutral-50 border border-neutral-border rounded-xl px-4 py-2 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300;
+  }
+
+  /* Sidebar Active Link */
+  .sidebar-link-active {
+    @apply bg-green-50 text-green-600 font-medium;
+  }
+}
+
+@layer utilities {
+  /* Animation utilities */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  /* Glass effect utilities */
+  .glass-blur {
+    @apply backdrop-blur-md;
+  }
+
+  .glass-blur-lg {
+    @apply backdrop-blur-lg;
+  }
+
+  /* Animation delay utilities - custom since Tailwind doesn't support animationDelay in theme */
+  [style*="--animation-delay"] {
+    animation-delay: var(--animation-delay);
+  }
+  
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+}
