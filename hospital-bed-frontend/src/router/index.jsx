@@ -36,6 +36,9 @@ const AppointmentManagementPage = lazy(() => import('@pages/appointments/Appoint
 const AccessDeniedPage = lazy(() => import('@pages/errors/AccessDeniedPage'));
 const NotFoundPage = lazy(() => import('@pages/errors/NotFoundPage'));
 
+// Import DashboardRedirect for role-based routing
+const DashboardRedirect = lazy(() => import('./DashboardRedirect'));
+
 // Router wrapper with Suspense fallback
 const AppRouter = () => (
   <Suspense fallback={<LoadingState type="full" />}>
@@ -53,7 +56,7 @@ const AppRouter = () => (
 
       {/* Protected routes - all authenticated users */}
       <Route element={<ProtectedRoute />}>
-        <Route element={<AdminDashboard />} path="/dashboard" />
+        <Route element={<DashboardRedirect />} path="/dashboard" />
         <Route element={<AdminDashboard />} path="/dashboard/admin" />
         <Route element={<DoctorDashboard />} path="/dashboard/doctor" />
         <Route element={<NurseDashboard />} path="/dashboard/nurse" />

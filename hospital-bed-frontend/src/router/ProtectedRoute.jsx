@@ -15,11 +15,12 @@
  * - Zero boilerplate - wraps the main dashboard layout and all private routes
  */
 
+import { Outlet } from 'react-router-dom';
 import { useAuthGuard } from '@hooks/useAuthGuard';
 import LoadingState from '@components/common/LoadingState';
 import AppShell from '@components/layout/AppShell';
 
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = () => {
   // Enforce authentication with automatic redirect
   const { isLoading } = useAuthGuard([], true);
 
@@ -29,8 +30,12 @@ const ProtectedRoute = ({ children }) => {
   }
 
   // If not authenticated → already redirected by useAuthGuard
-  // If authenticated → render AppShell with children
-  return <AppShell>{children}</AppShell>;
+  // If authenticated → render AppShell with nested routes via Outlet
+  return (
+    <AppShell>
+      <Outlet />
+    </AppShell>
+  );
 };
 
 export default ProtectedRoute;
