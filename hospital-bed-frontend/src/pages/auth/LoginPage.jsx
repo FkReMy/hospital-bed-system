@@ -17,33 +17,44 @@
  * - Secure: uses authApi.login with httpOnly cookie
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Lock, Globe } from 'lucide-react';
 import Card from '@components/ui/card.jsx';
 import Input from '@components/ui/input.jsx';
 import Button from '@components/ui/button.jsx';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { authApi } from '@services/api/authApi';
 import { useAuth } from '@hooks/useAuth';
 import toast from 'react-hot-toast';
 import './LoginPage.scss';
 
 const LoginPage = () => {
-  const { loginSuccess } = useAuth();
-  const queryClient = useQueryClient();
+  const { loginSuccess, user, isAuthenticated } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [loginData, setLoginData] = useState(null);
 
   const loginMutation = useMutation({
     mutationFn: authApi.login,
     onSuccess: async (userData) => {
       toast.success('Login successful');
-      
-      // Refetch auth query to ensure user data is loaded before navigation
-      await queryClient.refetchQueries({ queryKey: ['auth', 'me'] });
-      
+      // Store login data to trigger navigation after auth state updates
+      // Note: We don't use queryClient.refetchQueries here because auth state
+      // is managed by Firebase's onAuthStateChange listener, not React Query
+      setLoginData(userData);
+    },
+    onError: (error) => {
+      toast.error(error.message || 'Invalid credentials');
+    },
+  });
+
+  // Wait for Firebase auth state to propagate to AuthContext before navigation
+  // This prevents a redirect race condition where useAuthGuard sees isAuthenticated=false
+  // and redirects back to login before the onAuthStateChange listener updates the user state
+  useEffect(() => {
+    if (loginData && isAuthenticated && user) {
       // Direct redirect to role-specific dashboard
       const roleRouteMap = {
         'admin': '/dashboard/admin',
@@ -53,13 +64,11 @@ const LoginPage = () => {
         'reception': '/dashboard/reception',
       };
       
-      const targetRoute = roleRouteMap[userData.role?.toLowerCase()] || '/dashboard';
+      const targetRoute = roleRouteMap[user.role?.toLowerCase()] || '/dashboard';
       loginSuccess(targetRoute);
-    },
-    onError: (error) => {
-      toast.error(error.message || 'Invalid credentials');
-    },
-  });
+      setLoginData(null); // Reset to prevent re-navigation
+    }
+  }, [loginData, isAuthenticated, user, loginSuccess]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
