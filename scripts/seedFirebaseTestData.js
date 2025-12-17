@@ -283,6 +283,54 @@ async function createSampleRooms() {
 }
 
 /**
+ * Fix existing beds that are missing departmentId
+ */
+async function fixExistingBeds() {
+  console.log('\n🔧 Fixing existing beds missing departmentId...');
+  
+  // Get all beds
+  const bedsSnapshot = await db.collection('beds').get();
+  
+  // Get all rooms at once to avoid N+1 queries
+  const roomsSnapshot = await db.collection('rooms').get();
+  const roomsMap = {};
+  roomsSnapshot.docs.forEach(doc => {
+    roomsMap[doc.id] = doc.data();
+  });
+  
+  // Use batch writes for better performance
+  const batch = db.batch();
+  let bedsFixed = 0;
+  
+  for (const bedDoc of bedsSnapshot.docs) {
+    const bedData = bedDoc.data();
+    
+    // Check if bed is missing departmentId but has roomId
+    if (!bedData.departmentId && bedData.roomId) {
+      const roomData = roomsMap[bedData.roomId];
+      
+      if (roomData && roomData.departmentId) {
+        // Update the bed with departmentId from room
+        batch.update(bedDoc.ref, {
+          departmentId: roomData.departmentId,
+        });
+        bedsFixed++;
+        console.log(`   ✅ Fixed bed ${bedData.bedNumber} - added departmentId: ${roomData.departmentId}`);
+      } else if (!roomData) {
+        console.log(`   ⚠️  Warning: Bed ${bedData.bedNumber} has invalid roomId: ${bedData.roomId}`);
+      }
+    }
+  }
+  
+  if (bedsFixed > 0) {
+    await batch.commit();
+    console.log(`   ✅ Fixed ${bedsFixed} beds`);
+  } else {
+    console.log('   ℹ️  No beds needed fixing');
+  }
+}
+
+/**
  * Create sample beds
  */
 async function createSampleBeds() {
@@ -308,6 +356,7 @@ async function createSampleBeds() {
         await db.collection('beds').add({
           bedNumber: bedNumber,
           roomId: room.id,
+          departmentId: room.departmentId, // Add departmentId from room
           isOccupied: false,
         });
         bedsCreated++;
@@ -410,6 +459,9 @@ async function seedTestData() {
     
     // Create beds
     await createSampleBeds();
+    
+    // Fix existing beds that might be missing departmentId
+    await fixExistingBeds();
     
     // Create patients
     await createSamplePatients();

@@ -351,6 +351,7 @@ export const create = async (bedData) => {
     const newBed = {
       bedNumber: bedData.bedNumber || bedData.bed_number,
       roomId: bedData.roomId || bedData.room_id,
+      departmentId: bedData.departmentId || bedData.department_id,
       isOccupied: bedData.isOccupied || bedData.is_occupied || false,
     };
 
