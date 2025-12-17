@@ -283,6 +283,42 @@ async function createSampleRooms() {
 }
 
 /**
+ * Fix existing beds that are missing departmentId
+ */
+async function fixExistingBeds() {
+  console.log('\n🔧 Fixing existing beds missing departmentId...');
+  
+  // Get all beds
+  const bedsSnapshot = await db.collection('beds').get();
+  let bedsFixed = 0;
+  
+  for (const bedDoc of bedsSnapshot.docs) {
+    const bedData = bedDoc.data();
+    
+    // Check if bed is missing departmentId but has roomId
+    if (!bedData.departmentId && bedData.roomId) {
+      // Get the room to find its departmentId
+      const roomDoc = await db.collection('rooms').doc(bedData.roomId).get();
+      
+      if (roomDoc.exists && roomDoc.data().departmentId) {
+        // Update the bed with departmentId from room
+        await db.collection('beds').doc(bedDoc.id).update({
+          departmentId: roomDoc.data().departmentId,
+        });
+        bedsFixed++;
+        console.log(`   ✅ Fixed bed ${bedData.bedNumber} - added departmentId: ${roomDoc.data().departmentId}`);
+      }
+    }
+  }
+  
+  if (bedsFixed === 0) {
+    console.log('   ℹ️  No beds needed fixing');
+  } else {
+    console.log(`   ✅ Fixed ${bedsFixed} beds`);
+  }
+}
+
+/**
  * Create sample beds
  */
 async function createSampleBeds() {
@@ -308,6 +344,7 @@ async function createSampleBeds() {
         await db.collection('beds').add({
           bedNumber: bedNumber,
           roomId: room.id,
+          departmentId: room.departmentId, // Add departmentId from room
           isOccupied: false,
         });
         bedsCreated++;
@@ -410,6 +447,9 @@ async function seedTestData() {
     
     // Create beds
     await createSampleBeds();
+    
+    // Fix existing beds that might be missing departmentId
+    await fixExistingBeds();
     
     // Create patients
     await createSamplePatients();
