@@ -24,7 +24,8 @@ const DashboardRedirect = () => {
   useEffect(() => {
     if (!isLoading && user) {
       // Determine the dashboard route based on currentRole
-      const role = currentRole || (user.roles && user.roles[0]) || 'admin';
+      // Use the first available role from user.roles array, or default to 'reception' (safest fallback)
+      const userRole = currentRole || (user.roles && user.roles[0]);
       
       // Map roles to their dashboard routes
       const dashboardRoutes = {
@@ -34,8 +35,8 @@ const DashboardRedirect = () => {
         reception: '/dashboard/reception',
       };
 
-      // Redirect to the appropriate dashboard
-      const targetRoute = dashboardRoutes[role] || '/dashboard/admin';
+      // Redirect to the appropriate dashboard, defaulting to reception if role is unknown
+      const targetRoute = dashboardRoutes[userRole] || '/dashboard/reception';
       navigate(targetRoute, { replace: true });
     }
   }, [user, currentRole, isLoading, navigate]);
