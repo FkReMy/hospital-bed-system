@@ -194,6 +194,7 @@ async function createFirestoreProfile(uid, userData) {
       licenseNumber: userData.licenseNumber || null,
       yearsOfExperience: userData.yearsOfExperience || 0,
       role: userData.role,
+      roles: [userData.role], // Add roles array for consistency with auth expectations
       specializations: userData.specializations || [],
       isActive: true,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
