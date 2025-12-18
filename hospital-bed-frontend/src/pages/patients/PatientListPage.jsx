@@ -24,10 +24,12 @@ import {
   MoreVertical, 
   UserPlus 
 } from 'lucide-react';
+import toast from 'react-hot-toast';
 import Card from '@components/ui/card.jsx';
 import Button from '@components/ui/button.jsx';
 import Input from '@components/ui/input.jsx';
 import Badge from '@components/ui/badge.jsx';
+import Dialog from '@components/ui/dialog.jsx';
 import {
   Table,
   TableHeader,
@@ -38,14 +40,22 @@ import {
 } from '@components/ui/table.jsx';
 import LoadingState from '@components/common/LoadingState.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
+import PatientForm from '@components/patients/PatientForm.jsx';
 import { useRoleAccess } from '@hooks/useRoleAccess';
+import * as patientFirebase from '@services/firebase/patientFirebase';
+import * as departmentFirebase from '@services/firebase/departmentFirebase';
 import './PatientListPage.scss';
 
 const PatientListPage = () => {
   const { hasAccess: canManagePatients } = useRoleAccess(['admin', 'doctor', 'nurse', 'reception']);
   
+  // Dialog state for patient registration
+  const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   // In production: replace with usePatientsList hook or query
   const [patients, setPatients] = useState([]); // Mock - replace with real data
+  const [departments, setDepartments] = useState([]);
   const [isLoading, setIsLoading] = useState(false); // Mock loading
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('all');
@@ -97,7 +107,7 @@ const PatientListPage = () => {
 
   // Mock data - remove in production
   useEffect(() => {
-    // Simulate API call
+    // Simulate API call for patients
     setIsLoading(true);
     setTimeout(() => {
       setPatients([
@@ -107,14 +117,51 @@ const PatientListPage = () => {
       ]);
       setIsLoading(false);
     }, 1500);
+    
+    // Fetch departments for the form
+    departmentFirebase.getAll()
+      .then(depts => setDepartments(depts))
+      .catch(err => console.error('Failed to load departments:', err));
   }, []);
+
+  // Handler to open registration dialog
+  const handleOpenRegisterDialog = () => {
+    setIsRegisterDialogOpen(true);
+  };
+
+  // Handler to close registration dialog
+  const handleCloseRegisterDialog = () => {
+    setIsRegisterDialogOpen(false);
+  };
+
+  // Handler for successful patient registration
+  const handlePatientRegistered = async (patientData) => {
+    setIsSubmitting(true);
+    try {
+      const newPatient = await patientFirebase.create(patientData);
+      
+      // Add new patient to the list
+      setPatients(prev => [newPatient, ...prev]);
+      
+      // Show success message
+      toast.success('Patient registered successfully!');
+      
+      // Close dialog
+      setIsRegisterDialogOpen(false);
+    } catch (error) {
+      console.error('Failed to register patient:', error);
+      toast.error(error.message || 'Failed to register patient. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="patientListPage">
       <div className="pageHeader">
         <h1 className="pageTitle">Patient Management</h1>
         {canManagePatients && (
-          <Button size="lg">
+          <Button size="lg" onClick={handleOpenRegisterDialog}>
             <UserPlus className="mr-2" />
             Register New Patient
           </Button>
@@ -213,6 +260,19 @@ const PatientListPage = () => {
           </Table>
         )}
       </Card>
+
+      {/* Patient Registration Dialog */}
+      <Dialog
+        open={isRegisterDialogOpen}
+        onOpenChange={setIsRegisterDialogOpen}
+      >
+        <PatientForm
+          departments={departments}
+          isSubmitting={isSubmitting}
+          onCancel={handleCloseRegisterDialog}
+          onSuccess={handlePatientRegistered}
+        />
+      </Dialog>
     </div>
   );
 };
