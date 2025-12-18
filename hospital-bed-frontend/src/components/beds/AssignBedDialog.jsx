@@ -195,7 +195,7 @@ const AssignBedDialog = ({
             )}
             {eligiblePatients.length === 0 && (
               <p className="text-sm text-muted-foreground">
-                No patients available in {bed.department?.name || 'this department'}. 
+                No patients available in {bed.department?.name || 'this department'}.
                 Patients must be in the same department as the bed.
               </p>
             )}

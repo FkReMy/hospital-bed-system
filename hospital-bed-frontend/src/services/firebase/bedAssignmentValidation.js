@@ -57,6 +57,8 @@ export const validateBedAssignment = async (bedId, patientId) => {
   const patientData = patientDoc.data();
 
   // Check if patient is already assigned to another bed
+  // Note: For optimal performance with large datasets, consider adding a compound index
+  // in Firestore on (patientId, dischargedAt) for this query
   const existingAssignmentsQuery = query(
     collection(db, BED_ASSIGNMENTS_COLLECTION),
     where('patientId', '==', patientId),

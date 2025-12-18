@@ -229,12 +229,38 @@ The UI layer (React Query mutations) catches these errors and displays them to u
 
 Potential improvements for consideration:
 
-1. **Flexible Department Matching**: Add a flag to allow cross-department assignments in emergency situations
-2. **Assignment History**: Track all attempted assignments including failures for audit purposes
-3. **Capacity Management**: Prevent assignments when department is at capacity
-4. **Patient Status Validation**: Only allow assignments for patients with specific status (e.g., "admitted" but not "discharged")
-5. **Role-Based Overrides**: Allow admins to override department matching in special cases
-6. **Real-time Validation**: Show bed availability status in real-time using Firebase listeners
+1. **Firestore Index Optimization**: Add a compound index on `(patientId, dischargedAt)` in the `bedAssignments` collection for optimal query performance with large datasets
+2. **Flexible Department Matching**: Add a flag to allow cross-department assignments in emergency situations
+3. **Assignment History**: Track all attempted assignments including failures for audit purposes
+4. **Capacity Management**: Prevent assignments when department is at capacity
+5. **Patient Status Validation**: Only allow assignments for patients with specific status (e.g., "admitted" but not "discharged")
+6. **Role-Based Overrides**: Allow admins to override department matching in special cases
+7. **Real-time Validation**: Show bed availability status in real-time using Firebase listeners
+
+## Firestore Index Configuration
+
+For optimal performance, add the following composite index in Firebase Console:
+
+**Collection**: `bedAssignments`
+**Fields**: 
+- `patientId` (Ascending)
+- `dischargedAt` (Ascending)
+
+Alternatively, add to `firestore.indexes.json`:
+```json
+{
+  "indexes": [
+    {
+      "collectionGroup": "bedAssignments",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "patientId", "order": "ASCENDING" },
+        { "fieldPath": "dischargedAt", "order": "ASCENDING" }
+      ]
+    }
+  ]
+}
+```
 
 ## Migration Notes
 
