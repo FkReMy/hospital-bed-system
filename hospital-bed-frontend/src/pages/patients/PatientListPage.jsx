@@ -62,6 +62,22 @@ const PatientListPage = () => {
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [sortConfig, setSortConfig] = useState({ key: 'fullName', direction: 'asc' });
 
+  // Helper function to calculate accurate age from date of birth
+  const calculateAge = (dateOfBirth) => {
+    if (!dateOfBirth) return null;
+    
+    const birthDate = new Date(dateOfBirth);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    
+    return age;
+  };
+
   // Filtered and sorted patients
   const filteredAndSortedPatients = useMemo(() => {
     let filtered = patients;
@@ -90,8 +106,8 @@ const PatientListPage = () => {
 
         // Special handling for age sorting (computed field)
         if (sortConfig.key === 'age') {
-          aVal = a.dateOfBirth ? new Date().getFullYear() - new Date(a.dateOfBirth).getFullYear() : 999;
-          bVal = b.dateOfBirth ? new Date().getFullYear() - new Date(b.dateOfBirth).getFullYear() : 999;
+          aVal = calculateAge(a.dateOfBirth) ?? 999;
+          bVal = calculateAge(b.dateOfBirth) ?? 999;
         }
 
         if (aVal < bVal) return sortConfig.direction === 'asc' ? -1 : 1;
@@ -249,17 +265,8 @@ const PatientListPage = () => {
             </TableHeader>
             <TableBody>
               {filteredAndSortedPatients.map(patient => {
-                // Calculate accurate age from dateOfBirth
-                let age = 'N/A';
-                if (patient.dateOfBirth) {
-                  const birthDate = new Date(patient.dateOfBirth);
-                  const today = new Date();
-                  age = today.getFullYear() - birthDate.getFullYear();
-                  const monthDiff = today.getMonth() - birthDate.getMonth();
-                  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-                    age--;
-                  }
-                }
+                // Calculate accurate age using helper function
+                const age = calculateAge(patient.dateOfBirth) ?? 'N/A';
                 
                 // Find department name from ID
                 const departmentName = departments.find(d => d.id === patient.department)?.name || patient.department || 'N/A';
