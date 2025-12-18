@@ -19,7 +19,7 @@
  * - Real-time updates via notificationChannel (when appointment changes)
  */
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { 
   Search,
   Plus,
@@ -28,6 +28,7 @@ import {
 import Card from '@components/ui/card.jsx';
 import Button from '@components/ui/button.jsx';
 import Input from '@components/ui/input.jsx';
+import Dialog from '@components/ui/dialog.jsx';
 import {
   Table,
   TableHeader,
@@ -37,9 +38,11 @@ import {
   TableCell,
 } from '@components/ui/table.jsx';
 import AppointmentStatusBadge from '@components/appointments/AppointmentStatusBadge.jsx';
+import AppointmentForm from '@components/appointments/AppointmentForm.jsx';
 import LoadingState from '@components/common/LoadingState.jsx';
 import EmptyState from '@components/common/EmptyState.jsx';
 import { useAppointmentManagement } from '@hooks/useAppointmentManagement';
+import * as patientFirebase from '@services/firebase/patientFirebase';
 import { formatDateTime } from '@lib/dateUtils';
 import './AppointmentManagementPage.scss';
 
@@ -49,12 +52,20 @@ const AppointmentManagementPage = () => {
     doctors,
     isLoadingAppointments,
     isErrorAppointments,
+    createAppointment,
+    isCreating,
   } = useAppointmentManagement();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDoctor, setSelectedDoctor] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [sortConfig, setSortConfig] = useState({ key: 'appointment_date', direction: 'desc' });
+  
+  // Dialog state for appointment creation
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [patients, setPatients] = useState([]);
+  const [isLoadingPatients, setIsLoadingPatients] = useState(false);
+  const [patientsLoaded, setPatientsLoaded] = useState(false);
 
   // Filtered and sorted appointments
   const filteredAndSortedAppointments = useMemo(() => {
@@ -109,6 +120,46 @@ const AppointmentManagementPage = () => {
     }));
   };
 
+  // Load patients when dialog opens
+  useEffect(() => {
+    const loadPatients = async () => {
+      if (isCreateDialogOpen && !patientsLoaded) {
+        setIsLoadingPatients(true);
+        try {
+          const patientsData = await patientFirebase.getAll();
+          setPatients(patientsData);
+          setPatientsLoaded(true);
+        } catch (error) {
+          console.error('Failed to load patients:', error);
+        } finally {
+          setIsLoadingPatients(false);
+        }
+      }
+    };
+
+    loadPatients();
+  }, [isCreateDialogOpen, patientsLoaded]);
+
+  // Handler to open appointment dialog
+  const handleOpenCreateDialog = () => {
+    setIsCreateDialogOpen(true);
+  };
+
+  // Handler for dialog open/close changes
+  const handleDialogOpenChange = (open) => {
+    setIsCreateDialogOpen(open);
+  };
+
+  // Handler for successful appointment creation
+  const handleAppointmentCreated = async (appointmentData) => {
+    try {
+      await createAppointment(appointmentData);
+      setIsCreateDialogOpen(false);
+    } catch (error) {
+      console.error('Failed to create appointment:', error);
+    }
+  };
+
   if (isLoadingAppointments) {
     return <LoadingState count={10} type="table" />;
   }
@@ -125,7 +176,7 @@ const AppointmentManagementPage = () => {
     <div className="appointment-management-page">
       <div className="page-header">
         <h1 className="page-title">Appointment Management</h1>
-        <Button size="lg">
+        <Button size="lg" onClick={handleOpenCreateDialog}>
           <Plus size={20} />
           New Appointment
         </Button>
@@ -230,6 +281,21 @@ const AppointmentManagementPage = () => {
           </Table>
         )}
       </Card>
+
+      {/* Appointment Creation Dialog */}
+      <Dialog
+        open={isCreateDialogOpen}
+        onOpenChange={handleDialogOpenChange}
+      >
+        <AppointmentForm
+          doctors={doctors}
+          isLoading={isLoadingPatients}
+          isSubmitting={isCreating}
+          patients={patients}
+          onCancel={() => setIsCreateDialogOpen(false)}
+          onSuccess={handleAppointmentCreated}
+        />
+      </Dialog>
     </div>
   );
 };
