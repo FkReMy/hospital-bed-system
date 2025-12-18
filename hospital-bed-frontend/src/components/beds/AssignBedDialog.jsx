@@ -143,10 +143,18 @@ const AssignBedDialog = ({
               {patients.map((patient) => {
                 const name = patient.fullName || patient.full_name;
                 const dob = patient.dateOfBirth || patient.date_of_birth;
+                let dobText = '';
+                if (dob) {
+                  try {
+                    dobText = ` (DOB: ${format(new Date(dob), 'MMM dd, yyyy')})`;
+                  } catch (error) {
+                    // Skip invalid date
+                    console.warn('Invalid date format for patient:', patient.id, dob);
+                  }
+                }
                 return (
                   <option key={patient.id} value={patient.id}>
-                    {name}
-                    {dob && ` (DOB: ${format(new Date(dob), 'MMM dd, yyyy')})`}
+                    {name}{dobText}
                   </option>
                 );
               })}
