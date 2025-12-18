@@ -25,6 +25,7 @@ import {
   Timestamp 
 } from 'firebase/firestore';
 import { db } from './firebaseConfig';
+import { validateBedAssignment } from './bedAssignmentValidation';
 
 const BEDS_COLLECTION = 'beds';
 const DEPARTMENTS_COLLECTION = 'departments';
@@ -214,54 +215,11 @@ export const assign = async (payload) => {
   const finalPatientId = patientId || patient_id;
   const finalAssignedBy = assignedBy || assigned_by || 'system';
   
-  if (!finalBedId || !finalPatientId) {
-    throw new Error('Bed ID and Patient ID are required');
-  }
-  
   try {
+    // Validate assignment using shared validation logic
+    await validateBedAssignment(finalBedId, finalPatientId);
+    
     const bedRef = doc(db, BEDS_COLLECTION, finalBedId);
-    const bedDoc = await getDoc(bedRef);
-    
-    if (!bedDoc.exists()) {
-      throw new Error('Bed not found');
-    }
-
-    const bedData = bedDoc.data();
-    
-    if (bedData.isOccupied) {
-      throw new Error('Bed is already occupied');
-    }
-
-    // Validate patient exists
-    const patientRef = doc(db, PATIENTS_COLLECTION, finalPatientId);
-    const patientDoc = await getDoc(patientRef);
-    
-    if (!patientDoc.exists()) {
-      throw new Error('Patient not found');
-    }
-    
-    const patientData = patientDoc.data();
-    
-    // Check if patient is already assigned to another bed
-    const existingAssignmentsQuery = query(
-      collection(db, BED_ASSIGNMENTS_COLLECTION),
-      where('patientId', '==', finalPatientId),
-      where('dischargedAt', '==', null)
-    );
-    
-    const existingAssignments = await getDocs(existingAssignmentsQuery);
-    
-    if (!existingAssignments.empty) {
-      throw new Error('Patient is already assigned to another bed');
-    }
-    
-    // Validate department matching
-    const patientDepartment = patientData.department;
-    const bedDepartment = bedData.departmentId;
-    
-    if (patientDepartment && bedDepartment && patientDepartment !== bedDepartment) {
-      throw new Error('Patient department does not match bed department');
-    }
 
     // Create assignment record
     const assignmentRef = doc(collection(db, BED_ASSIGNMENTS_COLLECTION));

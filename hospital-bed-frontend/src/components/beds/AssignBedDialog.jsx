@@ -81,13 +81,14 @@ const AssignBedDialog = ({
   }, [open, reset]);
 
   // Filter patients by department to match the bed's department
+  // Note: Patients without a department assignment are excluded to ensure proper department matching
   const eligiblePatients = React.useMemo(() => {
     if (!bed?.department_id) {
       return patients;
     }
     
-    // Filter patients to only show those in the same department as the bed
-    return patients.filter(patient => patient.department === bed.department_id || !patient.department);
+    // Only show patients that have a department AND it matches the bed's department
+    return patients.filter(patient => patient.department === bed.department_id);
   }, [patients, bed]);
   
   const selectedPatientId = watch('patientId');
@@ -101,6 +102,7 @@ const AssignBedDialog = ({
   const departmentMismatch = React.useMemo(() => {
     if (!selectedPatient || !bed?.department_id) return false;
     const patientDept = selectedPatient.department;
+    // Only show warning if patient has a department AND it doesn't match bed's department
     return patientDept && patientDept !== bed.department_id;
   }, [selectedPatient, bed]);
 
