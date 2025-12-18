@@ -65,6 +65,7 @@ const AppointmentManagementPage = () => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [patients, setPatients] = useState([]);
   const [isLoadingPatients, setIsLoadingPatients] = useState(false);
+  const [patientsLoaded, setPatientsLoaded] = useState(false);
 
   // Filtered and sorted appointments
   const filteredAndSortedAppointments = useMemo(() => {
@@ -122,11 +123,12 @@ const AppointmentManagementPage = () => {
   // Load patients when dialog opens
   useEffect(() => {
     const loadPatients = async () => {
-      if (isCreateDialogOpen && patients.length === 0) {
+      if (isCreateDialogOpen && !patientsLoaded) {
         setIsLoadingPatients(true);
         try {
           const patientsData = await patientFirebase.getAll();
           setPatients(patientsData);
+          setPatientsLoaded(true);
         } catch (error) {
           console.error('Failed to load patients:', error);
         } finally {
@@ -136,7 +138,7 @@ const AppointmentManagementPage = () => {
     };
 
     loadPatients();
-  }, [isCreateDialogOpen, patients.length]);
+  }, [isCreateDialogOpen, patientsLoaded]);
 
   // Handler to open appointment dialog
   const handleOpenCreateDialog = () => {
@@ -146,6 +148,15 @@ const AppointmentManagementPage = () => {
   // Handler to close appointment dialog
   const handleCloseCreateDialog = () => {
     setIsCreateDialogOpen(false);
+  };
+
+  // Handler for dialog open/close changes
+  const handleDialogOpenChange = (open) => {
+    if (!open) {
+      handleCloseCreateDialog();
+    } else {
+      setIsCreateDialogOpen(true);
+    }
   };
 
   // Handler for successful appointment creation
@@ -283,7 +294,7 @@ const AppointmentManagementPage = () => {
       {/* Appointment Creation Dialog */}
       <Dialog
         open={isCreateDialogOpen}
-        onOpenChange={setIsCreateDialogOpen}
+        onOpenChange={handleDialogOpenChange}
       >
         <AppointmentForm
           doctors={doctors}
