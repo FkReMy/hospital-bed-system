@@ -411,6 +411,13 @@ function generatePatients(count = 100) {
   const statuses = ['admitted', 'discharged', 'waiting', 'emergency', 'critical', 'stable', 'recovering'];
   const departments = ['emergency', 'icu', 'cardiology', 'surgery'];
   
+  // Date generation constants
+  const MIN_BIRTH_YEAR = 1940;
+  const MAX_BIRTH_YEAR = 2015;
+  const DISCHARGED_MIN_DAYS_AGO = 30;
+  const DISCHARGED_MAX_DAYS_AGO = 90;
+  const ADMITTED_MAX_DAYS_AGO = 30;
+  
   const patients = [];
   
   for (let i = 0; i < count; i++) {
@@ -421,28 +428,27 @@ function generatePatients(count = 100) {
     const status = statuses[Math.floor(Math.random() * statuses.length)];
     const department = departments[Math.floor(Math.random() * departments.length)];
     
-    // Generate random date of birth (between 1940 and 2015)
-    const birthYear = 1940 + Math.floor(Math.random() * 75);
+    // Generate random date of birth
+    const birthYear = MIN_BIRTH_YEAR + Math.floor(Math.random() * (MAX_BIRTH_YEAR - MIN_BIRTH_YEAR));
     const birthMonth = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
     const birthDay = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
     
-    // Generate random admission date (within last 60 days for admitted patients, earlier for discharged)
+    // Generate admission date based on status
     let admissionDate;
     if (status === 'discharged') {
-      // Discharged patients: 30-90 days ago
-      const daysAgo = 30 + Math.floor(Math.random() * 60);
+      const daysAgo = DISCHARGED_MIN_DAYS_AGO + Math.floor(Math.random() * (DISCHARGED_MAX_DAYS_AGO - DISCHARGED_MIN_DAYS_AGO));
       const date = new Date();
       date.setDate(date.getDate() - daysAgo);
       admissionDate = date.toISOString().split('T')[0];
     } else {
-      // Current patients: within last 30 days
-      const daysAgo = Math.floor(Math.random() * 30);
+      const daysAgo = Math.floor(Math.random() * ADMITTED_MAX_DAYS_AGO);
       const date = new Date();
       date.setDate(date.getDate() - daysAgo);
       admissionDate = date.toISOString().split('T')[0];
     }
     
-    const phoneNum = 2000 + i;
+    // Generate unique phone numbers (starting from 2000, increment by 2 to avoid collisions with emergency contacts)
+    const phoneNum = 2000 + (i * 2);
     const addressNum = 100 + i * 10;
     const streetName = streetNames[i % streetNames.length];
     
@@ -479,7 +485,7 @@ async function createSamplePatients() {
   let skipped = 0;
   
   // Use batch writes for better performance
-  const batchSize = 500; // Firestore batch limit
+  const batchSize = 500; // Firestore batch write limit (operations per batch)
   let batch = db.batch();
   let operationCount = 0;
   
