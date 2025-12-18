@@ -20,6 +20,7 @@
  */
 
 import { useState, useMemo, useEffect } from 'react';
+import { format } from 'date-fns';
 import { 
   Search,
   Plus,
@@ -236,16 +237,25 @@ const AppointmentManagementPage = () => {
                 <TableHead className="sortable" onClick={() => handleSort('patient_name')}>
                   Patient
                 </TableHead>
+                <TableHead className="sortable" onClick={() => handleSort('patient_date_of_birth')}>
+                  Date of Birth
+                </TableHead>
+                <TableHead className="sortable" onClick={() => handleSort('patient_status')}>
+                  Patient Status
+                </TableHead>
+                <TableHead className="sortable" onClick={() => handleSort('patient_department')}>
+                  Department
+                </TableHead>
                 <TableHead className="sortable" onClick={() => handleSort('doctor_name')}>
                   Doctor
                 </TableHead>
                 <TableHead className="sortable" onClick={() => handleSort('appointment_date')}>
                   Date & Time
                 </TableHead>
-                <TableHead className="sortable" onClick={() => handleSort('status')}>
-                  Status
-                </TableHead>
                 <TableHead>Reason</TableHead>
+                <TableHead className="sortable" onClick={() => handleSort('status')}>
+                  Appointment Status
+                </TableHead>
                 <TableHead className="actions">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -255,20 +265,28 @@ const AppointmentManagementPage = () => {
                   <TableCell>
                     <div className="patient-info">
                       <strong>{appointment.patient_name}</strong>
-                      <span className="patient-id">ID: {appointment.patient_id}</span>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <span>Dr. {appointment.doctor_name}</span>
+                    {appointment.patient_date_of_birth ? format(new Date(appointment.patient_date_of_birth), 'MMM dd, yyyy') : '-'}
+                  </TableCell>
+                  <TableCell>
+                    {appointment.patient_status || '-'}
+                  </TableCell>
+                  <TableCell>
+                    {appointment.patient_department || '-'}
+                  </TableCell>
+                  <TableCell>
+                    <span>{appointment.doctor_name}</span>
                   </TableCell>
                   <TableCell>
                     {formatDateTime(appointment.appointment_date)}
                   </TableCell>
-                  <TableCell>
-                    <AppointmentStatusBadge status={appointment.status} />
-                  </TableCell>
                   <TableCell className="reason">
                     {appointment.reason || '-'}
+                  </TableCell>
+                  <TableCell>
+                    <AppointmentStatusBadge status={appointment.status} />
                   </TableCell>
                   <TableCell>
                     <Button size="icon" variant="ghost">

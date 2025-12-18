@@ -44,6 +44,9 @@ const transformAppointmentData = async (appointmentData, appointmentId) => {
   try {
     let patientName = UNKNOWN_PATIENT;
     let doctorName = UNKNOWN_DOCTOR;
+    let patientDateOfBirth = null;
+    let patientStatus = null;
+    let patientDepartment = null;
 
     // Get patient info
     if (appointmentData.patientId) {
@@ -51,6 +54,9 @@ const transformAppointmentData = async (appointmentData, appointmentId) => {
       if (patientDoc.exists()) {
         const patientData = patientDoc.data();
         patientName = patientData.fullName || patientData.full_name || UNKNOWN_PATIENT;
+        patientDateOfBirth = patientData.dateOfBirth || patientData.date_of_birth || null;
+        patientStatus = patientData.status || null;
+        patientDepartment = patientData.department || null;
       }
     }
 
@@ -74,6 +80,9 @@ const transformAppointmentData = async (appointmentData, appointmentId) => {
       patient_id: appointmentData.patientId,
       doctor_user_id: appointmentData.doctorId,
       patient_name: patientName,
+      patient_date_of_birth: patientDateOfBirth,
+      patient_status: patientStatus,
+      patient_department: patientDepartment,
       doctor_name: doctorName,
       appointment_date: appointmentDate,
       status: appointmentData.status || 'scheduled',
@@ -95,6 +104,9 @@ const transformAppointmentData = async (appointmentData, appointmentId) => {
       patient_id: appointmentData.patientId,
       doctor_user_id: appointmentData.doctorId,
       patient_name: UNKNOWN_PATIENT,
+      patient_date_of_birth: null,
+      patient_status: null,
+      patient_department: null,
       doctor_name: UNKNOWN_DOCTOR,
       appointment_date: appointmentDate,
       status: appointmentData.status || 'scheduled',
@@ -342,6 +354,9 @@ export const subscribeToAppointments = (callback, params = {}) => {
                 patient_id: appointmentData.patientId,
                 doctor_user_id: appointmentData.doctorId,
                 patient_name: UNKNOWN_PATIENT,
+                patient_date_of_birth: null,
+                patient_status: null,
+                patient_department: null,
                 doctor_name: UNKNOWN_DOCTOR,
                 appointment_date: appointmentDate,
                 status: appointmentData.status || 'scheduled',

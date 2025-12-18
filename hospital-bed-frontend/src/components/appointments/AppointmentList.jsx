@@ -89,9 +89,12 @@ const AppointmentList = ({
           <TableHeader>
             <TableRow>
               <TableHead>Patient</TableHead>
+              <TableHead>Date of Birth</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Department</TableHead>
               <TableHead>Doctor</TableHead>
               <TableHead>Date & Time</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>Appointment Status</TableHead>
               {showActions && <TableHead className="text-right">Actions</TableHead>}
             </TableRow>
           </TableHeader>
@@ -99,6 +102,9 @@ const AppointmentList = ({
             {[...Array(5)].map((_, i) => (
               <TableRow key={i}>
                 <TableCell><Skeleton className="h-4 w-48" /></TableCell>
+                <TableCell><Skeleton className="h-4 w-32" /></TableCell>
+                <TableCell><Skeleton className="h-6 w-20 rounded-full" /></TableCell>
+                <TableCell><Skeleton className="h-4 w-24" /></TableCell>
                 <TableCell><Skeleton className="h-4 w-40" /></TableCell>
                 <TableCell><Skeleton className="h-4 w-32" /></TableCell>
                 <TableCell><Skeleton className="h-6 w-24 rounded-full" /></TableCell>
@@ -146,10 +152,13 @@ const AppointmentList = ({
         <TableHeader>
           <TableRow>
             <TableHead>Patient</TableHead>
+            <TableHead>Date of Birth</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Department</TableHead>
             <TableHead>Doctor</TableHead>
             <TableHead>Date & Time</TableHead>
             <TableHead>Reason</TableHead>
-            <TableHead>Status</TableHead>
+            <TableHead>Appointment Status</TableHead>
             {showActions && <TableHead className="text-right">Actions</TableHead>}
           </TableRow>
         </TableHeader>
@@ -163,13 +172,32 @@ const AppointmentList = ({
                 <TableCell className="font-medium">
                   <div className="flex items-center gap-2">
                     <User className="w-4 h-4 text-muted-foreground" />
-                    {appt.patient?.full_name || 'Unknown Patient'}
+                    {appt.patient_name || 'Unknown Patient'}
                   </div>
+                </TableCell>
+                <TableCell>
+                  {appt.patient_date_of_birth ? format(new Date(appt.patient_date_of_birth), 'MMM dd, yyyy') : '-'}
+                </TableCell>
+                <TableCell>
+                  {appt.patient_status ? (
+                    <Badge variant={
+                      appt.patient_status === 'critical' ? 'destructive' :
+                      appt.patient_status === 'emergency' ? 'destructive' :
+                      appt.patient_status === 'stable' ? 'success' :
+                      appt.patient_status === 'recovering' ? 'default' :
+                      'secondary'
+                    }>
+                      {appt.patient_status}
+                    </Badge>
+                  ) : '-'}
+                </TableCell>
+                <TableCell>
+                  {appt.patient_department || '-'}
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
                     <Stethoscope className="w-4 h-4 text-muted-foreground" />
-                    Dr. {appt.doctor?.full_name || 'Unknown Doctor'}
+                    Dr. {appt.doctor_name || 'Unknown Doctor'}
                   </div>
                 </TableCell>
                 <TableCell>
