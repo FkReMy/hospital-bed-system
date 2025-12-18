@@ -368,126 +368,172 @@ async function createSampleBeds() {
 }
 
 /**
- * Create sample patients
+ * Generate random patient data for testing
+ */
+function generatePatients(count = 100) {
+  const firstNames = [
+    'James', 'Mary', 'John', 'Patricia', 'Robert', 'Jennifer', 'Michael', 'Linda',
+    'William', 'Elizabeth', 'David', 'Barbara', 'Richard', 'Susan', 'Joseph', 'Jessica',
+    'Thomas', 'Sarah', 'Christopher', 'Karen', 'Charles', 'Nancy', 'Daniel', 'Lisa',
+    'Matthew', 'Betty', 'Anthony', 'Margaret', 'Mark', 'Sandra', 'Donald', 'Ashley',
+    'Steven', 'Kimberly', 'Paul', 'Emily', 'Andrew', 'Donna', 'Joshua', 'Michelle',
+    'Kenneth', 'Carol', 'Kevin', 'Amanda', 'Brian', 'Dorothy', 'George', 'Melissa',
+    'Timothy', 'Deborah', 'Ronald', 'Stephanie', 'Edward', 'Rebecca', 'Jason', 'Sharon',
+    'Jeffrey', 'Laura', 'Ryan', 'Cynthia', 'Jacob', 'Kathleen', 'Gary', 'Amy',
+    'Nicholas', 'Angela', 'Eric', 'Shirley', 'Jonathan', 'Anna', 'Stephen', 'Brenda',
+    'Larry', 'Pamela', 'Justin', 'Emma', 'Scott', 'Nicole', 'Brandon', 'Helen',
+    'Benjamin', 'Samantha', 'Samuel', 'Katherine', 'Raymond', 'Christine', 'Gregory', 'Debra',
+    'Alexander', 'Rachel', 'Patrick', 'Carolyn', 'Frank', 'Janet', 'Jack', 'Catherine',
+    'Dennis', 'Maria', 'Jerry', 'Heather', 'Tyler', 'Diane', 'Aaron', 'Ruth',
+  ];
+  
+  const lastNames = [
+    'Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis',
+    'Rodriguez', 'Martinez', 'Hernandez', 'Lopez', 'Gonzalez', 'Wilson', 'Anderson', 'Thomas',
+    'Taylor', 'Moore', 'Jackson', 'Martin', 'Lee', 'Perez', 'Thompson', 'White',
+    'Harris', 'Sanchez', 'Clark', 'Ramirez', 'Lewis', 'Robinson', 'Walker', 'Young',
+    'Allen', 'King', 'Wright', 'Scott', 'Torres', 'Nguyen', 'Hill', 'Flores',
+    'Green', 'Adams', 'Nelson', 'Baker', 'Hall', 'Rivera', 'Campbell', 'Mitchell',
+    'Carter', 'Roberts', 'Gomez', 'Phillips', 'Evans', 'Turner', 'Diaz', 'Parker',
+    'Cruz', 'Edwards', 'Collins', 'Reyes', 'Stewart', 'Morris', 'Morales', 'Murphy',
+    'Cook', 'Rogers', 'Gutierrez', 'Ortiz', 'Morgan', 'Cooper', 'Peterson', 'Bailey',
+    'Reed', 'Kelly', 'Howard', 'Ramos', 'Kim', 'Cox', 'Ward', 'Richardson',
+  ];
+  
+  const streetNames = [
+    'Main St', 'Oak Ave', 'Pine Rd', 'Elm St', 'Maple Dr', 'Cedar Ln', 'Birch Way',
+    'Spruce Ct', 'Willow Blvd', 'Ash Pl', 'Cherry Ln', 'Walnut Ave', 'Chestnut Dr',
+    'Poplar St', 'Cypress Rd', 'Magnolia Way', 'Redwood Ct', 'Hickory Ln', 'Sycamore Ave',
+  ];
+  
+  const bloodGroups = ['O+', 'O-', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-'];
+  const genders = ['male', 'female'];
+  const statuses = ['admitted', 'discharged', 'waiting', 'emergency', 'critical', 'stable', 'recovering'];
+  const departments = ['emergency', 'icu', 'cardiology', 'surgery'];
+  
+  const patients = [];
+  
+  for (let i = 0; i < count; i++) {
+    const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+    const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+    const gender = genders[Math.floor(Math.random() * genders.length)];
+    const bloodGroup = bloodGroups[Math.floor(Math.random() * bloodGroups.length)];
+    const status = statuses[Math.floor(Math.random() * statuses.length)];
+    const department = departments[Math.floor(Math.random() * departments.length)];
+    
+    // Generate random date of birth (between 1940 and 2015)
+    const birthYear = 1940 + Math.floor(Math.random() * 75);
+    const birthMonth = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
+    const birthDay = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
+    
+    // Generate random admission date (within last 60 days for admitted patients, earlier for discharged)
+    let admissionDate;
+    if (status === 'discharged') {
+      // Discharged patients: 30-90 days ago
+      const daysAgo = 30 + Math.floor(Math.random() * 60);
+      const date = new Date();
+      date.setDate(date.getDate() - daysAgo);
+      admissionDate = date.toISOString().split('T')[0];
+    } else {
+      // Current patients: within last 30 days
+      const daysAgo = Math.floor(Math.random() * 30);
+      const date = new Date();
+      date.setDate(date.getDate() - daysAgo);
+      admissionDate = date.toISOString().split('T')[0];
+    }
+    
+    const phoneNum = 2000 + i;
+    const addressNum = 100 + i * 10;
+    const streetName = streetNames[i % streetNames.length];
+    
+    patients.push({
+      fullName: `${firstName} ${lastName}`,
+      dateOfBirth: `${birthYear}-${birthMonth}-${birthDay}`,
+      gender: gender,
+      phone: `+1-555-${String(phoneNum).padStart(4, '0')}`,
+      address: `${addressNum} ${streetName}, Hospital City`,
+      bloodGroup: bloodGroup,
+      emergencyContact: {
+        name: `Emergency Contact for ${firstName}`,
+        phone: `+1-555-${String(phoneNum + 1).padStart(4, '0')}`
+      },
+      status: status,
+      admissionDate: admissionDate,
+      department: department,
+    });
+  }
+  
+  return patients;
+}
+
+/**
+ * Create sample patients (100+ for comprehensive testing)
  */
 async function createSamplePatients() {
-  console.log('\n👨‍⚕️ Creating sample patients...');
+  console.log('\n👨‍⚕️ Creating sample patients (100+ for comprehensive testing)...');
   
-  const patients = [
-    {
-      fullName: 'John Smith',
-      dateOfBirth: '1975-05-15',
-      gender: 'male',
-      phone: '+1-555-1001',
-      address: '100 Main St, City',
-      bloodGroup: 'O+',
-      emergencyContact: { name: 'Jane Smith', phone: '+1-555-1002' },
-      status: 'admitted',
-      admissionDate: '2025-12-10',
-      department: 'emergency',
-    },
-    {
-      fullName: 'Mary Johnson',
-      dateOfBirth: '1982-08-22',
-      gender: 'female',
-      phone: '+1-555-1003',
-      address: '200 Oak Ave, City',
-      bloodGroup: 'A+',
-      emergencyContact: { name: 'Bob Johnson', phone: '+1-555-1004' },
-      status: 'admitted',
-      admissionDate: '2025-12-12',
-      department: 'icu',
-    },
-    {
-      fullName: 'Robert Williams',
-      dateOfBirth: '1965-03-10',
-      gender: 'male',
-      phone: '+1-555-1005',
-      address: '300 Pine Rd, City',
-      bloodGroup: 'B+',
-      emergencyContact: { name: 'Lisa Williams', phone: '+1-555-1006' },
-      status: 'admitted',
-      admissionDate: '2025-12-14',
-      department: 'cardiology',
-    },
-    {
-      fullName: 'Patricia Brown',
-      dateOfBirth: '1990-11-30',
-      gender: 'female',
-      phone: '+1-555-1007',
-      address: '400 Elm St, City',
-      bloodGroup: 'AB+',
-      emergencyContact: { name: 'Michael Brown', phone: '+1-555-1008' },
-      status: 'admitted',
-      admissionDate: '2025-12-15',
-      department: 'surgery',
-    },
-    {
-      fullName: 'James Davis',
-      dateOfBirth: '1988-07-18',
-      gender: 'male',
-      phone: '+1-555-1009',
-      address: '500 Maple Dr, City',
-      bloodGroup: 'A-',
-      emergencyContact: { name: 'Sarah Davis', phone: '+1-555-1010' },
-      status: 'admitted',
-      admissionDate: '2025-12-16',
-      department: 'emergency',
-    },
-    {
-      fullName: 'Jennifer Martinez',
-      dateOfBirth: '1978-02-25',
-      gender: 'female',
-      phone: '+1-555-1011',
-      address: '600 Cedar Ln, City',
-      bloodGroup: 'O-',
-      emergencyContact: { name: 'Carlos Martinez', phone: '+1-555-1012' },
-      status: 'discharged',
-      admissionDate: '2025-12-05',
-      department: 'icu',
-    },
-    {
-      fullName: 'Michael Anderson',
-      dateOfBirth: '1995-12-08',
-      gender: 'male',
-      phone: '+1-555-1013',
-      address: '700 Birch Way, City',
-      bloodGroup: 'B-',
-      emergencyContact: { name: 'Emily Anderson', phone: '+1-555-1014' },
-      status: 'admitted',
-      admissionDate: '2025-12-17',
-      department: 'cardiology',
-    },
-    {
-      fullName: 'Linda Thompson',
-      dateOfBirth: '1970-09-14',
-      gender: 'female',
-      phone: '+1-555-1015',
-      address: '800 Spruce Ct, City',
-      bloodGroup: 'AB-',
-      emergencyContact: { name: 'David Thompson', phone: '+1-555-1016' },
-      status: 'admitted',
-      admissionDate: '2025-12-11',
-      department: 'surgery',
-    },
-  ];
+  // Generate 120 patients to ensure we have enough variety
+  const patients = generatePatients(120);
+  
+  let created = 0;
+  let skipped = 0;
+  
+  // Use batch writes for better performance
+  const batchSize = 500; // Firestore batch limit
+  let batch = db.batch();
+  let operationCount = 0;
   
   for (const patient of patients) {
     // Check if patient already exists
     const existingPatients = await db.collection('patients')
       .where('fullName', '==', patient.fullName)
+      .where('dateOfBirth', '==', patient.dateOfBirth)
       .get();
     
     if (existingPatients.empty) {
-      await db.collection('patients').add({
+      const patientRef = db.collection('patients').doc();
+      batch.set(patientRef, {
         ...patient,
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
       });
-      console.log(`   ✅ Created patient: ${patient.fullName}`);
+      created++;
+      operationCount++;
+      
+      // Commit batch if we've reached the limit
+      if (operationCount >= batchSize) {
+        await batch.commit();
+        batch = db.batch();
+        operationCount = 0;
+      }
+      
+      // Log progress every 20 patients
+      if (created % 20 === 0) {
+        console.log(`   ⏳ Created ${created} patients so far...`);
+      }
     } else {
-      console.log(`   ℹ️  Patient already exists: ${patient.fullName}`);
+      skipped++;
     }
   }
+  
+  // Commit remaining operations
+  if (operationCount > 0) {
+    await batch.commit();
+  }
+  
+  console.log(`   ✅ Created ${created} new patients`);
+  if (skipped > 0) {
+    console.log(`   ℹ️  Skipped ${skipped} existing patients`);
+  }
+  
+  // Display status distribution
+  const statusCount = {};
+  patients.forEach(p => {
+    statusCount[p.status] = (statusCount[p.status] || 0) + 1;
+  });
+  console.log('\n   📊 Patient Status Distribution:');
+  Object.entries(statusCount).forEach(([status, count]) => {
+    console.log(`      • ${status}: ${count}`);
+  });
 }
 
 /**

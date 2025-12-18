@@ -14,6 +14,8 @@ This directory contains scripts for populating Firebase with test data for the H
    ```bash
    npm install
    ```
+   
+   This will install `firebase-admin` which is required to run the seeding script.
 
 3. **Run the seeding script**:
    ```bash
@@ -21,6 +23,20 @@ This directory contains scripts for populating Firebase with test data for the H
    ```
 
 ## What Gets Created
+
+### Test Patients
+The script creates **120 diverse test patients** with varied:
+- **Statuses**: admitted, discharged, waiting, emergency, critical, stable, recovering
+- **Departments**: emergency, icu, cardiology, surgery
+- **Demographics**: Different ages, genders, blood groups
+- **Admission dates**: Spanning the last 90 days
+
+This comprehensive dataset enables thorough testing of:
+- Patient list filtering and sorting
+- Department load analysis
+- Status-based workflows
+- Bed assignment scenarios
+- Reporting and analytics
 
 ### Test Users
 The script creates 7 test users with the following credentials:
