@@ -43,6 +43,28 @@ const assignBedSchema = z.object({
 });
 
 /**
+ * Patient severity order for sorting (higher number = more critical)
+ */
+const SEVERITY_ORDER = {
+  'critical': 4,
+  'severe': 3,
+  'serious': 2,
+  'moderate': 1,
+  'stable': 0,
+  'admitted': 0,
+};
+
+/**
+ * Visual indicators for patient severity in dropdown
+ */
+const SEVERITY_INDICATORS = {
+  'critical': '🔴 CRITICAL',
+  'severe': '🟠 SEVERE',
+  'serious': '🟡 SERIOUS',
+  'moderate': '🔵 MODERATE',
+};
+
+/**
  * Props:
  * - bed: The selected bed object (must include id, bed_number, room_number, status, department)
  * - open: boolean - controls dialog visibility
@@ -93,19 +115,9 @@ const AssignBedDialog = ({
   
   // Sort patients by severity/status - more critical patients first
   const sortedEligiblePatients = React.useMemo(() => {
-    // Define severity order (higher number = more critical)
-    const severityOrder = {
-      'critical': 4,
-      'severe': 3,
-      'serious': 2,
-      'moderate': 1,
-      'stable': 0,
-      'admitted': 0,
-    };
-    
     return [...eligiblePatients].sort((a, b) => {
-      const severityA = severityOrder[a.status?.toLowerCase()] ?? -1;
-      const severityB = severityOrder[b.status?.toLowerCase()] ?? -1;
+      const severityA = SEVERITY_ORDER[a.status?.toLowerCase()] ?? -1;
+      const severityB = SEVERITY_ORDER[b.status?.toLowerCase()] ?? -1;
       
       // Sort by severity (descending - most critical first)
       if (severityA !== severityB) {
@@ -209,19 +221,9 @@ const AssignBedDialog = ({
                 }
                 let statusText = '';
                 if (status) {
-                  const statusUpper = status.toUpperCase();
-                  // Add visual indicator for critical/severe patients
-                  if (statusUpper === 'CRITICAL') {
-                    statusText = ` - 🔴 CRITICAL`;
-                  } else if (statusUpper === 'SEVERE') {
-                    statusText = ` - 🟠 SEVERE`;
-                  } else if (statusUpper === 'SERIOUS') {
-                    statusText = ` - 🟡 SERIOUS`;
-                  } else if (statusUpper === 'MODERATE') {
-                    statusText = ` - 🔵 MODERATE`;
-                  } else {
-                    statusText = ` - ${statusUpper}`;
-                  }
+                  const statusLower = status.toLowerCase();
+                  const indicator = SEVERITY_INDICATORS[statusLower];
+                  statusText = indicator ? ` - ${indicator}` : ` - ${status.toUpperCase()}`;
                 }
                 return (
                   <option key={patient.id} value={patient.id}>
