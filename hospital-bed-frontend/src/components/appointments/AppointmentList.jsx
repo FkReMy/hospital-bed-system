@@ -197,7 +197,7 @@ const AppointmentList = ({
                 <TableCell>
                   <div className="flex items-center gap-2">
                     <Stethoscope className="w-4 h-4 text-muted-foreground" />
-                    {appt.doctor_name || 'Unknown Doctor'}
+                    Dr. {appt.doctor_name || 'Unknown Doctor'}
                   </div>
                 </TableCell>
                 <TableCell>

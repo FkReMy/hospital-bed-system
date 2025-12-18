@@ -20,6 +20,7 @@
  */
 
 import { useState, useMemo, useEffect } from 'react';
+import { format } from 'date-fns';
 import { 
   Search,
   Plus,
@@ -267,7 +268,7 @@ const AppointmentManagementPage = () => {
                     </div>
                   </TableCell>
                   <TableCell>
-                    {appointment.patient_date_of_birth ? formatDateTime(appointment.patient_date_of_birth) : '-'}
+                    {appointment.patient_date_of_birth ? format(new Date(appointment.patient_date_of_birth), 'MMM dd, yyyy') : '-'}
                   </TableCell>
                   <TableCell>
                     {appointment.patient_status || '-'}
