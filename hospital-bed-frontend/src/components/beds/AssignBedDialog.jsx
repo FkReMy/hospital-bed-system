@@ -142,7 +142,8 @@ const AssignBedDialog = ({
               <option value="">Select a patient...</option>
               {patients.map((patient) => (
                 <option key={patient.id} value={patient.id}>
-                  {patient.full_name} (DOB: {format(new Date(patient.date_of_birth), 'MMM dd, yyyy')})
+                  {patient.fullName || patient.full_name} 
+                  {patient.dateOfBirth && ` (DOB: ${format(new Date(patient.dateOfBirth), 'MMM dd, yyyy')})`}
                 </option>
               ))}
             </select>

@@ -21,6 +21,7 @@
 import { useEffect } from 'react'; // Add useEffect
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { bedApi } from '@services/api/bedApi';
+import { patientApi } from '@services/api/patientApi';
 import toast from 'react-hot-toast';
 
 export const useBedManagement = () => {
@@ -60,6 +61,16 @@ export const useBedManagement = () => {
     staleTime: 1000 * 60 * 30,
   });
 
+  // Fetch available patients for bed assignment
+  const {
+    data: patients = [],
+    isLoading: isLoadingPatients,
+  } = useQuery({
+    queryKey: ['patients'],
+    queryFn: patientApi.getAll,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+
   // Assign bed mutation
   const assignBedMutation = useMutation({
     mutationFn: bedApi.assign,
@@ -86,8 +97,10 @@ export const useBedManagement = () => {
   return {
     beds,
     departments,
+    patients,
     isLoadingBeds,
     isLoadingDepartments,
+    isLoadingPatients,
     isErrorBeds,
     bedsError,
     assignBed: assignBedMutation.mutate,
