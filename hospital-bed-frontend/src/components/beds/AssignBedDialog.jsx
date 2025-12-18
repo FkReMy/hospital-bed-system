@@ -44,6 +44,7 @@ const assignBedSchema = z.object({
 
 /**
  * Patient severity order for sorting (higher number = more critical)
+ * Unknown statuses default to -1 and appear at the end
  */
 const SEVERITY_ORDER = {
   'critical': 4,
@@ -51,8 +52,10 @@ const SEVERITY_ORDER = {
   'serious': 2,
   'moderate': 1,
   'stable': 0,
-  'admitted': 0,
+  'admitted': -1, // Less urgent than stable patients
 };
+
+const UNKNOWN_SEVERITY = -1;
 
 /**
  * Visual indicators for patient severity in dropdown
@@ -116,8 +119,8 @@ const AssignBedDialog = ({
   // Sort patients by severity/status - more critical patients first
   const sortedEligiblePatients = React.useMemo(() => {
     return [...eligiblePatients].sort((a, b) => {
-      const severityA = SEVERITY_ORDER[a.status?.toLowerCase()] ?? -1;
-      const severityB = SEVERITY_ORDER[b.status?.toLowerCase()] ?? -1;
+      const severityA = SEVERITY_ORDER[a.status?.toLowerCase()] ?? UNKNOWN_SEVERITY;
+      const severityB = SEVERITY_ORDER[b.status?.toLowerCase()] ?? UNKNOWN_SEVERITY;
       
       // Sort by severity (descending - most critical first)
       if (severityA !== severityB) {
