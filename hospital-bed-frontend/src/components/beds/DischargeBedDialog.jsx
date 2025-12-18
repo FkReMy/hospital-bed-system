@@ -101,7 +101,8 @@ const DischargeBedDialog = ({
               <p className="text-sm font-medium text-foreground">Current Patient:</p>
               <p className="text-base font-semibold">{patient.full_name}</p>
               <p className="text-sm text-muted-foreground">
-                ID: {patient.id} • DOB: {format(new Date(patient.date_of_birth), 'MMM dd, yyyy')}
+                ID: {patient.id}
+                {patient.date_of_birth && ` • DOB: ${format(new Date(patient.date_of_birth), 'MMM dd, yyyy')}`}
               </p>
             </div>
           )}

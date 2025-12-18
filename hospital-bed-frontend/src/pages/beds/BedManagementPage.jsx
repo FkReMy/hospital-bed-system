@@ -56,7 +56,7 @@ const BedManagementPage = () => {
       filtered = filtered.filter(bed =>
         bed.bed_number?.toLowerCase().includes(lower) ||
         bed.current_patient?.full_name?.toLowerCase().includes(lower) ||
-        bed.current_patient?.patient_id?.toString().includes(searchTerm)
+        bed.current_patient?.id?.toString().includes(searchTerm)
       );
     }
 
@@ -188,7 +188,7 @@ const BedManagementPage = () => {
                           {bed.current_patient ? (
                             <div className="patientInfo">
                               <p className="patientName">{bed.current_patient.full_name}</p>
-                              <p className="patientId">ID: {bed.current_patient.patient_id}</p>
+                              <p className="patientId">ID: {bed.current_patient.id}</p>
                             </div>
                           ) : (
                             <p className="noPatient">No patient assigned</p>

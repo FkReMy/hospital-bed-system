@@ -93,6 +93,7 @@ const transformBedData = async (bedData, bedId) => {
             currentPatient = { 
               id: patientDoc.id,
               full_name: patientData.fullName || patientData.full_name,
+              date_of_birth: patientData.dateOfBirth || patientData.date_of_birth,
               ...patientData
             };
           }
@@ -103,6 +104,7 @@ const transformBedData = async (bedData, bedId) => {
     return {
       id: bedId,
       bed_number: bedData.bedNumber || bedData.bed_number,
+      room_number: room?.roomNumber || room?.room_number || 'N/A',
       status: bedData.isOccupied ? 'occupied' : 'available',
       isOccupied: bedData.isOccupied,
       department_id: bedData.departmentId,
@@ -117,6 +119,7 @@ const transformBedData = async (bedData, bedId) => {
     return {
       id: bedId,
       bed_number: bedData.bedNumber || bedData.bed_number,
+      room_number: 'N/A',
       status: bedData.isOccupied ? 'occupied' : 'available',
       isOccupied: bedData.isOccupied,
       department_id: bedData.departmentId,
@@ -394,6 +397,7 @@ export const subscribeToBeds = (callback, params = {}) => {
               return {
                 id: docSnap.id,
                 bed_number: bedData.bedNumber || bedData.bed_number,
+                room_number: 'N/A',
                 status: bedData.isOccupied ? 'occupied' : 'available',
                 isOccupied: bedData.isOccupied,
                 department_id: bedData.departmentId,

@@ -43,6 +43,31 @@ const assignBedSchema = z.object({
 });
 
 /**
+ * Patient severity order for sorting (higher number = more critical)
+ * Unknown statuses default to -1 and appear at the end
+ */
+const SEVERITY_ORDER = {
+  'critical': 4,
+  'severe': 3,
+  'serious': 2,
+  'moderate': 1,
+  'stable': 0,
+  'admitted': -1, // Less urgent than stable patients
+};
+
+const UNKNOWN_SEVERITY = -1;
+
+/**
+ * Visual indicators for patient severity in dropdown
+ */
+const SEVERITY_INDICATORS = {
+  'critical': '🔴 CRITICAL',
+  'severe': '🟠 SEVERE',
+  'serious': '🟡 SERIOUS',
+  'moderate': '🔵 MODERATE',
+};
+
+/**
  * Props:
  * - bed: The selected bed object (must include id, bed_number, room_number, status, department)
  * - open: boolean - controls dialog visibility
@@ -90,6 +115,24 @@ const AssignBedDialog = ({
     // Only show patients that have a department AND it matches the bed's department
     return patients.filter(patient => patient.department === bed.department_id);
   }, [patients, bed]);
+  
+  // Sort patients by severity/status - more critical patients first
+  const sortedEligiblePatients = React.useMemo(() => {
+    return [...eligiblePatients].sort((a, b) => {
+      const severityA = SEVERITY_ORDER[a.status?.toLowerCase()] ?? UNKNOWN_SEVERITY;
+      const severityB = SEVERITY_ORDER[b.status?.toLowerCase()] ?? UNKNOWN_SEVERITY;
+      
+      // Sort by severity (descending - most critical first)
+      if (severityA !== severityB) {
+        return severityB - severityA;
+      }
+      
+      // If same severity, sort by name
+      const nameA = (a.fullName || a.full_name || '').toLowerCase();
+      const nameB = (b.fullName || b.full_name || '').toLowerCase();
+      return nameA.localeCompare(nameB);
+    });
+  }, [eligiblePatients]);
   
   const selectedPatientId = watch('patientId');
   
@@ -167,10 +210,10 @@ const AssignBedDialog = ({
               disabled={isSubmitting || bed.status !== 'available'}
             >
               <option value="">Select a patient...</option>
-              {eligiblePatients.map((patient) => {
+              {sortedEligiblePatients.map((patient) => {
                 const name = patient.fullName || patient.full_name;
                 const dob = patient.dateOfBirth || patient.date_of_birth;
-                const dept = patient.department;
+                const status = patient.status;
                 let dobText = '';
                 if (dob) {
                   try {
@@ -179,13 +222,15 @@ const AssignBedDialog = ({
                     // Skip invalid date - don't show DOB for malformed dates
                   }
                 }
-                let deptText = '';
-                if (dept) {
-                  deptText = ` - ${dept}`;
+                let statusText = '';
+                if (status) {
+                  const statusLower = status.toLowerCase();
+                  const indicator = SEVERITY_INDICATORS[statusLower];
+                  statusText = indicator ? ` - ${indicator}` : ` - ${status.toUpperCase()}`;
                 }
                 return (
                   <option key={patient.id} value={patient.id}>
-                    {name}{dobText}{deptText}
+                    {name}{dobText}{statusText}
                   </option>
                 );
               })}
@@ -193,7 +238,7 @@ const AssignBedDialog = ({
             {errors.patientId && (
               <p className="text-sm text-destructive">{errors.patientId.message}</p>
             )}
-            {eligiblePatients.length === 0 && (
+            {sortedEligiblePatients.length === 0 && (
               <p className="text-sm text-muted-foreground">
                 No patients available in {bed.department?.name || 'this department'}.
                 Patients must be in the same department as the bed.
