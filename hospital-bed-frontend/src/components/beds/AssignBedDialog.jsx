@@ -147,9 +147,8 @@ const AssignBedDialog = ({
                 if (dob) {
                   try {
                     dobText = ` (DOB: ${format(new Date(dob), 'MMM dd, yyyy')})`;
-                  } catch (error) {
-                    // Skip invalid date
-                    console.warn('Invalid date format for patient:', patient.id, dob);
+                  } catch {
+                    // Skip invalid date - don't show DOB for malformed dates
                   }
                 }
                 return (
