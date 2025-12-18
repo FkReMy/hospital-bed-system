@@ -115,8 +115,9 @@ const PatientListPage = () => {
 
         // Special handling for age sorting (computed field)
         if (sortConfig.key === 'age') {
-          aVal = calculateAge(a.dateOfBirth) ?? Number.MAX_SAFE_INTEGER;
-          bVal = calculateAge(b.dateOfBirth) ?? Number.MAX_SAFE_INTEGER;
+          // Use -1 for null ages to sort them at the beginning (ascending) or end (descending)
+          aVal = calculateAge(a.dateOfBirth) ?? -1;
+          bVal = calculateAge(b.dateOfBirth) ?? -1;
         }
 
         if (aVal < bVal) return sortConfig.direction === 'asc' ? -1 : 1;
