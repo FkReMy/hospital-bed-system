@@ -198,7 +198,7 @@ export const create = async (data) => {
     const dateValue = data.appointmentDate || data.appointment_date;
     
     if (!dateValue) {
-      appointmentDate = Timestamp.now();
+      throw new Error('Appointment date is required');
     } else if (typeof dateValue === 'string') {
       // Validate and parse ISO string
       const parsedDate = new Date(dateValue);
@@ -212,9 +212,11 @@ export const create = async (data) => {
         throw new Error('Invalid date object');
       }
       appointmentDate = Timestamp.fromDate(dateValue);
-    } else {
-      // Already a Timestamp or other supported format
+    } else if (dateValue instanceof Timestamp) {
+      // Already a Timestamp
       appointmentDate = dateValue;
+    } else {
+      throw new Error('Invalid date type: expected string, Date, or Timestamp');
     }
     
     const newAppointment = {

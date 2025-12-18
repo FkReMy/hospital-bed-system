@@ -42,17 +42,6 @@ const appointmentSchema = z.object({
   notes: z.string().optional(),
 });
 
-// Helper function to get doctor specialization
-const getDoctorSpecialization = (doctor) => {
-  if (doctor.specialization) {
-    return doctor.specialization;
-  }
-  if (Array.isArray(doctor.specializations) && doctor.specializations.length > 0) {
-    return doctor.specializations[0];
-  }
-  return 'General';
-};
-
 const AppointmentForm = ({
   initialData = null, // null for create, object for edit
   onSuccess, // callback after successful submission
@@ -62,6 +51,16 @@ const AppointmentForm = ({
   isLoading = false,
   isSubmitting = false,
 }) => {
+  // Helper function to get doctor specialization
+  const getDoctorSpecialization = (doctor) => {
+    if (doctor.specialization) {
+      return doctor.specialization;
+    }
+    if (Array.isArray(doctor.specializations) && doctor.specializations.length > 0) {
+      return doctor.specializations[0];
+    }
+    return 'General';
+  };
   const {
     register,
     handleSubmit,
