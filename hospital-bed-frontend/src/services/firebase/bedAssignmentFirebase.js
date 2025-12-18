@@ -26,6 +26,8 @@ import {
 import { db } from './firebaseConfig';
 
 const BED_ASSIGNMENTS_COLLECTION = 'bedAssignments';
+const BEDS_COLLECTION = 'beds';
+const PATIENTS_COLLECTION = 'patients';
 
 /**
  * Get all bed assignments with optional filters
@@ -137,11 +139,63 @@ export const getHistoryByPatientId = async (patientId) => {
  */
 export const create = async (data) => {
   try {
+    const patientId = data.patientId || data.patient_id;
+    const bedId = data.bedId || data.bed_id;
+    
+    if (!patientId || !bedId) {
+      throw new Error('Both patient ID and bed ID are required');
+    }
+    
+    // Validate bed exists and is available
+    const bedRef = doc(db, BEDS_COLLECTION, bedId);
+    const bedDoc = await getDoc(bedRef);
+    
+    if (!bedDoc.exists()) {
+      throw new Error('Bed not found');
+    }
+    
+    const bedData = bedDoc.data();
+    
+    if (bedData.isOccupied) {
+      throw new Error('Bed is already occupied');
+    }
+    
+    // Validate patient exists
+    const patientRef = doc(db, PATIENTS_COLLECTION, patientId);
+    const patientDoc = await getDoc(patientRef);
+    
+    if (!patientDoc.exists()) {
+      throw new Error('Patient not found');
+    }
+    
+    const patientData = patientDoc.data();
+    
+    // Check if patient is already assigned to another bed
+    const existingAssignmentsQuery = query(
+      collection(db, BED_ASSIGNMENTS_COLLECTION),
+      where('patientId', '==', patientId),
+      where('dischargedAt', '==', null)
+    );
+    
+    const existingAssignments = await getDocs(existingAssignmentsQuery);
+    
+    if (!existingAssignments.empty) {
+      throw new Error('Patient is already assigned to another bed');
+    }
+    
+    // Validate department matching
+    const patientDepartment = patientData.department;
+    const bedDepartment = bedData.departmentId;
+    
+    if (patientDepartment && bedDepartment && patientDepartment !== bedDepartment) {
+      throw new Error('Patient department does not match bed department');
+    }
+    
     const assignmentRef = doc(collection(db, BED_ASSIGNMENTS_COLLECTION));
     
     const newAssignment = {
-      patientId: data.patientId || data.patient_id,
-      bedId: data.bedId || data.bed_id,
+      patientId: patientId,
+      bedId: bedId,
       assignedBy: data.assignedBy || data.assigned_by || 'system',
       notes: data.notes || null,
       assignedAt: Timestamp.now(),

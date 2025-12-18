@@ -232,6 +232,37 @@ export const assign = async (payload) => {
       throw new Error('Bed is already occupied');
     }
 
+    // Validate patient exists
+    const patientRef = doc(db, PATIENTS_COLLECTION, finalPatientId);
+    const patientDoc = await getDoc(patientRef);
+    
+    if (!patientDoc.exists()) {
+      throw new Error('Patient not found');
+    }
+    
+    const patientData = patientDoc.data();
+    
+    // Check if patient is already assigned to another bed
+    const existingAssignmentsQuery = query(
+      collection(db, BED_ASSIGNMENTS_COLLECTION),
+      where('patientId', '==', finalPatientId),
+      where('dischargedAt', '==', null)
+    );
+    
+    const existingAssignments = await getDocs(existingAssignmentsQuery);
+    
+    if (!existingAssignments.empty) {
+      throw new Error('Patient is already assigned to another bed');
+    }
+    
+    // Validate department matching
+    const patientDepartment = patientData.department;
+    const bedDepartment = bedData.departmentId;
+    
+    if (patientDepartment && bedDepartment && patientDepartment !== bedDepartment) {
+      throw new Error('Patient department does not match bed department');
+    }
+
     // Create assignment record
     const assignmentRef = doc(collection(db, BED_ASSIGNMENTS_COLLECTION));
     

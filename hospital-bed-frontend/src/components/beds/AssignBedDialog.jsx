@@ -64,6 +64,7 @@ const AssignBedDialog = ({
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
   } = useForm({
     resolver: zodResolver(assignBedSchema),
     defaultValues: {
@@ -78,6 +79,30 @@ const AssignBedDialog = ({
       reset();
     }
   }, [open, reset]);
+
+  // Filter patients by department to match the bed's department
+  const eligiblePatients = React.useMemo(() => {
+    if (!bed?.department_id) {
+      return patients;
+    }
+    
+    // Filter patients to only show those in the same department as the bed
+    return patients.filter(patient => patient.department === bed.department_id || !patient.department);
+  }, [patients, bed]);
+  
+  const selectedPatientId = watch('patientId');
+  
+  // Find selected patient to show department mismatch warning
+  const selectedPatient = React.useMemo(
+    () => patients.find(p => p.id === selectedPatientId),
+    [patients, selectedPatientId]
+  );
+  
+  const departmentMismatch = React.useMemo(() => {
+    if (!selectedPatient || !bed?.department_id) return false;
+    const patientDept = selectedPatient.department;
+    return patientDept && patientDept !== bed.department_id;
+  }, [selectedPatient, bed]);
 
   const onSubmit = (data) => {
     const assignmentPayload = {
@@ -140,9 +165,10 @@ const AssignBedDialog = ({
               disabled={isSubmitting || bed.status !== 'available'}
             >
               <option value="">Select a patient...</option>
-              {patients.map((patient) => {
+              {eligiblePatients.map((patient) => {
                 const name = patient.fullName || patient.full_name;
                 const dob = patient.dateOfBirth || patient.date_of_birth;
+                const dept = patient.department;
                 let dobText = '';
                 if (dob) {
                   try {
@@ -151,15 +177,31 @@ const AssignBedDialog = ({
                     // Skip invalid date - don't show DOB for malformed dates
                   }
                 }
+                let deptText = '';
+                if (dept) {
+                  deptText = ` - ${dept}`;
+                }
                 return (
                   <option key={patient.id} value={patient.id}>
-                    {name}{dobText}
+                    {name}{dobText}{deptText}
                   </option>
                 );
               })}
             </select>
             {errors.patientId && (
               <p className="text-sm text-destructive">{errors.patientId.message}</p>
+            )}
+            {eligiblePatients.length === 0 && (
+              <p className="text-sm text-muted-foreground">
+                No patients available in {bed.department?.name || 'this department'}. 
+                Patients must be in the same department as the bed.
+              </p>
+            )}
+            {departmentMismatch && (
+              <div className="flex items-center gap-2 text-destructive text-sm p-2 bg-destructive/10 rounded">
+                <AlertCircle className="w-4 h-4" />
+                Warning: Selected patient&apos;s department does not match the bed&apos;s department.
+              </div>
             )}
           </div>
 
