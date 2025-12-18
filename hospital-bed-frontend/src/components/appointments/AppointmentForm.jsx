@@ -119,7 +119,7 @@ const AppointmentForm = ({
             <option value="">Choose patient</option>
             {patients.map((patient) => (
               <option key={patient.id} value={patient.id}>
-                {patient.full_name} (ID: {patient.id.slice(0, 8)})
+                {patient.fullName || patient.full_name || 'Unknown Patient'} (ID: {patient.id.slice(0, 8)})
               </option>
             ))}
           </Select>
@@ -143,7 +143,7 @@ const AppointmentForm = ({
             <option value="">Choose doctor</option>
             {doctors.map((doctor) => (
               <option key={doctor.id} value={doctor.id}>
-                Dr. {doctor.full_name} ({doctor.specialization || 'General'})
+                Dr. {doctor.fullName || doctor.full_name || 'Unknown Doctor'} ({doctor.specialization || doctor.specializations?.[0] || 'General'})
               </option>
             ))}
           </Select>

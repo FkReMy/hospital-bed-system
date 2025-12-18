@@ -56,7 +56,7 @@ const transformAppointmentData = async (appointmentData, appointmentId) => {
         patientName = patientData.fullName || patientData.full_name || UNKNOWN_PATIENT;
         patientDateOfBirth = patientData.dateOfBirth || patientData.date_of_birth || null;
         patientStatus = patientData.status || null;
-        patientDepartment = patientData.department || null;
+        patientDepartment = patientData.department || patientData.department_id || null;
       }
     }
 
@@ -189,10 +189,23 @@ export const create = async (data) => {
   try {
     const appointmentRef = doc(collection(db, APPOINTMENTS_COLLECTION));
     
+    // Handle both snake_case and camelCase inputs
+    const patientId = data.patientId || data.patient_id;
+    const doctorId = data.doctorId || data.doctor_id || data.doctor_user_id;
+    
+    // Parse date properly - handle both ISO string and Date objects
+    let appointmentDate;
+    if (data.appointmentDate || data.appointment_date) {
+      const dateStr = data.appointmentDate || data.appointment_date;
+      appointmentDate = typeof dateStr === 'string' ? Timestamp.fromDate(new Date(dateStr)) : Timestamp.fromDate(dateStr);
+    } else {
+      appointmentDate = Timestamp.now();
+    }
+    
     const newAppointment = {
-      patientId: data.patientId || data.patient_id,
-      doctorId: data.doctorId || data.doctor_id,
-      appointmentDate: data.appointmentDate || data.appointment_date || Timestamp.now(),
+      patientId,
+      doctorId,
+      appointmentDate,
       status: data.status || 'scheduled',
       reason: data.reason || null,
       notes: data.notes || null,
@@ -232,6 +245,7 @@ export const update = async (id, data) => {
       ...(data.patient_id && { patientId: data.patient_id }),
       ...(data.doctorId && { doctorId: data.doctorId }),
       ...(data.doctor_id && { doctorId: data.doctor_id }),
+      ...(data.doctor_user_id && { doctorId: data.doctor_user_id }),
       ...(data.appointmentDate && { appointmentDate: data.appointmentDate }),
       ...(data.appointment_date && { appointmentDate: data.appointment_date }),
       ...(data.status && { status: data.status }),
