@@ -21,7 +21,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import * as appointmentApi from '@services/api/appointmentApi';
 import * as userApi from '@services/api/userApi';
-import { ROLES } from '@lib/roles';
+import { ROLES } from '@lib/constants';
 import toast from 'react-hot-toast';
 
 export const useAppointmentManagement = (filters = {}) => {
