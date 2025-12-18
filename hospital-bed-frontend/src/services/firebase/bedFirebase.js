@@ -94,7 +94,6 @@ const transformBedData = async (bedData, bedId) => {
               id: patientDoc.id,
               full_name: patientData.fullName || patientData.full_name,
               date_of_birth: patientData.dateOfBirth || patientData.date_of_birth,
-              patient_id: patientDoc.id,
               ...patientData
             };
           }
