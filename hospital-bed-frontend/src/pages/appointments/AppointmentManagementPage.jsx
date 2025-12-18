@@ -145,18 +145,9 @@ const AppointmentManagementPage = () => {
     setIsCreateDialogOpen(true);
   };
 
-  // Handler to close appointment dialog
-  const handleCloseCreateDialog = () => {
-    setIsCreateDialogOpen(false);
-  };
-
   // Handler for dialog open/close changes
   const handleDialogOpenChange = (open) => {
-    if (!open) {
-      handleCloseCreateDialog();
-    } else {
-      setIsCreateDialogOpen(true);
-    }
+    setIsCreateDialogOpen(open);
   };
 
   // Handler for successful appointment creation
@@ -301,7 +292,7 @@ const AppointmentManagementPage = () => {
           isLoading={isLoadingPatients}
           isSubmitting={isCreating}
           patients={patients}
-          onCancel={handleCloseCreateDialog}
+          onCancel={() => setIsCreateDialogOpen(false)}
           onSuccess={handleAppointmentCreated}
         />
       </Dialog>
