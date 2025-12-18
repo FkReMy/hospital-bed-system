@@ -140,12 +140,16 @@ const AssignBedDialog = ({
               disabled={isSubmitting || bed.status !== 'available'}
             >
               <option value="">Select a patient...</option>
-              {patients.map((patient) => (
-                <option key={patient.id} value={patient.id}>
-                  {patient.fullName || patient.full_name} 
-                  {patient.dateOfBirth && ` (DOB: ${format(new Date(patient.dateOfBirth), 'MMM dd, yyyy')})`}
-                </option>
-              ))}
+              {patients.map((patient) => {
+                const name = patient.fullName || patient.full_name;
+                const dob = patient.dateOfBirth || patient.date_of_birth;
+                return (
+                  <option key={patient.id} value={patient.id}>
+                    {name}
+                    {dob && ` (DOB: ${format(new Date(dob), 'MMM dd, yyyy')})`}
+                  </option>
+                );
+              })}
             </select>
             {errors.patientId && (
               <p className="text-sm text-destructive">{errors.patientId.message}</p>
