@@ -53,30 +53,30 @@ const PatientListPage = () => {
   const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  // In production: replace with usePatientsList hook or query
-  const [patients, setPatients] = useState([]); // Mock - replace with real data
+  // State management
+  const [patients, setPatients] = useState([]);
   const [departments, setDepartments] = useState([]);
-  const [isLoading, setIsLoading] = useState(false); // Mock loading
+  const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
-  const [sortConfig, setSortConfig] = useState({ key: 'full_name', direction: 'asc' });
+  const [sortConfig, setSortConfig] = useState({ key: 'fullName', direction: 'asc' });
 
-  // Filtered and sorted patients (mock data)
+  // Filtered and sorted patients
   const filteredAndSortedPatients = useMemo(() => {
     let filtered = patients;
 
     if (searchTerm) {
       const lower = searchTerm.toLowerCase();
       filtered = filtered.filter(p =>
-        p.full_name?.toLowerCase().includes(lower) ||
-        p.patient_id?.toString().includes(searchTerm) ||
+        p.fullName?.toLowerCase().includes(lower) ||
+        p.id?.toString().toLowerCase().includes(lower) ||
         p.phone?.includes(searchTerm)
       );
     }
 
     if (selectedDepartment !== 'all') {
-      filtered = filtered.filter(p => p.department_id === selectedDepartment);
+      filtered = filtered.filter(p => p.department === selectedDepartment);
     }
 
     if (selectedStatus !== 'all') {
@@ -105,23 +105,28 @@ const PatientListPage = () => {
     }));
   };
 
-  // Mock data - remove in production
+  // Load patients and departments on mount
   useEffect(() => {
-    // Simulate API call for patients
-    setIsLoading(true);
-    setTimeout(() => {
-      setPatients([
-        // Replace with real data from API
-        { id: 1, full_name: 'Ahmed Mohamed', patient_id: 'P12345', age: 45, status: 'admitted', phone: '0123456789', department: 'ICU' },
-        // ... more
-      ]);
-      setIsLoading(false);
-    }, 1500);
-    
-    // Fetch departments for the form
-    departmentFirebase.getAll()
-      .then(depts => setDepartments(depts))
-      .catch(err => console.error('Failed to load departments:', err));
+    const loadData = async () => {
+      setIsLoading(true);
+      try {
+        // Fetch both patients and departments in parallel
+        const [patientsData, departmentsData] = await Promise.all([
+          patientFirebase.getAll(),
+          departmentFirebase.getAll()
+        ]);
+        
+        setPatients(patientsData);
+        setDepartments(departmentsData);
+      } catch (error) {
+        console.error('Failed to load data:', error);
+        toast.error('Failed to load patients. Please refresh the page.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadData();
   }, []);
 
   // Handler to open registration dialog
@@ -186,7 +191,11 @@ const PatientListPage = () => {
             onChange={(e) => setSelectedDepartment(e.target.value)}
           >
             <option value="all">All Departments</option>
-            {/* Populate from departments */}
+            {departments.map((dept) => (
+              <option key={dept.id} value={dept.id}>
+                {dept.name}
+              </option>
+            ))}
           </select>
 
           <select
@@ -215,13 +224,13 @@ const PatientListPage = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="sortable" onClick={() => handleSort('full_name')}>
+                <TableHead className="sortable" onClick={() => handleSort('fullName')}>
                   Name
                 </TableHead>
-                <TableHead className="sortable" onClick={() => handleSort('patient_id')}>
+                <TableHead className="sortable" onClick={() => handleSort('id')}>
                   Patient ID
                 </TableHead>
-                <TableHead className="sortable" onClick={() => handleSort('age')}>
+                <TableHead>
                   Age
                 </TableHead>
                 <TableHead className="sortable" onClick={() => handleSort('status')}>
@@ -233,29 +242,39 @@ const PatientListPage = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredAndSortedPatients.map(patient => (
-                <TableRow className="clickable" key={patient.id}>
-                  <TableCell>
-                    <Link className="patientName" to={`/patients/${patient.id}`}>
-                      {patient.full_name}
-                    </Link>
-                  </TableCell>
-                  <TableCell>{patient.patient_id}</TableCell>
-                  <TableCell>{patient.age}</TableCell>
-                  <TableCell>
-                    <Badge variant={patient.status === 'admitted' ? 'success' : 'warning'}>
-                      {patient.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>{patient.phone}</TableCell>
-                  <TableCell>{patient.department}</TableCell>
-                  <TableCell>
-                    <Button size="icon" variant="ghost">
-                      <MoreVertical size={18} />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {filteredAndSortedPatients.map(patient => {
+                // Calculate age from dateOfBirth
+                const age = patient.dateOfBirth 
+                  ? new Date().getFullYear() - new Date(patient.dateOfBirth).getFullYear()
+                  : 'N/A';
+                
+                // Find department name from ID
+                const departmentName = departments.find(d => d.id === patient.department)?.name || patient.department || 'N/A';
+                
+                return (
+                  <TableRow className="clickable" key={patient.id}>
+                    <TableCell>
+                      <Link className="patientName" to={`/patients/${patient.id}`}>
+                        {patient.fullName}
+                      </Link>
+                    </TableCell>
+                    <TableCell>{patient.id}</TableCell>
+                    <TableCell>{age}</TableCell>
+                    <TableCell>
+                      <Badge variant={patient.status === 'admitted' ? 'success' : 'warning'}>
+                        {patient.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>{patient.phone}</TableCell>
+                    <TableCell>{departmentName}</TableCell>
+                    <TableCell>
+                      <Button size="icon" variant="ghost">
+                        <MoreVertical size={18} />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         )}
