@@ -230,6 +230,10 @@ async function createSampleDepartments() {
     { id: 'icu', name: 'ICU', description: 'Intensive Care Unit' },
     { id: 'cardiology', name: 'Cardiology', description: 'Heart and Cardiovascular Care' },
     { id: 'surgery', name: 'Surgery', description: 'Surgical Department' },
+    { id: 'pediatrics', name: 'Pediatrics', description: 'Children and Adolescent Care' },
+    { id: 'neurology', name: 'Neurology', description: 'Neurological and Brain Care' },
+    { id: 'orthopedics', name: 'Orthopedics', description: 'Bone and Joint Care' },
+    { id: 'general', name: 'General Ward', description: 'General Medical Ward' },
   ];
   
   for (const dept of departments) {
@@ -255,16 +259,53 @@ async function createSampleRooms() {
   console.log('\n🏥 Creating sample rooms...');
   
   const rooms = [
+    // ICU - Floor 1
     { roomNumber: 'ICU-101', floor: 1, roomType: 'icu', capacity: 1, departmentId: 'icu' },
     { roomNumber: 'ICU-102', floor: 1, roomType: 'icu', capacity: 1, departmentId: 'icu' },
     { roomNumber: 'ICU-103', floor: 1, roomType: 'icu', capacity: 1, departmentId: 'icu' },
+    { roomNumber: 'ICU-104', floor: 1, roomType: 'icu', capacity: 1, departmentId: 'icu' },
+    { roomNumber: 'ICU-105', floor: 1, roomType: 'icu', capacity: 1, departmentId: 'icu' },
+    
+    // Emergency - Floor 2
     { roomNumber: 'ER-201', floor: 2, roomType: 'emergency', capacity: 2, departmentId: 'emergency' },
     { roomNumber: 'ER-202', floor: 2, roomType: 'emergency', capacity: 2, departmentId: 'emergency' },
     { roomNumber: 'ER-203', floor: 2, roomType: 'emergency', capacity: 2, departmentId: 'emergency' },
+    { roomNumber: 'ER-204', floor: 2, roomType: 'emergency', capacity: 2, departmentId: 'emergency' },
+    { roomNumber: 'ER-205', floor: 2, roomType: 'emergency', capacity: 3, departmentId: 'emergency' },
+    
+    // Cardiology - Floor 3
     { roomNumber: 'CARD-301', floor: 3, roomType: 'ward', capacity: 2, departmentId: 'cardiology' },
     { roomNumber: 'CARD-302', floor: 3, roomType: 'ward', capacity: 2, departmentId: 'cardiology' },
+    { roomNumber: 'CARD-303', floor: 3, roomType: 'ward', capacity: 2, departmentId: 'cardiology' },
+    { roomNumber: 'CARD-304', floor: 3, roomType: 'private', capacity: 1, departmentId: 'cardiology' },
+    
+    // Surgery - Floor 4
     { roomNumber: 'SURG-401', floor: 4, roomType: 'operation_theater', capacity: 1, departmentId: 'surgery' },
     { roomNumber: 'SURG-402', floor: 4, roomType: 'operation_theater', capacity: 1, departmentId: 'surgery' },
+    { roomNumber: 'SURG-403', floor: 4, roomType: 'recovery', capacity: 2, departmentId: 'surgery' },
+    { roomNumber: 'SURG-404', floor: 4, roomType: 'recovery', capacity: 2, departmentId: 'surgery' },
+    
+    // Pediatrics - Floor 5
+    { roomNumber: 'PED-501', floor: 5, roomType: 'ward', capacity: 2, departmentId: 'pediatrics' },
+    { roomNumber: 'PED-502', floor: 5, roomType: 'ward', capacity: 2, departmentId: 'pediatrics' },
+    { roomNumber: 'PED-503', floor: 5, roomType: 'ward', capacity: 3, departmentId: 'pediatrics' },
+    { roomNumber: 'PED-504', floor: 5, roomType: 'private', capacity: 1, departmentId: 'pediatrics' },
+    
+    // Neurology - Floor 6
+    { roomNumber: 'NEURO-601', floor: 6, roomType: 'ward', capacity: 2, departmentId: 'neurology' },
+    { roomNumber: 'NEURO-602', floor: 6, roomType: 'ward', capacity: 2, departmentId: 'neurology' },
+    { roomNumber: 'NEURO-603', floor: 6, roomType: 'observation', capacity: 1, departmentId: 'neurology' },
+    
+    // Orthopedics - Floor 7
+    { roomNumber: 'ORTHO-701', floor: 7, roomType: 'ward', capacity: 2, departmentId: 'orthopedics' },
+    { roomNumber: 'ORTHO-702', floor: 7, roomType: 'ward', capacity: 2, departmentId: 'orthopedics' },
+    { roomNumber: 'ORTHO-703', floor: 7, roomType: 'recovery', capacity: 2, departmentId: 'orthopedics' },
+    
+    // General Ward - Floor 8
+    { roomNumber: 'GEN-801', floor: 8, roomType: 'ward', capacity: 4, departmentId: 'general' },
+    { roomNumber: 'GEN-802', floor: 8, roomType: 'ward', capacity: 4, departmentId: 'general' },
+    { roomNumber: 'GEN-803', floor: 8, roomType: 'ward', capacity: 3, departmentId: 'general' },
+    { roomNumber: 'GEN-804', floor: 8, roomType: 'ward', capacity: 3, departmentId: 'general' },
   ];
   
   for (const room of rooms) {
@@ -409,7 +450,7 @@ function generatePatients(count = 100) {
   const bloodGroups = ['O+', 'O-', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-'];
   const genders = ['male', 'female'];
   const statuses = ['admitted', 'discharged', 'waiting', 'emergency', 'critical', 'stable', 'recovering'];
-  const departments = ['emergency', 'icu', 'cardiology', 'surgery'];
+  const departments = ['emergency', 'icu', 'cardiology', 'surgery', 'pediatrics', 'neurology', 'orthopedics', 'general'];
   
   // Date generation constants
   const MIN_BIRTH_YEAR = 1940;
@@ -543,6 +584,114 @@ async function createSamplePatients() {
 }
 
 /**
+ * Assign beds to some existing patients following proper validation logic
+ */
+async function assignBedsToPatients() {
+  console.log('\n🏥 Assigning beds to patients...');
+  
+  // Get all available beds (not occupied)
+  const bedsSnapshot = await db.collection('beds')
+    .where('isOccupied', '==', false)
+    .get();
+  
+  if (bedsSnapshot.empty) {
+    console.log('   ⚠️  No available beds to assign');
+    return;
+  }
+  
+  const availableBeds = bedsSnapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  }));
+  
+  // Get patients who should have beds (admitted, emergency, critical, stable, recovering)
+  const eligibleStatuses = ['admitted', 'emergency', 'critical', 'stable', 'recovering'];
+  const patientsSnapshot = await db.collection('patients').get();
+  const eligiblePatients = patientsSnapshot.docs
+    .map(doc => ({ id: doc.id, ...doc.data() }))
+    .filter(p => eligibleStatuses.includes(p.status) && p.department);
+  
+  if (eligiblePatients.length === 0) {
+    console.log('   ℹ️  No eligible patients to assign beds');
+    return;
+  }
+  
+  // Check for existing bed assignments to avoid duplicates
+  const assignmentsSnapshot = await db.collection('bedAssignments')
+    .where('dischargedAt', '==', null)
+    .get();
+  
+  const assignedPatientIds = new Set(
+    assignmentsSnapshot.docs.map(doc => doc.data().patientId)
+  );
+  
+  // Filter out patients who already have bed assignments
+  const patientsWithoutBeds = eligiblePatients.filter(
+    p => !assignedPatientIds.has(p.id)
+  );
+  
+  if (patientsWithoutBeds.length === 0) {
+    console.log('   ℹ️  All eligible patients already have bed assignments');
+    return;
+  }
+  
+  // Group beds by department for easy matching
+  const bedsByDept = {};
+  availableBeds.forEach(bed => {
+    if (!bedsByDept[bed.departmentId]) {
+      bedsByDept[bed.departmentId] = [];
+    }
+    bedsByDept[bed.departmentId].push(bed);
+  });
+  
+  // Assign beds to patients (matching departments)
+  let assignmentsCreated = 0;
+  const batch = db.batch();
+  const maxAssignments = Math.min(patientsWithoutBeds.length, 25); // Limit initial assignments
+  
+  for (let i = 0; i < maxAssignments; i++) {
+    const patient = patientsWithoutBeds[i];
+    if (!patient) break; // Safety check for array bounds
+    
+    const departmentBeds = bedsByDept[patient.department] || [];
+    
+    if (departmentBeds.length === 0) {
+      console.log(`   ⚠️  No available beds in ${patient.department} for patient ${patient.fullName}`);
+      continue;
+    }
+    
+    // Get and remove the first available bed for this department
+    const bed = departmentBeds.shift();
+    
+    // Create bed assignment
+    const assignmentRef = db.collection('bedAssignments').doc();
+    batch.set(assignmentRef, {
+      patientId: patient.id,
+      bedId: bed.id,
+      assignedAt: admin.firestore.FieldValue.serverTimestamp(),
+      dischargedAt: null,
+      notes: `Seeded assignment for ${patient.fullName}`,
+    });
+    
+    // Update bed status to occupied
+    const bedRef = db.collection('beds').doc(bed.id);
+    batch.update(bedRef, {
+      isOccupied: true,
+    });
+    
+    assignmentsCreated++;
+    console.log(`   ✅ Assigned ${bed.bedNumber} (${bed.departmentId}) to ${patient.fullName} (${patient.department})`);
+  }
+  
+  if (assignmentsCreated > 0) {
+    await batch.commit();
+    console.log(`\n   ✅ Successfully created ${assignmentsCreated} bed assignments`);
+  } else {
+    console.log('   ℹ️  No bed assignments were created');
+  }
+}
+
+/**
  * Main seeding function
  */
 async function seedTestData() {
@@ -565,6 +714,9 @@ async function seedTestData() {
     
     // Create patients
     await createSamplePatients();
+    
+    // Assign beds to patients (with proper validation)
+    await assignBedsToPatients();
     
     // Create users
     console.log('\n👥 Creating test users...\n');
@@ -605,18 +757,22 @@ async function seedTestData() {
     const bedsCount = (await db.collection('beds').get()).size;
     const patientsCount = (await db.collection('patients').get()).size;
     const usersCount = (await db.collection('users').get()).size;
+    const assignmentsCount = (await db.collection('bedAssignments').where('dischargedAt', '==', null).get()).size;
+    const occupiedBedsCount = (await db.collection('beds').where('isOccupied', '==', true).get()).size;
     
     console.log(`   • Departments: ${departmentsCount}`);
     console.log(`   • Rooms: ${roomsCount}`);
-    console.log(`   • Beds: ${bedsCount}`);
+    console.log(`   • Beds: ${bedsCount} (${occupiedBedsCount} occupied, ${bedsCount - occupiedBedsCount} available)`);
     console.log(`   • Patients: ${patientsCount}`);
     console.log(`   • Users: ${usersCount}`);
+    console.log(`   • Active Bed Assignments: ${assignmentsCount}`);
     
     console.log('\n✅ Firebase Authentication and Firestore are now populated with test data.');
     console.log('\n🔒 Next Steps:');
     console.log('   1. Test login with any of the above credentials');
     console.log('   2. All data uses camelCase field names as per the schema');
     console.log('   3. Explore departments, rooms, beds, and patients');
+    console.log('   4. Bed assignments follow strict validation: department matching enforced');
     
   } catch (error) {
     console.error('\n❌ Seeding failed:', error);
