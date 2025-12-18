@@ -649,8 +649,10 @@ async function assignBedsToPatients() {
   const batch = db.batch();
   const maxAssignments = Math.min(patientsWithoutBeds.length, 25); // Limit initial assignments
   
-  for (let i = 0; i < maxAssignments && i < patientsWithoutBeds.length; i++) {
+  for (let i = 0; i < maxAssignments; i++) {
     const patient = patientsWithoutBeds[i];
+    if (!patient) break; // Safety check for array bounds
+    
     const departmentBeds = bedsByDept[patient.department] || [];
     
     if (departmentBeds.length === 0) {
@@ -658,14 +660,8 @@ async function assignBedsToPatients() {
       continue;
     }
     
-    // Get the first available bed for this department
-    const bed = departmentBeds.shift(); // Remove from available list
-    
-    // Validate department matching (critical requirement)
-    if (bed.departmentId !== patient.department) {
-      console.log(`   ❌ Department mismatch: bed=${bed.departmentId}, patient=${patient.department}`);
-      continue;
-    }
+    // Get and remove the first available bed for this department
+    const bed = departmentBeds.shift();
     
     // Create bed assignment
     const assignmentRef = db.collection('bedAssignments').doc();
