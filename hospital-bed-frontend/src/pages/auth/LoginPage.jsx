@@ -153,20 +153,20 @@ const LoginPage = () => {
             </Button>
           </form>
 
-          {/* Create Patient Account Button */}
+          {/* Create Patient Account Button 
           <div className="mt-6 text-center">
             <Link to="/register">
               <Button variant="outline" className="w-full" size="lg">
                 Create Patient Account
               </Button>
             </Link>
-          </div>
+          </div>*/}
 
           <div className="mt-6 text-center">
-            <Button className="text-green-600 hover:bg-green-50" size="sm" variant="ghost">
+            {/* <Button className="text-green-600 hover:bg-green-50" size="sm" variant="ghost">
               <Globe className="mr-2" size={16} />
               العربية
-            </Button>
+            </Button> */}
           </div>
         </div>
 
