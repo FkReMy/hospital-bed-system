@@ -53,30 +53,55 @@ const PatientListPage = () => {
   const [isRegisterDialogOpen, setIsRegisterDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  // In production: replace with usePatientsList hook or query
-  const [patients, setPatients] = useState([]); // Mock - replace with real data
+  // State management
+  const [patients, setPatients] = useState([]);
   const [departments, setDepartments] = useState([]);
-  const [isLoading, setIsLoading] = useState(false); // Mock loading
+  const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
-  const [sortConfig, setSortConfig] = useState({ key: 'full_name', direction: 'asc' });
+  const [sortConfig, setSortConfig] = useState({ key: 'fullName', direction: 'asc' });
 
-  // Filtered and sorted patients (mock data)
+  // Helper function to calculate accurate age from date of birth
+  const calculateAge = (dateOfBirth) => {
+    if (!dateOfBirth) return null;
+    
+    const birthDate = new Date(dateOfBirth);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    
+    return age;
+  };
+
+  // Create department lookup map for efficient department name resolution
+  const departmentMap = useMemo(() => {
+    const map = {};
+    departments.forEach(dept => {
+      map[dept.id] = dept.name;
+    });
+    return map;
+  }, [departments]);
+
+  // Filtered and sorted patients
   const filteredAndSortedPatients = useMemo(() => {
     let filtered = patients;
 
     if (searchTerm) {
       const lower = searchTerm.toLowerCase();
       filtered = filtered.filter(p =>
-        p.full_name?.toLowerCase().includes(lower) ||
-        p.patient_id?.toString().includes(searchTerm) ||
+        p.fullName?.toLowerCase().includes(lower) ||
+        p.id?.toString().toLowerCase().includes(lower) ||
         p.phone?.includes(searchTerm)
       );
     }
 
     if (selectedDepartment !== 'all') {
-      filtered = filtered.filter(p => p.department_id === selectedDepartment);
+      filtered = filtered.filter(p => p.department === selectedDepartment);
     }
 
     if (selectedStatus !== 'all') {
@@ -85,8 +110,15 @@ const PatientListPage = () => {
 
     if (sortConfig.key) {
       filtered = [...filtered].sort((a, b) => {
-        const aVal = a[sortConfig.key];
-        const bVal = b[sortConfig.key];
+        let aVal = a[sortConfig.key];
+        let bVal = b[sortConfig.key];
+
+        // Special handling for age sorting (computed field)
+        if (sortConfig.key === 'age') {
+          // Use -1 for null ages to sort them at the beginning (ascending) or end (descending)
+          aVal = calculateAge(a.dateOfBirth) ?? -1;
+          bVal = calculateAge(b.dateOfBirth) ?? -1;
+        }
 
         if (aVal < bVal) return sortConfig.direction === 'asc' ? -1 : 1;
         if (aVal > bVal) return sortConfig.direction === 'asc' ? 1 : -1;
@@ -105,23 +137,28 @@ const PatientListPage = () => {
     }));
   };
 
-  // Mock data - remove in production
+  // Load patients and departments on mount
   useEffect(() => {
-    // Simulate API call for patients
-    setIsLoading(true);
-    setTimeout(() => {
-      setPatients([
-        // Replace with real data from API
-        { id: 1, full_name: 'Ahmed Mohamed', patient_id: 'P12345', age: 45, status: 'admitted', phone: '0123456789', department: 'ICU' },
-        // ... more
-      ]);
-      setIsLoading(false);
-    }, 1500);
-    
-    // Fetch departments for the form
-    departmentFirebase.getAll()
-      .then(depts => setDepartments(depts))
-      .catch(err => console.error('Failed to load departments:', err));
+    const loadData = async () => {
+      setIsLoading(true);
+      try {
+        // Fetch both patients and departments in parallel
+        const [patientsData, departmentsData] = await Promise.all([
+          patientFirebase.getAll(),
+          departmentFirebase.getAll()
+        ]);
+        
+        setPatients(patientsData);
+        setDepartments(departmentsData);
+      } catch (error) {
+        console.error('Failed to load data:', error);
+        toast.error('Failed to load patients. Please refresh the page.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadData();
   }, []);
 
   // Handler to open registration dialog
@@ -186,7 +223,11 @@ const PatientListPage = () => {
             onChange={(e) => setSelectedDepartment(e.target.value)}
           >
             <option value="all">All Departments</option>
-            {/* Populate from departments */}
+            {departments.map((dept) => (
+              <option key={dept.id} value={dept.id}>
+                {dept.name}
+              </option>
+            ))}
           </select>
 
           <select
@@ -215,10 +256,10 @@ const PatientListPage = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="sortable" onClick={() => handleSort('full_name')}>
+                <TableHead className="sortable" onClick={() => handleSort('fullName')}>
                   Name
                 </TableHead>
-                <TableHead className="sortable" onClick={() => handleSort('patient_id')}>
+                <TableHead className="sortable" onClick={() => handleSort('id')}>
                   Patient ID
                 </TableHead>
                 <TableHead className="sortable" onClick={() => handleSort('age')}>
@@ -233,29 +274,37 @@ const PatientListPage = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredAndSortedPatients.map(patient => (
-                <TableRow className="clickable" key={patient.id}>
-                  <TableCell>
-                    <Link className="patientName" to={`/patients/${patient.id}`}>
-                      {patient.full_name}
-                    </Link>
-                  </TableCell>
-                  <TableCell>{patient.patient_id}</TableCell>
-                  <TableCell>{patient.age}</TableCell>
-                  <TableCell>
-                    <Badge variant={patient.status === 'admitted' ? 'success' : 'warning'}>
-                      {patient.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>{patient.phone}</TableCell>
-                  <TableCell>{patient.department}</TableCell>
-                  <TableCell>
-                    <Button size="icon" variant="ghost">
-                      <MoreVertical size={18} />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {filteredAndSortedPatients.map(patient => {
+                // Calculate accurate age using helper function
+                const age = calculateAge(patient.dateOfBirth) ?? 'N/A';
+                
+                // Get department name from lookup map
+                const departmentName = departmentMap[patient.department] || patient.department || 'N/A';
+                
+                return (
+                  <TableRow className="clickable" key={patient.id}>
+                    <TableCell>
+                      <Link className="patientName" to={`/patients/${patient.id}`}>
+                        {patient.fullName}
+                      </Link>
+                    </TableCell>
+                    <TableCell>{patient.id}</TableCell>
+                    <TableCell>{age}</TableCell>
+                    <TableCell>
+                      <Badge variant={patient.status === 'admitted' ? 'success' : 'warning'}>
+                        {patient.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>{patient.phone}</TableCell>
+                    <TableCell>{departmentName}</TableCell>
+                    <TableCell>
+                      <Button size="icon" variant="ghost">
+                        <MoreVertical size={18} />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         )}
