@@ -24,6 +24,7 @@ import {
   Timestamp 
 } from 'firebase/firestore';
 import { db } from './firebaseConfig';
+import { validateBedAssignment } from './bedAssignmentValidation';
 
 const BED_ASSIGNMENTS_COLLECTION = 'bedAssignments';
 
@@ -137,11 +138,17 @@ export const getHistoryByPatientId = async (patientId) => {
  */
 export const create = async (data) => {
   try {
+    const patientId = data.patientId || data.patient_id;
+    const bedId = data.bedId || data.bed_id;
+    
+    // Validate assignment using shared validation logic
+    await validateBedAssignment(bedId, patientId);
+    
     const assignmentRef = doc(collection(db, BED_ASSIGNMENTS_COLLECTION));
     
     const newAssignment = {
-      patientId: data.patientId || data.patient_id,
-      bedId: data.bedId || data.bed_id,
+      patientId: patientId,
+      bedId: bedId,
       assignedBy: data.assignedBy || data.assigned_by || 'system',
       notes: data.notes || null,
       assignedAt: Timestamp.now(),
