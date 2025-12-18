@@ -195,11 +195,26 @@ export const create = async (data) => {
     
     // Parse date properly - handle both ISO string and Date objects
     let appointmentDate;
-    if (data.appointmentDate || data.appointment_date) {
-      const dateStr = data.appointmentDate || data.appointment_date;
-      appointmentDate = typeof dateStr === 'string' ? Timestamp.fromDate(new Date(dateStr)) : Timestamp.fromDate(dateStr);
-    } else {
+    const dateValue = data.appointmentDate || data.appointment_date;
+    
+    if (!dateValue) {
       appointmentDate = Timestamp.now();
+    } else if (typeof dateValue === 'string') {
+      // Validate and parse ISO string
+      const parsedDate = new Date(dateValue);
+      if (isNaN(parsedDate.getTime())) {
+        throw new Error('Invalid date format');
+      }
+      appointmentDate = Timestamp.fromDate(parsedDate);
+    } else if (dateValue instanceof Date) {
+      // Handle Date object
+      if (isNaN(dateValue.getTime())) {
+        throw new Error('Invalid date object');
+      }
+      appointmentDate = Timestamp.fromDate(dateValue);
+    } else {
+      // Already a Timestamp or other supported format
+      appointmentDate = dateValue;
     }
     
     const newAppointment = {
