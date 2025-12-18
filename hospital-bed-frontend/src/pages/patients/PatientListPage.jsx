@@ -78,6 +78,15 @@ const PatientListPage = () => {
     return age;
   };
 
+  // Create department lookup map for efficient department name resolution
+  const departmentMap = useMemo(() => {
+    const map = {};
+    departments.forEach(dept => {
+      map[dept.id] = dept.name;
+    });
+    return map;
+  }, [departments]);
+
   // Filtered and sorted patients
   const filteredAndSortedPatients = useMemo(() => {
     let filtered = patients;
@@ -106,8 +115,8 @@ const PatientListPage = () => {
 
         // Special handling for age sorting (computed field)
         if (sortConfig.key === 'age') {
-          aVal = calculateAge(a.dateOfBirth) ?? 999;
-          bVal = calculateAge(b.dateOfBirth) ?? 999;
+          aVal = calculateAge(a.dateOfBirth) ?? Number.MAX_SAFE_INTEGER;
+          bVal = calculateAge(b.dateOfBirth) ?? Number.MAX_SAFE_INTEGER;
         }
 
         if (aVal < bVal) return sortConfig.direction === 'asc' ? -1 : 1;
@@ -268,8 +277,8 @@ const PatientListPage = () => {
                 // Calculate accurate age using helper function
                 const age = calculateAge(patient.dateOfBirth) ?? 'N/A';
                 
-                // Find department name from ID
-                const departmentName = departments.find(d => d.id === patient.department)?.name || patient.department || 'N/A';
+                // Get department name from lookup map
+                const departmentName = departmentMap[patient.department] || patient.department || 'N/A';
                 
                 return (
                   <TableRow className="clickable" key={patient.id}>
