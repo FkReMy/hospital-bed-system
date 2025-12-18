@@ -38,7 +38,7 @@ import { useRoleAccess } from '@hooks/useRoleAccess';
 import './BedManagementPage.scss';
 
 const BedManagementPage = () => {
-  const { beds, departments, patients, isLoadingBeds, assignBed, isAssigning } = useBedManagement();
+  const { beds, departments, patients, isLoadingBeds, assignBed, isAssigning, dischargeBed, isDischarging } = useBedManagement();
   const { hasAccess: canManageBeds } = useRoleAccess(['admin', 'nurse', 'reception']);
   
   const [searchTerm, setSearchTerm] = useState('');
@@ -97,6 +97,17 @@ const BedManagementPage = () => {
   const handleDischarge = (bed) => {
     setSelectedBed(bed);
     setDischargeDialogOpen(true);
+  };
+
+  const handleDischargeSuccess = (dischargePayload) => {
+    // Call the dischargeBed mutation from useBedManagement hook
+    // Note: discharge only needs bed_id, not the full payload
+    dischargeBed(dischargePayload.bed_id, {
+      onSuccess: () => {
+        setDischargeDialogOpen(false);
+        setSelectedBed(null);
+      }
+    });
   };
 
   if (isLoadingBeds) {
@@ -236,6 +247,8 @@ const BedManagementPage = () => {
             bed={selectedBed}
             open={dischargeDialogOpen}
             onOpenChange={setDischargeDialogOpen}
+            isSubmitting={isDischarging}
+            onSuccess={handleDischargeSuccess}
           />
         </>
       )}
