@@ -85,8 +85,14 @@ const PatientListPage = () => {
 
     if (sortConfig.key) {
       filtered = [...filtered].sort((a, b) => {
-        const aVal = a[sortConfig.key];
-        const bVal = b[sortConfig.key];
+        let aVal = a[sortConfig.key];
+        let bVal = b[sortConfig.key];
+
+        // Special handling for age sorting (computed field)
+        if (sortConfig.key === 'age') {
+          aVal = a.dateOfBirth ? new Date().getFullYear() - new Date(a.dateOfBirth).getFullYear() : 999;
+          bVal = b.dateOfBirth ? new Date().getFullYear() - new Date(b.dateOfBirth).getFullYear() : 999;
+        }
 
         if (aVal < bVal) return sortConfig.direction === 'asc' ? -1 : 1;
         if (aVal > bVal) return sortConfig.direction === 'asc' ? 1 : -1;
@@ -230,7 +236,7 @@ const PatientListPage = () => {
                 <TableHead className="sortable" onClick={() => handleSort('id')}>
                   Patient ID
                 </TableHead>
-                <TableHead>
+                <TableHead className="sortable" onClick={() => handleSort('age')}>
                   Age
                 </TableHead>
                 <TableHead className="sortable" onClick={() => handleSort('status')}>
@@ -243,10 +249,17 @@ const PatientListPage = () => {
             </TableHeader>
             <TableBody>
               {filteredAndSortedPatients.map(patient => {
-                // Calculate age from dateOfBirth
-                const age = patient.dateOfBirth 
-                  ? new Date().getFullYear() - new Date(patient.dateOfBirth).getFullYear()
-                  : 'N/A';
+                // Calculate accurate age from dateOfBirth
+                let age = 'N/A';
+                if (patient.dateOfBirth) {
+                  const birthDate = new Date(patient.dateOfBirth);
+                  const today = new Date();
+                  age = today.getFullYear() - birthDate.getFullYear();
+                  const monthDiff = today.getMonth() - birthDate.getMonth();
+                  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                  }
+                }
                 
                 // Find department name from ID
                 const departmentName = departments.find(d => d.id === patient.department)?.name || patient.department || 'N/A';
