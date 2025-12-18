@@ -47,12 +47,8 @@ export const useAppointmentManagement = (filters = {}) => {
     isLoading: isLoadingDoctors,
     isError: isErrorDoctors,
   } = useQuery({
-    queryKey: ['users', { role: ROLES.DOCTOR }],
-    queryFn: async () => {
-      const users = await userApi.getAll({ role: ROLES.DOCTOR });
-      // Handle both array and paginated response
-      return Array.isArray(users) ? users : users.data || [];
-    },
+    queryKey: ['doctors'],
+    queryFn: () => userApi.getAll({ role: ROLES.DOCTOR }),
     staleTime: 1000 * 60 * 5, // 5 minutes (doctors list doesn't change often)
     refetchOnWindowFocus: false,
   });
