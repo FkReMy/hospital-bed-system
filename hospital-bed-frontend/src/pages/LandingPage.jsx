@@ -87,10 +87,10 @@ const LandingPage = () => {
                   Staff Login <ArrowRight className="ml-2" />
                 </Link>
               </Button>
-              <Button className="languageToggle" size="lg" variant="outline">
+              {/* <Button className="languageToggle" size="lg" variant="outline">
                 <Globe className="mr-2" />
                 العربية
-              </Button>
+              </Button> */}
             </div>
           </div>
           <div className="heroImage">
