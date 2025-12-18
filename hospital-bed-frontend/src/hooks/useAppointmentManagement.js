@@ -3,11 +3,12 @@
  * useAppointmentManagement Hook
  * 
  * Production-ready custom hook centralizing all appointment management operations.
- * Handles fetching appointments, creating, updating, and deleting appointments,
+ * Handles fetching appointments, doctors, creating, updating, and deleting appointments,
  * and cache invalidation for real-time updates.
  * 
  * Features:
  * - Fetches appointments with optional filters
+ * - Fetches doctors list for filtering
  * - Real-time cache updates on create/update/delete
  * - Error handling with toast feedback
  * - Loading states for queries and mutations
@@ -19,6 +20,8 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import * as appointmentApi from '@services/api/appointmentApi';
+import * as userApi from '@services/api/userApi';
+import { ROLES } from '@lib/roles';
 import toast from 'react-hot-toast';
 
 export const useAppointmentManagement = (filters = {}) => {
@@ -35,6 +38,22 @@ export const useAppointmentManagement = (filters = {}) => {
     queryKey: ['appointments', filters],
     queryFn: () => appointmentApi.getAll(filters),
     staleTime: 1000 * 60 * 2, // 2 minutes
+    refetchOnWindowFocus: false,
+  });
+
+  // Fetch all doctors for filtering
+  const {
+    data: doctors = [],
+    isLoading: isLoadingDoctors,
+    isError: isErrorDoctors,
+  } = useQuery({
+    queryKey: ['users', { role: ROLES.DOCTOR }],
+    queryFn: async () => {
+      const users = await userApi.getAll({ role: ROLES.DOCTOR });
+      // Handle both array and paginated response
+      return Array.isArray(users) ? users : users.data || [];
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes (doctors list doesn't change often)
     refetchOnWindowFocus: false,
   });
 
@@ -158,6 +177,11 @@ export const useAppointmentManagement = (filters = {}) => {
     isErrorAppointments,
     appointmentsError,
     refetchAppointments,
+    
+    // Doctors data for filters
+    doctors,
+    isLoadingDoctors,
+    isErrorDoctors,
 
     // Mutations
     createAppointment,
