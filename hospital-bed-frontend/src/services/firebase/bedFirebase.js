@@ -107,7 +107,7 @@ const transformBedData = async (bedData, bedId) => {
       room_number: room?.roomNumber || room?.room_number || 'N/A',
       status: bedData.isOccupied ? 'occupied' : 'available',
       isOccupied: bedData.isOccupied,
-      department_id: bedData.departmentId,
+      department_id: bedData.departmentId || (department ? department.id : null),
       room_id: bedData.roomId,
       department: department,
       room: room,
@@ -122,7 +122,7 @@ const transformBedData = async (bedData, bedId) => {
       room_number: 'N/A',
       status: bedData.isOccupied ? 'occupied' : 'available',
       isOccupied: bedData.isOccupied,
-      department_id: bedData.departmentId,
+      department_id: bedData.departmentId || null,
       room_id: bedData.roomId,
     };
   }
@@ -400,7 +400,7 @@ export const subscribeToBeds = (callback, params = {}) => {
                 room_number: 'N/A',
                 status: bedData.isOccupied ? 'occupied' : 'available',
                 isOccupied: bedData.isOccupied,
-                department_id: bedData.departmentId,
+                department_id: bedData.departmentId || null,
                 room_id: bedData.roomId,
               };
             }
